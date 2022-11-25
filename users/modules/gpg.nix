@@ -4,7 +4,6 @@
         enable = true;
         homedir = "/state/secrets/.gnupg";
         #settings
-#TODO
     };
     services.gpg-agent = {
         enable = true;

@@ -16,6 +16,12 @@
 		, nur
 	}: {
 		nixosConfigurations = {
+            #south = nixkpgs.lib.nixosSystem {
+                #system = "x86_64-linux";
+                #modules = [
+                    #./hosts/south.nix
+                #];
+                #};
 			west = nixpkgs.lib.nixosSystem {
 				system = "x86_64-linux";
 				modules = [

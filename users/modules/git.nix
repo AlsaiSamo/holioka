@@ -5,6 +5,9 @@ secrets = import /state/secrets/secrets.nix;
 
 in
 {
+    home.packages = with pkgs;[
+        git-crypt
+    ];
 	programs = {
 #gh =
 		lazygit = {
