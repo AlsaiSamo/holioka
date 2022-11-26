@@ -1,7 +1,7 @@
 inputs@{ lib, config, pkgs, ... }:
 let
 
-secrets = import /state/secrets/secrets.nix;
+secrets = import ../secrets.nix;
 
 in
 {

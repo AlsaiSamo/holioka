@@ -1,7 +1,4 @@
 {lib, pkgs, ...}:
-let
-
-in
 {
 	imports = map(x: ./modules/. + x + ".nix") [
 		"/firefox"
