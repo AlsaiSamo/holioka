@@ -8,7 +8,6 @@
 	programs.rofi = {
 		enable = true;
 		cycle = true;
-	#	font = "FiraCode 12";
 		location = "center";
 		theme = "gruvbox-dark-soft";
 		plugins = with pkgs; [

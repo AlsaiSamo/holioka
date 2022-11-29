@@ -26,8 +26,6 @@
 	home.packages = with pkgs; [
         xorg.xkill
         barrier
-#TODO move stuff away
-#after we finish other parts
 	];
 
 	home.persistence."/state/home/imikoy" = {
@@ -41,8 +39,6 @@
             "Projects"
             ".cache/nheko"
             ".config/nheko"
-            ".gnupg"
-#TODO move to its own module?
 		];
 	};
 
@@ -51,10 +47,6 @@
 		options = [
             "grp:caps_toggle"
 		];
-	};
-	home.language = {
-#TODO
-#review later
 	};
 
 	home.pointerCursor = {

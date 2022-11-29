@@ -186,9 +186,6 @@ services.avahi = {
         ];
     };
 
-#TODO move to their respective places
-#And understand what should go where.
-#Do after finishing other parts.
     environment.systemPackages = with pkgs; [
         pciutils
 #       pamixer

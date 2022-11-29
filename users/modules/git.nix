@@ -9,7 +9,6 @@ in
         git-crypt
     ];
 	programs = {
-#gh =
 		lazygit = {
 			enable = true;
 		};
@@ -17,8 +16,6 @@ in
 			enable = true;
 			delta.enable = true;
             package = pkgs.gitFull;
-            #signing = {};
-            #TODO
 
             userEmail = secrets.gitUserEmail;
             userName  = secrets.gitUserName;
@@ -26,10 +23,6 @@ in
             signing.signByDefault = true;
 
             #TODO additional configuration options
-
-#aliases
-#TODO finish
-#or use Magit
 		};
 	};
 }

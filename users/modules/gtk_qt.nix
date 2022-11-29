@@ -2,6 +2,7 @@
 
 {
 	home.packages = [pkgs.dconf];
+    dconf.enable = true;
 	gtk = {
 		enable = true;
 		font = {
@@ -13,13 +14,15 @@
 			name = "Papirus-Dark";
 		};
 		theme = {
-			package = pkgs.breeze-gtk;
-			name = "Breeze-Dark";
+			package = pkgs.gnome.gnome-themes-extra;
+			name = "Adwaita";
 		};
+        gtk3.extraConfig = {
+            gtk-application-prefer-dark-theme = 1;
+        };
 	};
     qt = {
         enable = true;
-        style.package = pkgs.libsForQt5.breeze-gtk;
-#TODO theming
+        style.package = pkgs.adwaita-qt;
     };
 }

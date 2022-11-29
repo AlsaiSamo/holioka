@@ -9,9 +9,5 @@
 	};
 	programs.ncmpcpp = {
 		enable = true;
-#TODO when I'll start using mpd/ncmpcpp
-#prio 5 scale medium
-#bindings
-#settings
 	};
 }

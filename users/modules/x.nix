@@ -6,7 +6,6 @@
         alacritty
         xdotool
         maim
-#       flashfocus
         ];
 #TODO i3-gaps doesn't understand gaps???
 #yoooo, i3 without gaps
