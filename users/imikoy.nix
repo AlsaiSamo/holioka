@@ -24,6 +24,7 @@
 	manual.manpages.enable = true;
 
 	home.packages = with pkgs; [
+        nixops
         xorg.xkill
         barrier
 	];
