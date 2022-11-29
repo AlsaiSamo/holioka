@@ -17,6 +17,11 @@ in
             ./modules/ssh.nix
         ];
 
+    #for NixOps
+        nixpkgs.config.permittedInsecurePackages = [
+            "python2.7-pyjwt-1.7.1"
+        ];
+
     nix.settings.cores = 3;
     hardware.opengl = {
             enable = true;
