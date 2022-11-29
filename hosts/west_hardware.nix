@@ -25,6 +25,9 @@
   #this does not work
   #boot.initrd.postMountCommands = "chown -R imikoy:users /home/imikoy";
 
+  #boot.tmpOnTmpfs = true;
+  zramSwap.enable = true;
+
   fileSystems."/" =
     { device = "none";
       fsType = "tmpfs";
