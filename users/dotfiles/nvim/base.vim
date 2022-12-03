@@ -2,6 +2,7 @@ set pastetoggle=<F2>
 nnoremap <SPACE> <Nop>
 let mapleader=" "
 set mouse="a"
+set number
 set relativenumber
 set cursorline
 set hidden

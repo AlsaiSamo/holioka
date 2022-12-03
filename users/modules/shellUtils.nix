@@ -43,10 +43,11 @@
 		tmux = {
 			enable = true;
 			clock24 = true;
-			terminal = "screen-256color";
+			terminal = "tmux-256color";
 			shortcut = "Space";
 			historyLimit=20000;
 			escapeTime = 5;
+            extraConfig = "";
 		};
 
 		zoxide = {
