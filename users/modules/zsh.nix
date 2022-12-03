@@ -46,6 +46,7 @@
 		'';
 		localVariables = {
 			POWERLEVEL9K_DISABLE_CONFIGURATION_WIZARD = "true";
+            EDITOR = "nvim";
 		};
 	};
 
