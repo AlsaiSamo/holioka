@@ -47,7 +47,12 @@
 			shortcut = "Space";
 			historyLimit=20000;
 			escapeTime = 5;
-            extraConfig = "";
+            keyMode = "vi";
+            extraConfig = ''
+            set -g set-titles on
+            set -g set-titles-string "TMUX###S: #T"
+            '';
+            sensibleOnTop = true;
 		};
 
 		zoxide = {

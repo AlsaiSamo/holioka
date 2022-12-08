@@ -1,10 +1,9 @@
 {pkgs, lib, ...}:
 let
 baseConfig = builtins.readFile ../dotfiles/nvim/base.vim;
-bindsConfig = builtins.readFile ../dotfiles/nvim/binds.vim;
 
-#TODO: configure binds, add treeclimber, understand lspsaga
-# and begin learning all the features
+#the startup time is ~400 ms. Could optimize, but won't
+#debugger, compilation, lspsaga will be used when I'll touch some code
 in
 {
     home.persistence."/state/home/imikoy" = {
@@ -17,28 +16,61 @@ in
         withNodeJs = true;
         withPython3 = true;
         plugins = [] ++ (with pkgs.vimPlugins; [
+            {
+                plugin = impatient-nvim;
+                type = "lua";
+                config = ''
+                --
+                require('impatient').enable_profile()
+                '';
+            }
             plenary-nvim
             gruvbox
             gitsigns-nvim
             nvim-web-devicons
             lspkind-nvim
+            editorconfig-nvim
+            {
+                plugin = comment-nvim;
+                type = "lua";
+                config = ''
+                    require('Comment').setup()
+                '';
+            }
             {
             plugin = chad;
             config = "let g:chadtree_settings = { \'xdg\': v:true }";
             }
             {
             plugin = coq_nvim;
-            config = "let g:coq_settings = { \'xdg\' : v:true ,  \"auto_start\": \"shut-up\"}";
+            type = "lua";
+            config = ''
+            --
+            vim.g.coq_settings = {
+                ["auto_start"] = 'shut-up',
+                ["xdg"] = true,
+                ["keymap.recommended"] = false,
             }
-#Place manual completion on a different key. Look into snippets.
+            
+            local remap = vim.api.nvim_set_keymap
+            remap('i', '<esc>', [[pumvisible() ? "<c-e><esc>" : "<esc>"]], { expr = true, noremap = true })
+            remap('i', '<c-c>', [[pumvisible() ? "<c-e><c-c>" : "<c-c>"]], { expr = true, noremap = true })
+            remap('i', '<tab>', [[pumvisible() ? "<c-n>" : "<tab>"]], { expr = true, noremap = true })
+            remap('i', '<s-tab>', [[pumvisible() ? "<c-p>" : "<bs>"]], { expr = true, noremap = true })
+            '';
+            }
+            #look into snippets
             {
             plugin = nvim-lspconfig;
+            type = "lua";
             config = ''
-            lua coq = require "coq"
-            lua lsp = require "lspconfig"
-            lua lsp.rnix.setup(coq.lsp_ensure_capabilities())
-            lua lsp.ccls.setup(coq.lsp_ensure_capabilities())
-            lua vim.diagnostic.config({ virtual_text={prefix = '\\'} })
+            --
+            coq = require "coq"
+            lsp = require "lspconfig"
+            lsp.rnix.setup(coq.lsp_ensure_capabilities())
+            lsp.ccls.setup(coq.lsp_ensure_capabilities())
+            lsp.pyright.setup(coq.lsp_ensure_capabilities())
+            vim.diagnostic.config({ virtual_text={prefix = '\\'} })
             '';
             }
             coq-artifacts
@@ -52,16 +84,25 @@ in
             }
             {
             plugin = telescope-nvim;
-                config = "lua require('telescope').setup{}";
+                config = ''
+                lua require('telescope').setup{}
+                lua require('telescope').load_extension('harpoon')
+                '';
             }
             #telescope-zoxide
             #telescope-fzf-native-nvim
             #telescope-project-nvim
             nvim-treesitter.withAllGrammars
-
             {
             plugin = nvim-treesitter-context;
-                config = "lua require(\"nvim-treesitter.configs\").setup {highlight = {enable = true}, incremental_selection = {enable = true}, indent = {enable = true}}";
+            type = "lua";
+                config = ''
+                --
+                require("nvim-treesitter.configs").setup {
+                    highlight = {enable = true},
+                    incremental_selection = {enable = true},
+                    indent = {enable = true}}
+                    '';
             }
             harpoon
             {
@@ -76,15 +117,115 @@ in
             plugin = lspsaga-nvim;
                 config = "lua require(\"lspsaga\").init_lsp_saga({})";
             }
-#Need something like rust or c++ code to see this in action
+            {
+                plugin = nvim-autopairs;
+                type = "lua";
+#the -- trick works
+                config = ''
+                --
+                require("nvim-autopairs").setup{}
+
+                local remap = vim.api.nvim_set_keymap
+                local npairs = require('nvim-autopairs')
+
+                npairs.setup({ map_bs = false, map_cr = false })
+                _G.MUtils= {}
+
+                MUtils.CR = function()
+                if vim.fn.pumvisible() ~= 0 then
+                    if vim.fn.complete_info({ 'selected' }).selected ~= -1 then
+                    return npairs.esc('<c-y>')
+                    else
+                    return npairs.esc('<c-e>') .. npairs.autopairs_cr()
+                    end
+                else
+                    return npairs.autopairs_cr()
+                end
+                end
+                remap('i', '<cr>', 'v:lua.MUtils.CR()', { expr = true, noremap = true })
+
+                MUtils.BS = function()
+                if vim.fn.pumvisible() ~= 0 and vim.fn.complete_info({ 'mode' }).mode == 'eval' then
+                    return npairs.esc('<c-e>') .. npairs.autopairs_bs()
+                else
+                    return npairs.autopairs_bs()
+                end
+                end
+                remap('i', '<bs>', 'v:lua.MUtils.BS()', { expr = true, noremap = true })   
+                '';
+            }
+            {
+            plugin = leap-nvim;
+            type = "lua";
+            config = ''
+            --
+            require('leap').add_default_mappings()
+            vim.api.nvim_set_hl(0, 'LeapBackdrop', { link = 'Comment' })
+            '';
+            }
+            {
+            plugin = flit-nvim;
+            type = "lua";
+            config = ''
+            --
+            require('flit').setup{}
+            '';
+            }
+            {
+                plugin = todo-comments-nvim;
+                type = "lua";
+                config = ''
+                --
+                require("todo-comments").setup()
+                '';
+            }
         ]);
 
-                extraConfig = baseConfig + bindsConfig + ''
-                '';
+        extraConfig = baseConfig + ''
+            noremap ; :
+            noremap < <<
+            noremap > >>
+
+            noremap gQ <nop>
+            "Coq remaps <C-h> to jump_to_mark from i_<BS>
+            "Also, its <C-Space> is overshadowed by tmux
+            "leap.nvim remaps s/S, v_x/v_X, which are redundant (cl and cc respectively)
+            "flit.nvim remaps t/T and f/F to leap.nvim-powered variants
+
+            noremap <F2> :UndotreeToggle<CR>
+            noremap <F6> :CHADopen<CR>
+
+            nnoremap <leader>ft :Telescope treesitter<CR>
+            nnoremap <leader>fb :Telescope buffers<CR>
+            nnoremap <leader>ff :Telescope find_files<CR>
+            nnoremap <leader>fF :Telescope live_grep<CR>
+            nnoremap <leader>fr :Telescope registers<CR>
+            nnoremap <leader>pp :Telescope harpoon marks<CR>
+            nnoremap <leader>pt :lua require('harpoon.mark').add_file()<CR>
+            nnoremap <leader>ps :lua require('harpoon.mark').rm_file()<CR>
+            nnoremap <leader>pS :lua require('harpoon.mark').clear_all()<CR>
+            "nnoremap <leader>pp :lua require('harpoon.ui').toggle_quick_menu()<CR>
+
+            "the 'unpeck wifi' solution, when folds start getting funky
+            noremap <F11> :set foldexpr=nvim_treesitter#foldexpr()<CR>
+            set foldmethod=expr
+            set foldexpr=nvim_treesitter#foldexpr()
+            set nofoldenable
+
+            nnoremap <leader>ru :Lspsaga diagnostic_jump_next<CR>
+            nnoremap <leader>rl :Lspsaga diagnostic_jump_prev<CR>
+            nnoremap <leader>rr :Lspsaga hover_doc<CR>
+            nnoremap <leader>ri :Lspsaga preview_definition<CR>
+            nnoremap <leader>ro :Lspsaga rename<CR>
+            nnoremap <leader>rn :Lspsaga code_action<CR>
+            nnoremap <leader>rf :Lspsaga lsp_finder<CR>
+
+            '';
                 extraPackages = with pkgs;[
                     rnix-lsp
                         ccls
                         tree-sitter
+                        nodePackages.pyright
                 ];
     };
 }
