@@ -16,6 +16,7 @@
 		, nur
 	}: {
 		nixosConfigurations = {
+#South is not required yet
             #south = nixkpgs.lib.nixosSystem {
                 #system = "x86_64-linux";
                 #modules = [
@@ -26,6 +27,24 @@
 				system = "x86_64-linux";
 				modules = [
 					./hosts/west.nix
+					impermanence.nixosModule
+					home-manager.nixosModules.home-manager {
+						home-manager.verbose = true;
+						home-manager.useGlobalPkgs = true;
+						home-manager.useUserPackages = true;
+					}
+					{nixpkgs.overlays = [
+						nur.overlay
+					];}
+				];
+				specialArgs = {
+					hm_im = impermanence.nixosModules.home-manager.impermanence;
+				};
+			};
+			east = nixpkgs.lib.nixosSystem {
+				system = "x86_64-linux";
+				modules = [
+					./hosts/east.nix
 					impermanence.nixosModule
 					home-manager.nixosModules.home-manager {
 						home-manager.verbose = true;
