@@ -24,9 +24,15 @@
 	manual.manpages.enable = true;
 
 	home.packages = with pkgs; [
+        nheko
         xdg-utils
         xorg.xkill
         barrier
+        gcc
+        rustc
+        cargo
+        rustfmt
+        nixfmt
 	];
 
 	home.persistence."/state/home/imikoy" = {
@@ -40,6 +46,7 @@
             "Projects"
             ".cache/nheko"
             ".config/nheko"
+            ".local/share/nheko"
 		];
 	};
 

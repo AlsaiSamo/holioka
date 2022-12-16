@@ -70,6 +70,7 @@ in
             lsp.rnix.setup(coq.lsp_ensure_capabilities())
             lsp.ccls.setup(coq.lsp_ensure_capabilities())
             lsp.pyright.setup(coq.lsp_ensure_capabilities())
+            lsp.rust_analyzer.setup(coq.lsp_ensure_capabilities())
             vim.diagnostic.config({ virtual_text={prefix = '\\'} })
             '';
             }
@@ -226,6 +227,7 @@ in
                         ccls
                         tree-sitter
                         nodePackages.pyright
+                        rust-analyzer
                 ];
     };
 }
