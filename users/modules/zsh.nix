@@ -12,7 +12,7 @@
 			l = "exa -lahT -L 1";
 			sl = "ls";
 			ll = "exa -lahT";
-			v = "TERM=tmux nvim";
+			v = "nvim";
 			q = "exit";
 			":q" = "exit";
 #TODO tmux, nixos, and other stuffs
@@ -43,6 +43,7 @@
 			set -o vi
 			source $HOME/.config/zsh/.p10k.zsh
             zstyle ':fzf-tab:complete:cd:*' fzf-preview 'exa -1 --color=always $realpath'
+            unsetopt cdablevars
 		'';
 		localVariables = {
 			POWERLEVEL9K_DISABLE_CONFIGURATION_WIZARD = "true";
@@ -53,7 +54,8 @@
 	xdg.configFile."zsh/.p10k.zsh".source = ../dotfiles/.p10k.zsh;
 	home.persistence."/state/home/imikoy" = {
 		files = [
-			".zsh_history"
+			#".zsh_history"
+#atuin preserves the history
 			".zcompdump"
 		];
 		directories = [

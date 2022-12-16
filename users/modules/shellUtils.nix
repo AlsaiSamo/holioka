@@ -51,6 +51,7 @@
             extraConfig = ''
             set -g set-titles on
             set -g set-titles-string "TMUX###S: #T"
+            set-option -sa terminal-overrides ',alacritty:RGB'
             '';
             sensibleOnTop = true;
 		};
