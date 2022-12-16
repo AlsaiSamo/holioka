@@ -3,9 +3,9 @@ let
 
 secrets = import ../secrets.nix;
 
-#Configuration for Thinkpad A275 (TFT 1366x768 no-touch, no keyboard backlight, no smartcard reader, no fingerprint reader, has TPM 2, has SIM slot)
-#TODO backlight control (in i3 config, and set a default value), power control, networkmanager and a different polybar config
-#and buy both batteries
+#Configuration for Thinkpad A275 (TFT 1366x768 no-touch, no keyboard backlight, no smartcard reader, no fingerprint reader, has TPM 2, no WWAN but with SIM slot)
+#TODO scripts for power saving and a different polybar config
+#buy both batteries, 16G RAM stick and replace the screen
 
 in
 {
@@ -32,15 +32,13 @@ in
     };
     services.xserver.libinput = {
             enable = true;
+            touchpad = {
+                    naturalScrolling = true;
+                };
     };
-    services.fprintd.enable = true;
 
         time.timeZone = secrets.timeZone;
 
-    boot.kernel.sysctl = {
-        #"net.ipv4.conf.all.forwarding" = true;
-        #"net.ipv6.conf.all.forwarding" = true;
-    };
     networking = {
         nameservers = [ "8.8.8.8" ];
         #no iptables
@@ -83,6 +81,10 @@ services.avahi = {
             enable = true;
         };
         displayManager.defaultSession = "none+i3";
+        displayManager.autoLogin = {
+                enable = true;
+                user = "imikoy";
+            };
         displayManager.sddm = {
             enable = true;
             autoNumlock = true;
@@ -99,7 +101,7 @@ services.avahi = {
     security.polkit.enable = true;
     users.users.imikoy = {
         isNormalUser = true;
-        extraGroups = [ "realtime" "pipewire" "jackaudio" "wheel" "libvirt" "audio" ];
+        extraGroups = [ "realtime" "pipewire" "jackaudio" "wheel" "libvirt" "audio" "video"];
         shell = pkgs.zsh;
         initialHashedPassword = secrets.userHashedPassword;
         packages = with pkgs; [
@@ -124,6 +126,7 @@ services.avahi = {
             pinentry
 #^^^^^ needed for GPG
     ];
+    programs.light.enable = true;
 
     home-manager = {
         users.imikoy = import ../users/imikoy.nix {inherit config lib pkgs;};

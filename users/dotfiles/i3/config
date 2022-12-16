@@ -52,9 +52,6 @@ font pango: Hack Nerd Font 8
 #exec --no-startup-id xss-lock --nofork --transfer-sleep-lock -- i3lock --color=1f1f1f
 bindsym $mod+ctrl+l exec "betterlockscreen -l blur"
 
-#TODO look into this when I'll be doing East
-#exec --no-startup-id nm-applet
-
 #TODO replace with a different solution that utilises an already existing terminal
 #it is a script
 #exec --no-startup-id yakuake
@@ -66,6 +63,9 @@ bindsym XF86AudioRaiseVolume exec --no-startup-id pactl set-sink-volume @DEFAULT
 bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT_SINK@ -5% && $refresh_i3status
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
+
+bindsym XF86MonBrightnessUp exec --no-startup-id light -A 5
+bindsym XF86MonBrightnessDown exec --no-startup-id light -U 5
 
 # start a terminal
 bindsym $mod+Return exec "WINIT_X11_SCALE_FACTOR=1.5 alacritty"

@@ -26,15 +26,17 @@
 
   boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "ehci_pci" "nvme" "usbhid" "usb_storage" "sd_mod" "rtsx_pci_sdmmc" ];
   boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ "kvm-amd" "amdgpu" ];
-  boot.extraModulePackages = [ ];
+  boot.kernelModules = [ "kvm-amd" "amdgpu" "acpi_call" ];
+  boot.extraModulePackages = with config.boot.kernelPackages; [
+    acpi_call
+  ];
   boot.kernelParams = ["i8042.nomux=1" "i8042.reset"];
 
   fileSystems."/" =
     { device = "none";
       fsType = "tmpfs";
 #TODO upgrade memory and increase this to 2G
-      options = ["defaults" "size=1G" "mode=755"];
+      options = ["defaults" "size=2G" "mode=755"];
     };
 
   fileSystems."/boot" =
@@ -72,7 +74,11 @@
       neededForBoot = true;
     };
 
-  swapDevices = [ ];
+  swapDevices = [
+  {device ="/dev/nvme1n1p2";
+  }];
+
+  services.tlp.enable = true;
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
