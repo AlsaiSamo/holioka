@@ -61,6 +61,31 @@
 			enableZshIntegration = true;
 			options = [];
 		};
+        starship = {
+                enable = true;
+                enableZshIntegration = true;
+                settings = {
+#TODO do I really need to specify versions of c, cmake, Rust, and other things? They could be obtained from Nix environment
+#TODO configure things - symbols shown by $status and $git_status, etc.
+                        format = lib.concatStrings [
+                        "$directory$nix_shell$docker_context$c$cmake$python$rust"
+                        "$git_state$git_branch$git_commit$git_status"
+                        "$fill"
+                        "$sudo"
+                        "$fill"
+                        "$username$hostname"
+                        "$status$cmd_duration "
+                        "$line_break"
+                        "$character"
+                        ];
+                        sudo.disabled = false;
+                        status.disabled = false;
+                        fill = {
+                        symbol = "∙";
+                        style = "238";
+                            };
+                };
+        };
 
 		fzf = {
 			enable = true;

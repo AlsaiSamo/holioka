@@ -23,11 +23,6 @@
 			share = true;
 		};
 		plugins = [
-			{
-				name = "powerlevel10k";
-				src = pkgs.zsh-powerlevel10k;
-				file = "share/zsh-powerlevel10k/powerlevel10k.zsh-theme";
-			}
             {
                 name = "zsh-fzf-tab";
                 src = pkgs.zsh-fzf-tab;
@@ -41,17 +36,14 @@
         '';
 		initExtra = ''
 			set -o vi
-			source $HOME/.config/zsh/.p10k.zsh
             zstyle ':fzf-tab:complete:cd:*' fzf-preview 'exa -1 --color=always $realpath'
             unsetopt cdablevars
 		'';
 		localVariables = {
-			POWERLEVEL9K_DISABLE_CONFIGURATION_WIZARD = "true";
             EDITOR = "nvim";
 		};
 	};
 
-	xdg.configFile."zsh/.p10k.zsh".source = ../dotfiles/.p10k.zsh;
 	home.persistence."/state/home/imikoy" = {
 		files = [
 			#".zsh_history"
