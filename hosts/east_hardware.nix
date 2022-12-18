@@ -78,7 +78,22 @@
   {device ="/dev/nvme1n1p2";
   }];
 
-  services.tlp.enable = true;
+  services.tlp = {
+    enable = true;
+    settings = {
+        #keyboard
+        USB_DENYLIST = "8114:5981";
+        CPU_SCALING_GOVERNOR_ON_AC="performance";
+        CPU_SCALING_GOVERNOR_ON_BAT="powersave";
+        CPU_MAX_PERF_ON_AC = 100;
+        CPU_MAX_PERF_ON_BAT = 75;
+#BAT1 is external
+        START_CHARGE_TRESH_BAT1 = 50;
+        STOP_CHARGE_TRESH_BAT1 = 70;
+        #TODO add BAT0
+#TODO recalibrate new batteries
+    };
+  };
 
   # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
   # (the default) this is the recommended approach. When using systemd-networkd it's
