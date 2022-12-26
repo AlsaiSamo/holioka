@@ -23,7 +23,7 @@
         enable = true;
         shadow = false;
         fade = true;
-        fadeDelta = 4;
+        fadeDelta = 2;
         fadeExclude = ["x = 0 && y = 0 && override_redirect = true"];
 
         inactiveOpacity = 1.0;

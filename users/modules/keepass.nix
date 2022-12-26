@@ -1,7 +1,5 @@
 {pkgs, lib, ...}:
 
-#TODO move database to secrets
-
 {
     home.packages = with pkgs; [
         libsecret

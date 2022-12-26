@@ -4,6 +4,7 @@ baseConfig = builtins.readFile ../dotfiles/nvim/base.vim;
 
 #the startup time is ~400 ms. Could optimize, but won't
 #debugger, compilation, lspsaga will be used when I'll touch some code
+#TODO add formatting command
 in
 {
     home.persistence."/state/home/imikoy" = {
