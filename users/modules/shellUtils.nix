@@ -8,8 +8,7 @@
 		less
 		ripgrep
 		bottom
-#		ncdu
-#^^^^ illegal hardware instruction
+		ncdu
 		tree
 		vifm
 	];
@@ -67,30 +66,56 @@
                 settings = {
 #TODO do I really need to specify versions of c, cmake, Rust, and other things? They could be obtained from Nix environment
 #TODO configure things - symbols shown by $status and $git_status, etc.
-                        format = lib.concatStrings [
-                        "$directory$nix_shell$docker_context$c$cmake$python$rust"
-                        "$git_state$git_branch$git_commit$git_status"
-                        "$fill"
-                        "$sudo"
-                        "$fill"
-                        "$username$hostname"
-                        "$status$cmd_duration "
-                        "$line_break"
-                        "$character"
-                        ];
-                        sudo.disabled = false;
-                        status.disabled = false;
-                        fill = {
+                    format = lib.concatStrings [
+                        "$directory$docker_context$c$cmake$python$rust"
+                            "$git_state$git_branch$git_commit$git_status"
+                            "$fill"
+                            "$sudo$nix_shell"
+                            "$fill"
+                            "$username$hostname"
+                            "$status$cmd_duration "
+                            "$line_break"
+                            "$character"
+                    ];
+                    sudo.disabled = false;
+                    status.disabled = false;
+                    fill = {
                         symbol = "∙";
                         style = "238";
-                            };
+                    };
+                    battery = {
+                        format = "[$percentage]($style) ";
+#TODO starship can take in several battery.display, how can I add that in Nix?
+                        display.threshold = "20";
+                        display.style = "bold red";
+                    };
+                    cmd_duration = {
+                        format = "⌛ [$duration]($style)";
+                    };
+                    directory = {
+                            truncation_length = 7;
+                            truncation_symbol = "… /";
+                    };
+                    git_status = {
+                            conflicted = "≠ ";
+                            ahead = "⇡$\{count} ";
+                            behind = "⇣$\{count} ";
+                            diverged = "⇅ ";
+                            up_to_date = "";
+                            untracked = "? ";
+                            stashed = "$ ";
+                            modified = "! ";
+                            staged = "+ ";
+                            renamed = "+ ";
+                            deleted = "⛒ ";
+                        };
                 };
         };
 
 		fzf = {
 			enable = true;
-#enableZshIntegration = true;
-#tmux.enableShellIntegration = true;
+            #enableZshIntegration = true;
+            #tmux.enableShellIntegration = true;
 		};
 
 		bat = {

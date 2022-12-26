@@ -33,6 +33,7 @@
         cargo
         rustfmt
         nixfmt
+        kicad-small
 	];
 
 	home.persistence."/state/home/imikoy" = {
