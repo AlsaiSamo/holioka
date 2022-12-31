@@ -84,13 +84,14 @@
         #keyboard
         USB_DENYLIST = "8114:5981";
         CPU_SCALING_GOVERNOR_ON_AC="performance";
-        CPU_SCALING_GOVERNOR_ON_BAT="powersave";
+        CPU_SCALING_GOVERNOR_ON_BAT="schedutil";
         CPU_MAX_PERF_ON_AC = 100;
         CPU_MAX_PERF_ON_BAT = 75;
 #BAT1 is external
         START_CHARGE_TRESH_BAT1 = 50;
-        STOP_CHARGE_TRESH_BAT1 = 70;
-        #TODO add BAT0
+        STOP_CHARGE_TRESH_BAT1 = 75;
+        START_CHARGE_TRESH_BAT0 = 25;
+        STOP_CHARGE_TRESH_BAT0 = 65;
 #TODO recalibrate new batteries
     };
   };
