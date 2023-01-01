@@ -78,6 +78,10 @@
   {device ="/dev/nvme1n1p2";
   }];
 
+  environment.systemPackages = with pkgs; [
+  tpacpi-bat
+  ];
+  services.thinkfan.enable = true;
   services.tlp = {
     enable = true;
     settings = {
@@ -88,10 +92,11 @@
         CPU_MAX_PERF_ON_AC = 100;
         CPU_MAX_PERF_ON_BAT = 75;
 #BAT1 is external
-        START_CHARGE_TRESH_BAT1 = 50;
-        STOP_CHARGE_TRESH_BAT1 = 75;
-        START_CHARGE_TRESH_BAT0 = 25;
-        STOP_CHARGE_TRESH_BAT0 = 65;
+#TODO when I'll get 72Wh battery, change the percentages, as bat0 will see little use.
+        START_CHARGE_THRESH_BAT1 = 50;
+        STOP_CHARGE_THRESH_BAT1 = 75;
+        START_CHARGE_THRESH_BAT0 = 25;
+        STOP_CHARGE_THRESH_BAT0 = 75;
 #TODO recalibrate new batteries
     };
   };
