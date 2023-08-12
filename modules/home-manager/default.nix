@@ -1,5 +1,5 @@
 { lib, config, pkgs, ... }@inputs: {
-  imports = [ ./cli.nix ./gpg.nix ./x.nix ./firefox.nix ./nvim.nix ];
+  imports = [ ./cli.nix ./gpg.nix ./x.nix ./firefox.nix ./nvim.nix ./emacs.nix ];
 #TODO: move messaging out
 #also use fluffychat and look into configuring nheko here
   home.packages = with pkgs; [

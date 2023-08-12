@@ -9,12 +9,12 @@
     };
     nur.url = "github:nix-community/NUR";
     #TODO: update its flake?
-    doom = { url = "github:nix-community/nix-doom-emacs"; };
+    nix-doom-emacs = { url = "github:nix-community/nix-doom-emacs"; };
     nixd.url = "github:nix-community/nixd";
   };
 
   outputs = { self, nixpkgs, nixos-hardware, impermanence, home-manager, nur
-    , doom, nixd, ... }@inputs:
+    , nix-doom-emacs, nixd, ... }@inputs:
     let
       inherit (self) outputs;
       #Secrets may be distributed together with state, but they are encrypted in the repo.

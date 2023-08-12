@@ -24,6 +24,7 @@
   };
   users.users.root.hashedPassword = secrets.common.rootHashedPassword;
   environment.systemPackages = with pkgs; [
+    sqlite
     htop
     pinentry
     gnupg

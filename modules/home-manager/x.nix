@@ -6,7 +6,8 @@
 #TODO: configure mpv
     mpv
     xawtv
-    #sarasa-gothic
+#TODO: patch with nerd font and use everywhere
+    sarasa-gothic
     i3
     feh
     rofi-power-menu
