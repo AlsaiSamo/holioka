@@ -2,7 +2,6 @@
   programs.gpg = {
     enable = true;
     homedir = "/state/secrets/.gnupg";
-    #may break gnupg (scary)
     settings = {
       #TODO
     };
