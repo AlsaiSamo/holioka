@@ -3,7 +3,6 @@
     enable = true;
     homedir = "/state/secrets/.gnupg";
     settings = {
-      #TODO
     };
   };
   services.gpg-agent = {
@@ -13,10 +12,10 @@
     defaultCacheTtlSsh = 300;
     sshKeys = [ "50AF8896441CF20361687883C53B1A8D9D0FB49E" ];
     verbose = true;
-    #TODO may break gpg
-    extraConfig = ''
-      allow-emacs-pinentry
-      allow-loopback-pinentry
-    '';
+    #This does not work, GPG uses config from the state
+    # extraConfig = ''
+    #   allow-emacs-pinentry
+    #   allow-loopback-pinentry
+    # '';
   };
 }

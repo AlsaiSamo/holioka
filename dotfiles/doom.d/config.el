@@ -30,3 +30,8 @@
 (setq fill-column 80)
 (add-hook 'prog-mode-hook 'display-fill-column-indicator-mode)
 (add-hook 'text-mode-hook 'display-fill-column-indicator-mode)
+
+;;Pinentry
+(use-package! pinentry
+  :init (setq epa-pinentry-mode 'loopback)
+        (pinentry-start))
