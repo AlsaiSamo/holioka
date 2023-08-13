@@ -13,7 +13,7 @@
     emacs --daemon
     '';
     home.persistence."/state/home/imikoy/" = {
-        allowOther = false;
+        allowOther = true;
         directories = [
         ".cache/doom"
         "org"

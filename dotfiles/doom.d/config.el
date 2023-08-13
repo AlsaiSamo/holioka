@@ -12,7 +12,7 @@
 
 ;;Org
 (setq org-directory "~/org"
-      org-agenda-files org-directory
+      org-agenda-files "./agenda.org"
       org-agenda-mouse-1-follows-link t
       ;;TODO: decide on speed commands
       org-return-follows-link t
