@@ -7,6 +7,10 @@
     defaultEditor = true;
     vimAlias = true;
   };
+  programs.bash.shellInit = ''
+      GPG_TTY=$(tty)
+      export GPG_TTY
+  '';
   services.kmscon = {
     enable = true;
     autologinUser = "imikoy";

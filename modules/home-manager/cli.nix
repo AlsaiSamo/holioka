@@ -43,6 +43,10 @@
       q = "exit";
       ":q" = "exit";
     };
+    loginExtra = ''
+      GPG_TTY=$(tty)
+      export GPG_TTY
+    '';
     history = {
       ignoreSpace = true;
       save = 10000;

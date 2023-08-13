@@ -17,5 +17,6 @@
     #   allow-emacs-pinentry
     #   allow-loopback-pinentry
     # '';
+    enableExtraSocket = true;
   };
 }

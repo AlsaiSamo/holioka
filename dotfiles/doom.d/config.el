@@ -34,4 +34,5 @@
 ;;Pinentry
 (use-package! pinentry
   :init (setq epa-pinentry-mode 'loopback)
-        (pinentry-start))
+        (pinentry-start)
+        (setenv "SSH_AUTH_SOCK" (shell-command-to-string "gpgconf --list-dirs agent-ssh-socket")))
