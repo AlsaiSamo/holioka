@@ -10,6 +10,8 @@
   defaultFilesystems = true;
   stateRemoval.enable = true;
 
+  nixpkgs.config.allowUnfree = lib.mkForce true;
+
   nix.settings.cores = 11;
   networking = {
     hostName = secrets.west.hostName;

@@ -1,17 +1,16 @@
 { config, lib, pkgs, modulesPath, ... }: {
   imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
 
-  #TODO: replace with uuid
-  #swapDevices = [{ device = "/dev/nvme0n1p2"; }];
+  swapDevices = [{ device = "/dev/disk/by-uuid/cf9e173b-197a-43fa-836e-e1cb9a563437"; }];
 
   fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/5B95-3FE7";
+    device = "/dev/disk/by-uuid/8933-C2AD";
     fsType = "vfat";
   };
 
   boot.initrd.luks.devices = {
     cryptroot = {
-      device = "/dev/disk/by-uuid/a9856469-be13-40d9-88cb-ac0eb2d7b451";
+      device = "/dev/disk/by-uuid/9ea8f9f0-585f-41c4-9aab-6091a7b6c145";
     };
   };
 
