@@ -23,6 +23,21 @@
   programs.nm-applet.enable = true;
   time.timeZone = secrets.common.timeZone;
 
+  #TODO: move to hardware
+  programs.light.enable = true;
+  hardware.nvidia = {
+    #Offload is enabled in nixos-hardware module
+    #FIX: causes issues. See notes.
+    #prime.reverseSync.enable = true;
+    prime.sync.enable = lib.mkForce true;
+    prime.offload.enable = lib.mkForce false;
+    modesetting.enable = true;
+    powerManagement.enable = true;
+    #will this lead to issues?
+    #powerManagement.finegrained = true;
+    open = false;
+  };
+
   #TODO: move this out
   #It is common for all machines and other parts of the config may depend on this
   #user existing
@@ -49,7 +64,6 @@
     gvfs
     nixd
   ];
-  programs.light.enable = true;
 
   system.stateVersion = "23.11";
 }
