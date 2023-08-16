@@ -1,10 +1,10 @@
 { lib, config, pkgs, secrets, extra, modulesPath, ... }@inputs: {
   imports =
     [
-    ./hardware.nix
-    ../../modules/nixos/audio.nix
-    ../../modules/nixos/x.nix
-    ../../modules/nixos/common.nix
+      ./hardware.nix
+      ../../modules/nixos/audio.nix
+      ../../modules/nixos/x.nix
+      ../../modules/nixos/common.nix
     ];
 
   defaultFilesystems = true;
@@ -19,9 +19,13 @@
     nftables.enable = true;
     networkmanager.enable = true;
   };
+  #TODO: nm-applet should be in GUI module
   programs.nm-applet.enable = true;
   time.timeZone = secrets.common.timeZone;
 
+  #TODO: move this out
+  #It is common for all machines and other parts of the config may depend on this
+  #user existing
   users.mutableUsers = false;
   users.groups = { imikoy = { }; };
   users.users.imikoy = {
