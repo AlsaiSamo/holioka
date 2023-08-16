@@ -5,10 +5,13 @@
       ../../modules/nixos/audio.nix
       ../../modules/nixos/x.nix
       ../../modules/nixos/common.nix
+      ../../modules/nixos/avahi.nix
     ];
 
   defaultFilesystems = true;
   stateRemoval.enable = true;
+
+  services.avahi.allowInterfaces = ["eno1"];
 
   nixpkgs.config.allowUnfree = lib.mkForce true;
 

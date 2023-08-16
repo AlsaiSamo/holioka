@@ -5,10 +5,13 @@ inputs@{ lib, config, pkgs, secrets, extra, modulesPath, ... }: {
     ../../modules/nixos/audio.nix
     ../../modules/nixos/x.nix
     ../../modules/nixos/common.nix
+    ../../modules/nixos/avahi.nix
     ];
 
   defaultFilesystems = true;
   stateRemoval.enable = true;
+
+  services.avahi.allowInterfaces = ["enp1s0f0"];
 
   nix.settings.cores = 3;
   networking = {
