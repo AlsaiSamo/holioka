@@ -6,6 +6,7 @@
       ../../modules/nixos/x.nix
       ../../modules/nixos/common.nix
       ../../modules/nixos/avahi.nix
+      ../../modules/nixos/sshd.nix
     ];
 
   defaultFilesystems = true;
