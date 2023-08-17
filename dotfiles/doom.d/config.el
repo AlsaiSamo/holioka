@@ -32,8 +32,6 @@
 (add-hook 'text-mode-hook 'display-fill-column-indicator-mode)
 
 ;;SSH, GPG
-;; (use-package! keychain-environment
-;;   :init (keychain-refresh-environment))
 (use-package! pinentry
   :init (setq epa-pinentry-mode 'loopback)
         (pinentry-start)
