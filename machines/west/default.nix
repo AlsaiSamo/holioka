@@ -44,6 +44,7 @@
     alacritty
     gvfs
     nixd
+    redshift
   ];
 
   system.stateVersion = "23.11";
