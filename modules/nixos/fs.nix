@@ -49,5 +49,9 @@
         zfs rollback -r nix_pool/local/home@blank
         zfs rollback -r nix_pool/local/root@blank
       '');
+    environment.persistence."/state" = lib.mkIf config.stateRemoval.enable {
+      files = [ "/etc/machine-id" ];
+      directories = [ "/etc/NetworkManager/" ];
+    };
   };
 }

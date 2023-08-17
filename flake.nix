@@ -8,7 +8,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nur.url = "github:nix-community/NUR";
-    #TODO: update its flake?
     nix-doom-emacs = { url = "github:nix-community/nix-doom-emacs"; };
     nixd.url = "github:nix-community/nixd";
   };
@@ -56,9 +55,7 @@
           system = "x86_64-linux";
           pkgs = nixpkgs.legacyPackages."x86_64-linux";
           specialArgs = { inherit secrets inputs outputs; };
-          #TODO: change to match the hardware
           modules = commonNixosModules ++ [ (import ./machines/west) ] ++ [
-            #{nixpkgs.config.allowUnfreePredicate = nixpkgs.lib.mkForce ( _: true );}
             nixos-hardware.nixosModules.lenovo-ideapad-15arh05
             { nixpkgs.overlays = [ nur.overlay nixd.overlays.default ]; }
             home-manager.nixosModules.home-manager

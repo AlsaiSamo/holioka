@@ -7,6 +7,7 @@
       ../../modules/nixos/common.nix
       ../../modules/nixos/avahi.nix
       ../../modules/nixos/sshd.nix
+      ../../modules/nixos/imikoy.nix
     ];
 
   defaultFilesystems = true;
@@ -34,42 +35,7 @@
     nftables.enable = true;
     networkmanager.enable = true;
   };
-  #TODO: nm-applet should be in GUI module
-  programs.nm-applet.enable = true;
   time.timeZone = secrets.common.timeZone;
-
-  #TODO: move to hardware
-  programs.light.enable = true;
-  hardware.nvidia = {
-    #Offload is enabled in nixos-hardware module
-    #FIX: causes issues. See notes.
-    #prime.reverseSync.enable = true;
-    prime.sync.enable = lib.mkForce true;
-    prime.offload.enable = lib.mkForce false;
-    modesetting.enable = true;
-    powerManagement.enable = true;
-    #will this lead to issues?
-    #powerManagement.finegrained = true;
-    open = false;
-  };
-
-  #TODO: move this out
-  #It is common for all machines and other parts of the config may depend on this
-  #user existing
-  users.mutableUsers = false;
-  users.groups = { imikoy = { }; };
-  users.users.imikoy = {
-    hashedPassword = secrets.common.userHashedPassword;
-    isNormalUser = true;
-    group = "imikoy";
-    shell = pkgs.zsh;
-    extraGroups =
-      [ "wheel" "realtime" "pipewire" "jackaudio" "libvirt" "audio" "video" ];
-  };
-  environment.persistence."/state" = {
-    files = [ "/etc/machine-id" ];
-    directories = [ "/etc/NetworkManager/" ];
-  };
 
   environment.systemPackages = with pkgs; [
     jq

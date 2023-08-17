@@ -1,6 +1,19 @@
 { config, lib, pkgs, modulesPath, ... }: {
   imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
 
+  hardware.nvidia = {
+    #Offload is enabled in nixos-hardware module
+    #FIX: causes issues. See notes.
+    #prime.reverseSync.enable = true;
+    prime.sync.enable = lib.mkForce true;
+    prime.offload.enable = lib.mkForce false;
+    modesetting.enable = true;
+    powerManagement.enable = true;
+    #will this lead to issues?
+    #powerManagement.finegrained = true;
+    open = false;
+  };
+
   swapDevices = [{ device = "/dev/disk/by-uuid/cf9e173b-197a-43fa-836e-e1cb9a563437"; }];
 
   fileSystems."/boot" = {

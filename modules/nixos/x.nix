@@ -1,4 +1,6 @@
 { config, lib, pkgs, ... }@inputs: {
+  programs.nm-applet.enable = true;
+  programs.light.enable = true;
   services.xserver = {
     xkbOptions = "grp:caps_toggle";
     autoRepeatDelay = 200;
