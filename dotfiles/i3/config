@@ -46,6 +46,8 @@ floating_modifier $mod
 #font pango:monospace 8
 font pango: Hack Nerd Font 8
 
+bindsym $mod+F9 exec "emacs-everywhere"
+
 #Seems like declaring timeout for betterlockscreen already does this
 #exec --no-startup-id xss-lock --nofork --transfer-sleep-lock -- i3lock --color=1f1f1f
 bindsym $mod+ctrl+l exec "betterlockscreen -l blur"

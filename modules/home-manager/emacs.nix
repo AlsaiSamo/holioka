@@ -1,6 +1,19 @@
 { config, lib, pkgs, flake_inputs, ...}@inputs:
+let
+    emacs-everywhere = pkgs.writeScriptBin "emacs-everywhere"
+        ''
+        emacsclient --eval "(emacs-everywhere)"
+        '';
+in
 {
     imports = [flake_inputs.nix-doom-emacs.hmModule];
+    home.packages = with pkgs; [
+        xorg.xwininfo
+        xclip
+        xorg.xprop
+        xdotool
+        emacs-everywhere
+    ];
     programs.doom-emacs = {
         enable = true;
         doomPrivateDir = ../../dotfiles/doom.d;
@@ -23,10 +36,4 @@
         "org"
         ];
     };
-    home.packages = [
-        (pkgs.writeScriptBin "emacs-everywhere"
-        ''
-        emacsclient --eval "(emacs-everywhere)"
-        '')
-    ];
 }
