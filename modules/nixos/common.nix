@@ -7,10 +7,11 @@
     defaultEditor = true;
     vimAlias = true;
   };
-  programs.bash.shellInit = ''
-      GPG_TTY=$(tty)
-      export GPG_TTY
-  '';
+  #BUG: systemd units using bash -l -c run this. However, "not a tty" is exported.
+  # environment.shellInit = ''
+  #     GPG_TTY=$(tty)
+  #     export GPG_TTY
+  # '';
   services.kmscon = {
     enable = true;
     autologinUser = "imikoy";

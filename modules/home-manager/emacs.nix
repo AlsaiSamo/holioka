@@ -5,13 +5,17 @@
         enable = true;
         doomPrivateDir = ../../dotfiles/doom.d;
     };
-    #This does not allow GPG_TTY to be set. It is better to start Emcas from the login
-    #shell.
-    #services.emacs.enable = true;
-    #TODO: make an Emacs systemd unit myself
-    programs.zsh.loginExtra = ''
-    emacs --daemon
-    '';
+    #Emacs cannot itself inherit gpg and ssh agent information. pkgs.keychain
+    #needs to be used, and gpg_tty has to be set some other way.
+    # services.emacs = {
+    #     enable = true;
+    #     #nvim is configured as default editor in nixos,
+    #     #I think emacs will overshadow that
+    #     defaultEditor = true;
+    # };
+     programs.zsh.loginExtra = ''
+     emacs --daemon
+     '';
     home.persistence."/state/home/imikoy/" = {
         allowOther = true;
         directories = [

@@ -1,5 +1,10 @@
 { pkgs, config, lib, secrets, ... }@inputs: {
-  home.packages = with pkgs; [ ripgrep git-crypt python3Full ];
+  home.packages = with pkgs; [
+    ripgrep
+    git-crypt
+    keychain
+    python3Full
+  ];
   home.persistence."/state/home/imikoy" = {
     allowOther = true;
     files = [ ".zcompdump" ".config/htop/htoprc" ];
@@ -27,7 +32,11 @@
       init.defaultBranch = "main";
     };
   };
-
+  programs.bash.profileExtra = ''
+      GPG_TTY=$(tty)
+      export GPG_TTY
+      keychain --agents ssh,gpg
+    '';
   programs.zsh = {
     enable = true;
     enableAutosuggestions = true;
@@ -46,6 +55,7 @@
     loginExtra = ''
       GPG_TTY=$(tty)
       export GPG_TTY
+      keychain --agents ssh,gpg
     '';
     history = {
       ignoreSpace = true;

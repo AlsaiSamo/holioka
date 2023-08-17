@@ -31,8 +31,11 @@
 (add-hook 'prog-mode-hook 'display-fill-column-indicator-mode)
 (add-hook 'text-mode-hook 'display-fill-column-indicator-mode)
 
-;;Pinentry
+;;SSH, GPG
+;; (use-package! keychain-environment
+;;   :init (keychain-refresh-environment))
 (use-package! pinentry
   :init (setq epa-pinentry-mode 'loopback)
         (pinentry-start)
-        (setenv "SSH_AUTH_SOCK" (shell-command-to-string "gpgconf --list-dirs agent-ssh-socket")))
+        (setenv "SSH_AUTH_SOCK" (string-clean-whitespace (shell-command-to-string "gpgconf --list-dirs agent-ssh-socket")))
+        )
