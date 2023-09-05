@@ -225,7 +225,8 @@ for_window	[title="Origin"] floating enable, border 3
 no_focus    [title="Zoom Meeting"]
 
 #TODO: add polybar to the env
-exec_always --no-startup-id "pkill polybar ; polybar default"
+#exec_always --no-startup-id "pkill polybar ; polybar default"
+exec_always --no-startup-id "systemctl restart --user polybar.service"
 
 bindsym $mod+ctrl+p exec --no-startup-id "rofi -show power-menu -modi power-menu:rofi-power-menu"
 
