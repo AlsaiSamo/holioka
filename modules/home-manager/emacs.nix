@@ -26,8 +26,11 @@ in
     #     #I think emacs will overshadow that
     #     defaultEditor = true;
     # };
+    #TODO: check whether this works
      programs.zsh.loginExtra = ''
-     emacs --daemon
+     if ! [[ -o interactive ]]; then
+        emacs --daemon
+     fi
      '';
     home.persistence."/state/home/imikoy/" = {
         allowOther = true;

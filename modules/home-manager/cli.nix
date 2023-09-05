@@ -23,7 +23,6 @@
 
     userEmail = secrets.common.gitUserEmail;
     userName = secrets.common.gitUserName;
-    #signing.key = "3C02 CDA2 EBF0 C5AF FFC2  1B56 B5C3 DF17 6EED 79E4";
     signing.key = secrets.common.gitSigningKey;
     signing.signByDefault = true;
 

@@ -16,7 +16,7 @@
       org-agenda-mouse-1-follows-link t
       ;;TODO: decide on speed commands
       org-return-follows-link t
-      org-startup-numerated t
+      ;org-startup-numerated t
       org-yank-adjusted-subtrees t)
 
 ;;Completion
