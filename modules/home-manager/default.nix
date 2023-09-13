@@ -14,7 +14,11 @@
         ".cache/nheko"
         ".config/nheko"
         ".local/share/nheko"
+
         ".local/state/wireplumber"
+
+        ".config/cmus"
+
         ".xonotic"
     ];
   };

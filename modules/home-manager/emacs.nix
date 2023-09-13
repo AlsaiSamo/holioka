@@ -37,6 +37,7 @@ in
         directories = [
         ".cache/doom"
         "org"
+        ".local/share/doom"
         ];
     };
 }
