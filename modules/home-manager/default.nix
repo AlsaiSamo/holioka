@@ -5,6 +5,7 @@
   home.packages = with pkgs; [
     fluffychat
     cmus
+    xonotic
   ];
   programs.nheko.enable = true;
   home.persistence."/state/home/imikoy" = {
@@ -14,6 +15,7 @@
         ".config/nheko"
         ".local/share/nheko"
         ".local/state/wireplumber"
+        ".xonotic"
     ];
   };
 }
