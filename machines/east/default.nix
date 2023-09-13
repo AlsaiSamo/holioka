@@ -14,6 +14,16 @@ inputs@{ lib, config, pkgs, secrets, extra, modulesPath, ... }: {
 
   services.avahi.allowInterfaces = ["enp1s0f0"];
 
+  users.users.root.openssh.authorizedKeys.keyFiles = [
+    ../../secrets/west/ssh_host_ed25519_key.pub
+    ../../secrets/west/ssh_host_rsa_key.pub
+  ];
+  #TODO: is this okay?
+  users.users.imikoy.openssh.authorizedKeys.keyFiles = [
+    ../../secrets/west/ssh_host_rsa_key.pub
+    ../../secrets/west/ssh_host_ed25519_key.pub
+  ];
+
   nix.settings.cores = 3;
   networking = {
     hostName = secrets.east.hostName;

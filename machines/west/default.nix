@@ -12,6 +12,16 @@
   defaultFilesystems = true;
   stateRemoval.enable = true;
 
+  users.users.root.openssh.authorizedKeys.keyFiles = [
+    ../../secrets/east/ssh_host_ed25519_key.pub
+    ../../secrets/east/ssh_host_rsa_key.pub
+  ];
+  #TODO: is this ok?
+  users.users.imikoy.openssh.authorizedKeys.keyFiles = [
+    ../../secrets/east/ssh_host_ed25519_key.pub
+    ../../secrets/east/ssh_host_rsa_key.pub
+  ];
+
   services.avahi.allowInterfaces = ["eno1"];
 
   nixpkgs.config.allowUnfree = lib.mkForce true;
