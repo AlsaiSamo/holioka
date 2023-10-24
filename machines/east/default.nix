@@ -15,6 +15,8 @@ inputs@{ lib, config, pkgs, secrets, extra, modulesPath, ... }: {
 
   services.avahi.allowInterfaces = ["enp1s0f0"];
 
+  hardware.bluetooth.enable = true;
+
   programs.ssh = {
     knownHosts = {
       hlkwest = {
@@ -51,6 +53,7 @@ inputs@{ lib, config, pkgs, secrets, extra, modulesPath, ... }: {
     alacritty
     gvfs
     nixd
+    blueberry
   ];
 
   system.stateVersion = "23.11";

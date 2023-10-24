@@ -30,6 +30,7 @@
   users.users.root.hashedPassword = secrets.common.rootHashedPassword;
   environment.systemPackages = with pkgs; [
     sqlite
+    p7zip
     htop
     pinentry
     gnupg
@@ -62,6 +63,9 @@
       dates = [ "weekly" ];
       automatic = true;
     };
-    settings = { experimental-features = [ "nix-command" "flakes" ]; };
+    settings = {
+        experimental-features = [ "nix-command" "flakes" ];
+        trusted-users = ["@wheel"];
+    };
   };
 }

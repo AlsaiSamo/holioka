@@ -50,6 +50,9 @@
       ll = "exa -halT";
       q = "exit";
       ":q" = "exit";
+
+      nsh = "nix-shell";
+      gs = "git status";
     };
     loginExtra = ''
       GPG_TTY=$(tty)
