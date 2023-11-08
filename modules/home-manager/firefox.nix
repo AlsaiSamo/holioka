@@ -1,8 +1,10 @@
 { connfig, lib, pkgs, ... }@inputs:
 #TODO: look into profiles and using them to install extensions.
 let
-  myFirefox = pkgs.wrapFirefox pkgs.firefox-unwrapped {
-    cfg = { enableTridactylNative = true; };
+  myFirefox = pkgs.wrapFirefox pkgs.firefox-esr-unwrapped {
+    nativeMessagingHosts = with pkgs; [
+        pkgs.tridactyl-native
+    ];
     extraPolicies = {
       OverrideFirstRunPage = "";
       OverridePostUpdatePage = "";
@@ -22,17 +24,20 @@ let
       DisableSetDesktopBackground = true;
       DisableTelemetry = true;
     };
+    #TODO: I cannot use addons packaged by rycee due to missing extid.
+    # nixExtensions = with pkgs.nur.repos.rycee.firefox-addons; [
+    #     # keepassxc-browser
+    #     # firefox-color
+    #     # tridactyl
+    #     ublock-origin
+    #     #enhanced-h264ify
+    #     # enhanced-h264ify
+    # ];
   };
 in {
   programs.firefox = {
     enable = true;
     package = myFirefox;
-    #extensions = with pkgs.nur.repos.rycee.firefox-addons; [
-    #ublock-origin
-    #tridactyl
-    #firefox-color
-    #keepassxc-browser
-    #];
   };
   home.persistence."/state/home/imikoy" = {
     files = [ ".config/tridactyl/tridactylrc" ];
