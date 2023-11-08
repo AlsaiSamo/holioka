@@ -36,6 +36,17 @@ in {
   };
   home.persistence."/state/home/imikoy" = {
     files = [ ".config/tridactyl/tridactylrc" ];
-    directories = [ ".mozilla/firefox" ".cache/mozilla" ".mozilla/native-messaging-hosts" ];
+    directories = [
+      #Has the profile
+      ".mozilla/firefox"
+      #".cache/mozilla"
+      #Keepassxc
+      ".mozilla/native-messaging-hosts"
+    ];
+  };
+  home.persistence."/local_state/home/imikoy" = {
+    directories = [
+      ".cache/mozilla"
+    ];
   };
 }

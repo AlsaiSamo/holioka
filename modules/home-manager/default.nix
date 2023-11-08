@@ -18,7 +18,11 @@
         ".local/state/wireplumber"
 
         ".config/cmus"
-
+    ];
+  };
+  home.persistence."/local_state/home/imikoy" = {
+    directories = [
+        #Big.
         ".xonotic"
     ];
   };

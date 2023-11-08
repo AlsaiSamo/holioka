@@ -5,10 +5,12 @@
   home.persistence."/state/home/imikoy" = {
     allowOther = true;
     directories = [
-      "Scripts"
+      #Never used it
+      #"Scripts"
       "Desktop"
       "Documents"
-      "Downloads"
+      #Was persisted before, not now
+      #"Downloads"
       "Music"
       "Pictures"
       "Projects"
