@@ -14,16 +14,16 @@
     open = false;
   };
 
-  swapDevices = [{ device = "/dev/disk/by-uuid/cf9e173b-197a-43fa-836e-e1cb9a563437"; }];
+  swapDevices = [{ device = "/dev/disk/by-uuid/553de4ea-dc22-4a77-84f5-a36c6b5dab82"; }];
 
   fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/8933-C2AD";
+    device = "/dev/disk/by-uuid/CEEB-4273";
     fsType = "vfat";
   };
 
   boot.initrd.luks.devices = {
     cryptroot = {
-      device = "/dev/disk/by-uuid/9ea8f9f0-585f-41c4-9aab-6091a7b6c145";
+      device = "/dev/disk/by-uuid/cb49fc83-8af7-47a1-8a59-9946fa36f174";
     };
   };
 

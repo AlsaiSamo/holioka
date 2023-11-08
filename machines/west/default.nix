@@ -26,7 +26,7 @@
 
   services.avahi.allowInterfaces = ["eno1"];
 
-  nixpkgs.config.allowUnfree = lib.mkForce true;
+  #nixpkgs.config.allowUnfree = lib.mkForce true;
 
   nix.settings.cores = 11;
   networking = {
