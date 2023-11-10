@@ -13,9 +13,8 @@
 
 ;;Org
 (setq org-directory "~/org"
-      org-agenda-files (list org-directory "~/org/notes.org")
+      org-agenda-files (cons "~/org/notes.org" (directory-files-recursively "~/org/" "tasks.org"))
       org-agenda-file-regexp "tasks.org"
-      org-agenda-files nil
       org-agenda-mouse-1-follows-link t
       ;;TODO: decide on speed commands
       org-return-follows-link t
@@ -51,7 +50,7 @@
 (set-face-attribute 'org-level-2 nil :height 1.4)
 (set-face-attribute 'org-level-3 nil :height 1.2)
 (set-face-attribute 'org-level-4 nil :height 1.1)
-(set-face-attribute 'org-document-title nil :inherit 'org-level-1)
+;(set-face-attribute 'org-document-title nil :inherit 'org-level-1)
 (setq org-bullets-bullet-list '("§" "✿" "⬙" "⦿"))
 (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
 )
