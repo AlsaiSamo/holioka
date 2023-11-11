@@ -12,6 +12,7 @@
 
   defaultFilesystems = true;
   stateRemoval.enable = true;
+  backup.enable = true;
 
   programs.ssh.knownHosts = {
     hlkeast = {

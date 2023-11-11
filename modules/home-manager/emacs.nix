@@ -35,9 +35,17 @@ in
     home.persistence."/state/home/imikoy/" = {
         allowOther = true;
         directories = [
-        ".cache/doom"
+        #Losing cache only leads to annoyingly long several minutes of wait.
+        #".cache/doom"
         "org"
+        #History-like things
         ".local/share/doom"
+        ];
+    };
+    home.persistence."/local_state/home/imikoy" = {
+        allowOther = true;
+        directories = [
+            ".cache/doom"
         ];
     };
 }

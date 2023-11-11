@@ -1,5 +1,5 @@
 { config, lib, pkgs, ... }@inputs: {
-  home.persistence."/state/home/imikoy" = {
+  home.persistence."/local_state/home/imikoy" = {
     directories = [ ".local/share/nvim" ];
   };
   programs.neovim = {
