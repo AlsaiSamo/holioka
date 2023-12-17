@@ -30,7 +30,6 @@
       nixosConfigurations = {
         east = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
-          pkgs = nixpkgs.legacyPackages."x86_64-linux";
           specialArgs = { inherit secrets inputs outputs; };
           modules = commonNixosModules ++ [ (import ./machines/east) ] ++ [
             nixos-hardware.nixosModules.common-gpu-amd
@@ -53,11 +52,11 @@
         };
         west = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
-          pkgs = nixpkgs.legacyPackages."x86_64-linux";
           specialArgs = { inherit secrets inputs outputs; };
           modules = commonNixosModules ++ [ (import ./machines/west) ] ++ [
             nixos-hardware.nixosModules.lenovo-ideapad-15arh05
             { nixpkgs.overlays = [ nur.overlay nixd.overlays.default ]; }
+            {nixpkgs.config.allowUnfree = true;}
             home-manager.nixosModules.home-manager
             {
               home-manager = {
