@@ -1,5 +1,32 @@
 { config, lib, pkgs, secrets, ... }@inputs: {
 
+  security.pam.loginLimits = [
+    {
+      domain = "imikoy";
+      type = "hard";
+      item = "nofile";
+      value = "65535";
+    }
+    {
+      domain = "imikoy";
+      type = "soft";
+      item = "nofile";
+      value = "8191";
+    }
+    {
+      domain = "@audio";
+      type = "-";
+      item = "memlock";
+      value = "unlimited";
+    }
+    {
+      domain = "@audio";
+      type = "-";
+      item = "rtprio";
+      value = "95";
+    }
+  ];
+
   services.udisks2.enable = true;
   programs.fuse.userAllowOther = true;
   programs.neovim = {
