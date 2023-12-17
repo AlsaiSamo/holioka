@@ -27,17 +27,13 @@ client.background       #ffffff
 
 #exec --no-startup-id "setxkbmap -option grp:caps_toggle"
 
-#TODO: enable when these are present. Perhaps edit i3 config in nix code to add these?
-#exec --no-startup-id dunst
 exec --no-startup-id picom
-#exec --no-startup-id warpd
 exec --no-startup-id keepassxc
 exec --no-startup-id "udiskie -t --appindicator --file-manager=pcmanfm"
 
 #TODO: move this out and enable when nvidia card is present.
 #exec --no-startup-id nvidia-settings --assign CurrentMetaMode="nvidia-auto-select +0+0 { ForceFullCompositionPipeline = On }"
 
-#TODO: add feh to the env
 exec --no-startup-id "betterlockscreen -w"
 
 set $mod Mod4
@@ -224,13 +220,10 @@ no_focus	[instance="Steam"]
 for_window	[title="Origin"] floating enable, border 3
 no_focus    [title="Zoom Meeting"]
 
-#TODO: add polybar to the env
-#exec_always --no-startup-id "pkill polybar ; polybar default"
 exec_always --no-startup-id "systemctl restart --user polybar.service"
 
 bindsym $mod+ctrl+p exec --no-startup-id "rofi -show power-menu -modi power-menu:rofi-power-menu"
 
-#TODO: add maim and xclip to the env
 bindsym --release Print exec --no-startup-id "maim ~/Pictures/$(date +%F-%T).png"
 bindsym shift+Print exec --no-startup-id "maim -s | xclip -selection clipboard -t image/png"
 

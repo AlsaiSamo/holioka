@@ -24,7 +24,7 @@ in {
   #     #I think emacs will overshadow that
   #     defaultEditor = true;
   # };
-  #TODO: check whether this works
+  #This does not work either, oh well
   programs.zsh.loginExtra = ''
     if ! [[ -o interactive ]]; then
        emacs --daemon

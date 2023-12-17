@@ -16,7 +16,6 @@
       org-agenda-files (cons "~/org/notes.org" (directory-files-recursively "~/org/" "tasks.org"))
       org-agenda-file-regexp "tasks.org"
       org-agenda-mouse-1-follows-link t
-      ;;TODO: decide on speed commands
       org-return-follows-link t
       ;org-startup-numerated t
       org-yank-adjusted-subtrees t)
@@ -41,7 +40,6 @@
         ("CANCEL" . +org-todo-cancel)
         ("NEXT" . +org-todo-onhold)))
 
-;TODO: colors?
 (setq org-archive-location "~/org/archive/%s_archive::")
 (setq org-capture-templates
       '(

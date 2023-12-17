@@ -1,9 +1,7 @@
 { flake_inputs, lib, pkgs, config, ... }:
-#TODO: matrix messaging
 {
   home.packages = with pkgs; [
     (nerdfonts.override { fonts = [ "FiraCode" "Iosevka" "Hack" ]; })
-    #TODO: configure mpv
     mpv
     xawtv
     #TODO: patch with nerd font and use everywhere
@@ -137,7 +135,6 @@
       ".config/keepassxc/keepassxc.ini"
       ".cache/keepassxc/keepassxc.ini"
       ".config/warpd/config"
-      #TODO: see if anything else has to be backed up
     ];
   };
 }
