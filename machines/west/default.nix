@@ -9,6 +9,7 @@
       ../../modules/nixos/sshd.nix
       ../../modules/nixos/imikoy.nix
       ../../modules/nixos/flatpak.nix
+      ../../modules/nixos/virt.nix
     ];
 
   defaultFilesystems = true;
