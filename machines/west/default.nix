@@ -8,6 +8,7 @@
       ../../modules/nixos/avahi.nix
       ../../modules/nixos/sshd.nix
       ../../modules/nixos/imikoy.nix
+      ../../modules/nixos/flatpak.nix
     ];
 
   defaultFilesystems = true;

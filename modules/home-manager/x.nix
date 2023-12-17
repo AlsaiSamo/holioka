@@ -29,6 +29,7 @@
     poppler
     ffmpegthumbnailer
     haskellPackages.freetype2
+    libnotify
   ];
 
   fonts.fontconfig.enable = true;

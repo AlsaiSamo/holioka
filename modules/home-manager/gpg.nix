@@ -2,6 +2,8 @@
   programs.gpg = {
     enable = true;
     homedir = "/state/secrets/.gnupg";
+    mutableKeys = true;
+    mutableTrust = true;
     settings = {
     };
   };
