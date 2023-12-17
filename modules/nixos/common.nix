@@ -91,8 +91,8 @@
       automatic = true;
     };
     settings = {
-        experimental-features = [ "nix-command" "flakes" ];
-        trusted-users = ["@wheel"];
+      experimental-features = [ "nix-command" "flakes" ];
+      trusted-users = [ "@wheel" ];
     };
   };
 }

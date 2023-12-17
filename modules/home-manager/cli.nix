@@ -1,10 +1,5 @@
 { pkgs, config, lib, secrets, ... }@inputs: {
-  home.packages = with pkgs; [
-    ripgrep
-    git-crypt
-    keychain
-    python3Full
-  ];
+  home.packages = with pkgs; [ ripgrep git-crypt keychain python3Full ];
   home.persistence."/state/home/imikoy" = {
     allowOther = true;
     files = [ ".zcompdump" ".config/htop/htoprc" ];
@@ -33,10 +28,10 @@
     };
   };
   programs.bash.profileExtra = ''
-      GPG_TTY=$(tty)
-      export GPG_TTY
-      keychain --agents ssh,gpg
-    '';
+    GPG_TTY=$(tty)
+    export GPG_TTY
+    keychain --agents ssh,gpg
+  '';
   programs.zsh = {
     enable = true;
     enableAutosuggestions = true;

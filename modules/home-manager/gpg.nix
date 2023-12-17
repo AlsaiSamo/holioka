@@ -4,8 +4,7 @@
     homedir = "/state/secrets/.gnupg";
     mutableKeys = true;
     mutableTrust = true;
-    settings = {
-    };
+    settings = { };
   };
   services.gpg-agent = {
     enable = true;

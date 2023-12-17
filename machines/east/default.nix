@@ -1,19 +1,18 @@
 inputs@{ lib, config, pkgs, secrets, extra, modulesPath, ... }: {
-  imports =
-    [
-      ./hardware.nix
-      ../../modules/nixos/audio.nix
-      ../../modules/nixos/x.nix
-      ../../modules/nixos/common.nix
-      ../../modules/nixos/avahi.nix
-      ../../modules/nixos/sshd.nix
-      ../../modules/nixos/imikoy.nix
-    ];
+  imports = [
+    ./hardware.nix
+    ../../modules/nixos/audio.nix
+    ../../modules/nixos/x.nix
+    ../../modules/nixos/common.nix
+    ../../modules/nixos/avahi.nix
+    ../../modules/nixos/sshd.nix
+    ../../modules/nixos/imikoy.nix
+  ];
 
   defaultFilesystems = true;
   stateRemoval.enable = true;
 
-  services.avahi.allowInterfaces = ["enp1s0f0"];
+  services.avahi.allowInterfaces = [ "enp1s0f0" ];
 
   hardware.bluetooth.enable = true;
 
@@ -25,10 +24,10 @@ inputs@{ lib, config, pkgs, secrets, extra, modulesPath, ... }: {
     };
     #TODO: i have to make the network nuuuuuuu
     extraConfig = ''
-#This allows using root to log in as root
-#AddKeysToAgent will probably not work with non-root ssh agent
-      Host 192.168.0.185
-      IdentityFile /state/secrets/ssh/ssh_host_ed25519_key
+      #This allows using root to log in as root
+      #AddKeysToAgent will probably not work with non-root ssh agent
+            Host 192.168.0.185
+            IdentityFile /state/secrets/ssh/ssh_host_ed25519_key
     '';
   };
 

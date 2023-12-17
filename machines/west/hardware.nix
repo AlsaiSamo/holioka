@@ -14,7 +14,8 @@
     open = false;
   };
 
-  swapDevices = [{ device = "/dev/disk/by-uuid/553de4ea-dc22-4a77-84f5-a36c6b5dab82"; }];
+  swapDevices =
+    [{ device = "/dev/disk/by-uuid/553de4ea-dc22-4a77-84f5-a36c6b5dab82"; }];
 
   fileSystems."/boot" = {
     device = "/dev/disk/by-uuid/CEEB-4273";
@@ -47,7 +48,7 @@
     "rtsx_pci_sdmmc"
   ];
   boot.initrd.kernelModules = [ ];
-#TODO: amd drivers will be missing, I believe. So, I will need to see if this causes issues.
+  #TODO: amd drivers will be missing, I believe. So, I will need to see if this causes issues.
   #boot.kernelModules = [ "kvm-amd" "amdgpu" "acpi_call" ];
   #boot.extraModulePackages = with config.boot.kernelPackages; [ acpi_call ];
   #boot.kernelParams = [ "iommu=soft" "i8042.nomux=1" "i8042.reset" ];

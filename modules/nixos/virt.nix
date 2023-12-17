@@ -8,9 +8,6 @@
     defaultNetwork.settings.dns_enabled = true;
   };
 
-  environment.systemPackages = with pkgs; [
-    arion
-    docker-client
-  ];
+  environment.systemPackages = with pkgs; [ arion docker-client ];
 
 }

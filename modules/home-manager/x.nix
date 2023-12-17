@@ -3,10 +3,10 @@
 {
   home.packages = with pkgs; [
     (nerdfonts.override { fonts = [ "FiraCode" "Iosevka" "Hack" ]; })
-#TODO: configure mpv
+    #TODO: configure mpv
     mpv
     xawtv
-#TODO: patch with nerd font and use everywhere
+    #TODO: patch with nerd font and use everywhere
     sarasa-gothic
     i3
     feh

@@ -2,9 +2,7 @@
 #TODO: look into profiles and using them to install extensions.
 let
   myFirefox = pkgs.wrapFirefox pkgs.firefox-esr-unwrapped {
-    nativeMessagingHosts = with pkgs; [
-        pkgs.tridactyl-native
-    ];
+    nativeMessagingHosts = with pkgs; [ pkgs.tridactyl-native ];
     extraPolicies = {
       OverrideFirstRunPage = "";
       OverridePostUpdatePage = "";
@@ -50,8 +48,6 @@ in {
     ];
   };
   home.persistence."/local_state/home/imikoy" = {
-    directories = [
-      ".cache/mozilla"
-    ];
+    directories = [ ".cache/mozilla" ];
   };
 }

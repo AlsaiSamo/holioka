@@ -1,5 +1,4 @@
-{lib, config, pkgs, ...}@inputs:
-{
+{ lib, config, pkgs, ... }@inputs: {
   services.avahi = {
     enable = true;
     nssmdns = true;

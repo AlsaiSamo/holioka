@@ -56,7 +56,7 @@
           modules = commonNixosModules ++ [ (import ./machines/west) ] ++ [
             nixos-hardware.nixosModules.lenovo-ideapad-15arh05
             { nixpkgs.overlays = [ nur.overlay nixd.overlays.default ]; }
-            {nixpkgs.config.allowUnfree = true;}
+            { nixpkgs.config.allowUnfree = true; }
             home-manager.nixosModules.home-manager
             {
               home-manager = {
