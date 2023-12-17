@@ -1,5 +1,8 @@
 { config, lib, pkgs, secrets, ... }@inputs: {
 
+  #block the most hideous ADHD distraction
+  networking.hosts."127.0.0.1" = ["youtube.com" "https://www.youtube.com" "www.youtube.com"];
+
   security.pam.loginLimits = [
     {
       domain = "imikoy";
