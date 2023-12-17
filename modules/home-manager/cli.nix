@@ -29,6 +29,7 @@
     extraConfig = {
       core = { editor = "vim"; };
       init.defaultBranch = "main";
+      push.followTags = true;
     };
   };
   programs.bash.profileExtra = ''
@@ -53,6 +54,7 @@
 
       nsh = "nix-shell";
       gs = "git status";
+      gc = "git commit";
     };
     loginExtra = ''
       GPG_TTY=$(tty)

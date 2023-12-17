@@ -28,13 +28,18 @@
 
 (after! org
 
-(setq org-todo-keywords '((sequence "TODO(t)" "ACTIVE(a)" "WAITING(w)" "DELEGATED(s)" "|" "DONE(d)" "CANCEL(c)"))
+(setq org-todo-keywords
+      ;Work
+      '((sequence "TODO(t)" "ACTIVE(a)" "WAITING(w)" "DELEGATED(s)" "|" "DONE(d)" "CANCEL(c)")
+        ;Project
+        (sequence "CURRENT" "NEXT" "|" "DONE"))
       org-todo-keyword-faces
-      '(("WAITING" . +org-todo-onhold)
-        ("DELEGATED" . +org-todo-onhold)
+      '(("TODO" . +org-todo-project)
         ("ACTIVE" . +org-todo-active)
-        ("TODO" . +org-todo-project)
-        ("CANCEL" . +org-todo-cancel)))
+        ("WAITING" . +org-todo-onhold)
+        ("DELEGATED" . +org-todo-onhold)
+        ("CANCEL" . +org-todo-cancel)
+        ("NEXT" . +org-todo-onhold)))
 
 ;TODO: colors?
 (setq org-archive-location "~/org/archive/%s_archive::")

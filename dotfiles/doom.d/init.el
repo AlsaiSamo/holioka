@@ -133,7 +133,7 @@
        ;;fsharp            ; ML stands for Microsoft's Language
        ;;fstar             ; (dependent) types and (monadic) effects and Z3
        ;;gdscript          ; the language you waited for
-       ;;(go +lsp)         ; the hipster dialect
+       (go +lsp)         ; the hipster dialect
        ;;(haskell +lsp)    ; a language that's lazier than I am
        ;;hy                ; readability of scheme w/ speed of python
        ;;idris             ; a language you can depend on
@@ -151,14 +151,14 @@
        (nix +tree-sitter)               ; I hereby declare "nix geht mehr!"
        ;;ocaml             ; an objective camel
        (org +roam2 +dragndrop)
-       ;;php               ; perl's insecure younger brother
+       php               ; perl's insecure younger brother
        ;;plantuml          ; diagrams for confusing people more
        ;;purescript        ; javascript, but functional
        (python +lsp)            ; beautiful is better than ugly
        ;;qt                ; the 'cutest' gui framework ever
        ;;racket            ; a DSL for DSLs
        ;;raku              ; the artist formerly known as perl6
-       ;;rest              ; Emacs as a REST client
+       rest              ; Emacs as a REST client
        ;;rst               ; ReST in peace
        ;;(ruby +rails)     ; 1.step {|i| p "Ruby is #{i.even? ? 'love' : 'life'}"}
        (rust +tree-sitter +lsp)              ; Fe2O3.unwrap().unwrap().unwrap().unwrap()

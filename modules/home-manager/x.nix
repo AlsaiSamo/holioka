@@ -135,6 +135,7 @@
       ".cache/rofi3.druncache"
       ".config/keepassxc/keepassxc.ini"
       ".cache/keepassxc/keepassxc.ini"
+      ".config/warpd/config"
       #TODO: see if anything else has to be backed up
     ];
   };
