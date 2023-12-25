@@ -28,6 +28,7 @@
     directories = [
       #Big.
       ".xonotic"
+      ".local/share/osu"
     ];
   };
 }

@@ -1,5 +1,5 @@
 { config, lib, pkgs, ... }:
 
 {
-  home.packages = with pkgs; [ cargo rustc rust-analyzer ];
+  home.packages = with pkgs; [ cargo rustc rust-analyzer rustfmt ];
 }
