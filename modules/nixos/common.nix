@@ -56,6 +56,21 @@
     defaultLocale = "en_US.UTF-8";
     supportedLocales =
       [ "en_US.UTF-8/UTF-8" "ru_RU.UTF-8/UTF-8" "ja_JP.UTF-8/UTF-8" ];
+    extraLocaleSettings = {
+      LC_TIME="ru_RU.UTF-8";
+    };
+    #TODO: move out? it's not available in tty
+    inputMethod = {
+      enabled = "fcitx5";
+      fcitx5 = {
+        addons = with pkgs; [
+          fcitx5-gtk
+          libsForQt5.fcitx5-qt
+          fcitx5-lua
+          fcitx5-mozc
+        ];
+      };
+    };
   };
   users.users.root.hashedPassword = secrets.common.rootHashedPassword;
   environment.systemPackages = with pkgs; [
@@ -70,6 +85,9 @@
     tmux
     ripgrep
     iproute2
+    #TODO: move out
+    fcitx5-configtool
+    anki-bin
   ];
   programs.zsh = {
     enable = true;
