@@ -128,8 +128,15 @@
     vSync = true;
   };
 
+  #TODO: take fcitx (and ibus and mozc) and anki stuff out
   home.persistence."/state/home/imikoy" = {
-    directories = [ ".cache/betterlockscreen" ];
+    directories = [
+      ".cache/betterlockscreen"
+
+      ".config/fcitx5"
+      ".config/mozc"
+      ".local/share/Anki2"
+    ];
     files = [
       ".cache/rofi3.druncache"
       ".config/keepassxc/keepassxc.ini"
