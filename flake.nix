@@ -8,14 +8,14 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nur.url = "github:nix-community/NUR";
-    nix-doom-emacs = { url = "github:nix-community/nix-doom-emacs"; };
-    nixd.url = "github:nix-community/nixd";
+    nix-doom-emacs = {
+      url = "github:nix-community/nix-doom-emacs";
+    };
   };
 
   outputs = { self, nixpkgs, nixos-hardware, impermanence, home-manager, nur
-    , nix-doom-emacs, nixd, ... }@inputs:
+    , nix-doom-emacs, ... }@inputs:
     let
-      inherit (self) outputs;
       #Secrets may be distributed together with state, but they are encrypted in the repo.
       secrets = import ./secrets.nix { };
       commonNixosModules = [ impermanence.nixosModule ]
@@ -26,14 +26,13 @@
       packages =
         import ./packages { pkgs = nixpkgs.legacyPackages."x86_64-linux"; };
       #TODO: overlays
-      #TODO: shell for bootstrapping
       nixosConfigurations = {
         east = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
-          specialArgs = { inherit secrets inputs outputs; };
+          specialArgs = { inherit secrets inputs; outputs = self.outputs; };
           modules = commonNixosModules ++ [ (import ./machines/east) ] ++ [
             nixos-hardware.nixosModules.common-gpu-amd
-            { nixpkgs.overlays = [ nur.overlay nixd.overlays.default ]; }
+            { nixpkgs.overlays = [ nur.overlay ]; }
             home-manager.nixosModules.home-manager
             {
               home-manager = {
@@ -42,7 +41,7 @@
                 verbose = true;
                 extraSpecialArgs = {
                   flake_inputs = inputs;
-                  flake_outputs = outputs;
+                  flake_outputs = self.outputs;
                   inherit secrets;
                 };
               };
@@ -52,10 +51,10 @@
         };
         west = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
-          specialArgs = { inherit secrets inputs outputs; };
+          specialArgs = { inherit secrets inputs; outputs = self.outputs; };
           modules = commonNixosModules ++ [ (import ./machines/west) ] ++ [
             nixos-hardware.nixosModules.lenovo-ideapad-15arh05
-            { nixpkgs.overlays = [ nur.overlay nixd.overlays.default ]; }
+            { nixpkgs.overlays = [ nur.overlay ]; }
             { nixpkgs.config.allowUnfree = true; }
             home-manager.nixosModules.home-manager
             {
@@ -65,7 +64,7 @@
                 verbose = true;
                 extraSpecialArgs = {
                   flake_inputs = inputs;
-                  flake_outputs = outputs;
+                  flake_outputs = self.outputs;
                   inherit secrets;
                 };
               };

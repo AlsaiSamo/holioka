@@ -14,6 +14,8 @@ in {
   ];
   programs.doom-emacs = {
     enable = true;
+    #TODO: NDE issue
+    emacsPackage = pkgs.emacs28;
     doomPrivateDir = ../../dotfiles/doom.d;
   };
   #Emacs cannot itself inherit gpg and ssh agent information. pkgs.keychain
