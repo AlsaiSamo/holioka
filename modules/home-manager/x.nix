@@ -1,5 +1,4 @@
-{ flake_inputs, lib, pkgs, config, ... }:
-{
+{ flake_inputs, lib, pkgs, config, ... }: {
   home.packages = with pkgs; [
     (nerdfonts.override { fonts = [ "FiraCode" "Iosevka" "Hack" ]; })
     mpv

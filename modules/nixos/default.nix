@@ -1,4 +1,1 @@
-{ config, lib, pkgs, secrets, ... }@inputs: {
-  imports = [ ./fs.nix ];
-
-}
+{ config, lib, pkgs, secrets, ... }@inputs: { imports = [ ./fs.nix ]; }

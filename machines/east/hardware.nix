@@ -5,8 +5,10 @@
   imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
 
   #TODO: replace with uuid
-  swapDevices = [{ device = "/dev/disk/by-partuuid/4ef7c7f0-53e6-4051-a37b-8231ecec6207";
-   randomEncryption.enable = true; }];
+  swapDevices = [{
+    device = "/dev/disk/by-partuuid/4ef7c7f0-53e6-4051-a37b-8231ecec6207";
+    randomEncryption.enable = true;
+  }];
 
   fileSystems."/boot" = {
     device = "/dev/disk/by-uuid/0784-493A";

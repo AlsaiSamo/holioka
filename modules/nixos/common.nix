@@ -1,7 +1,8 @@
 { config, lib, pkgs, secrets, ... }@inputs: {
 
   #block the most hideous ADHD distraction
-  networking.hosts."127.0.0.1" = ["youtube.com" "https://www.youtube.com" "www.youtube.com"];
+  networking.hosts."127.0.0.1" =
+    [ "youtube.com" "https://www.youtube.com" "www.youtube.com" ];
 
   security.pam.loginLimits = [
     {
@@ -56,9 +57,7 @@
     defaultLocale = "en_US.UTF-8";
     supportedLocales =
       [ "en_US.UTF-8/UTF-8" "ru_RU.UTF-8/UTF-8" "ja_JP.UTF-8/UTF-8" ];
-    extraLocaleSettings = {
-      LC_TIME="ru_RU.UTF-8";
-    };
+    extraLocaleSettings = { LC_TIME = "ru_RU.UTF-8"; };
     #TODO: move out? it's not available in tty
     inputMethod = {
       enabled = "fcitx5";

@@ -8,9 +8,7 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nur.url = "github:nix-community/NUR";
-    nix-doom-emacs = {
-      url = "github:nix-community/nix-doom-emacs";
-    };
+    nix-doom-emacs = { url = "github:nix-community/nix-doom-emacs"; };
   };
 
   outputs = { self, nixpkgs, nixos-hardware, impermanence, home-manager, nur
@@ -18,18 +16,18 @@
     let
       #Secrets may be distributed together with state, but they are encrypted in the repo.
       secrets = import ./secrets.nix { };
+      #These modules add options for all systems.
       commonNixosModules = [ impermanence.nixosModule ]
         ++ [ (import ./modules/nixos) ];
-    in rec {
-      #TODO: out-of-nixpkgs packages
-      #TODO: make it be available for all systems
-      packages =
-        import ./packages { pkgs = nixpkgs.legacyPackages."x86_64-linux"; };
-      #TODO: overlays
+    in {
+      #TODO: overlays (when I need them)
       nixosConfigurations = {
         east = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
-          specialArgs = { inherit secrets inputs; outputs = self.outputs; };
+          specialArgs = {
+            inherit secrets inputs;
+            outputs = self.outputs;
+          };
           modules = commonNixosModules ++ [ (import ./machines/east) ] ++ [
             nixos-hardware.nixosModules.common-gpu-amd
             { nixpkgs.overlays = [ nur.overlay ]; }
@@ -51,7 +49,10 @@
         };
         west = nixpkgs.lib.nixosSystem {
           system = "x86_64-linux";
-          specialArgs = { inherit secrets inputs; outputs = self.outputs; };
+          specialArgs = {
+            inherit secrets inputs;
+            outputs = self.outputs;
+          };
           modules = commonNixosModules ++ [ (import ./machines/west) ] ++ [
             nixos-hardware.nixosModules.lenovo-ideapad-15arh05
             { nixpkgs.overlays = [ nur.overlay ]; }
