@@ -1,35 +1,12 @@
-{ config, lib, pkgs, secrets, ... }@inputs: {
-
+{
+  config,
+  lib,
+  pkgs,
+  secrets,
+  ...
+} @ inputs: {
   #block the most hideous ADHD distraction
-  networking.hosts."127.0.0.1" =
-    [ "youtube.com" "https://www.youtube.com" "www.youtube.com" ];
-
-  security.pam.loginLimits = [
-    {
-      domain = "imikoy";
-      type = "hard";
-      item = "nofile";
-      value = "65535";
-    }
-    {
-      domain = "imikoy";
-      type = "soft";
-      item = "nofile";
-      value = "8191";
-    }
-    {
-      domain = "@audio";
-      type = "-";
-      item = "memlock";
-      value = "unlimited";
-    }
-    {
-      domain = "@audio";
-      type = "-";
-      item = "rtprio";
-      value = "95";
-    }
-  ];
+  networking.hosts."127.0.0.1" = ["youtube.com" "https://www.youtube.com" "www.youtube.com"];
 
   services.udisks2.enable = true;
   programs.fuse.userAllowOther = true;
@@ -45,31 +22,19 @@
   # '';
   services.kmscon = {
     enable = true;
-    autologinUser = "imikoy";
-    extraOptions = "";
     extraConfig = "font-size=10";
-    fonts = [{
-      name = "Iosevka";
-      package = pkgs.iosevka;
-    }];
+    fonts = [
+      {
+        name = "Iosevka";
+        package = pkgs.iosevka;
+      }
+    ];
   };
   i18n = {
     defaultLocale = "en_US.UTF-8";
-    supportedLocales =
-      [ "en_US.UTF-8/UTF-8" "ru_RU.UTF-8/UTF-8" "ja_JP.UTF-8/UTF-8" ];
-    extraLocaleSettings = { LC_TIME = "ru_RU.UTF-8"; };
+    supportedLocales = ["en_US.UTF-8/UTF-8" "ru_RU.UTF-8/UTF-8" "ja_JP.UTF-8/UTF-8"];
+    extraLocaleSettings = {LC_TIME = "ru_RU.UTF-8";};
     #TODO: move out? it's not available in tty
-    inputMethod = {
-      enabled = "fcitx5";
-      fcitx5 = {
-        addons = with pkgs; [
-          fcitx5-gtk
-          libsForQt5.fcitx5-qt
-          fcitx5-lua
-          fcitx5-mozc
-        ];
-      };
-    };
   };
   users.users.root.hashedPassword = secrets.common.rootHashedPassword;
   environment.systemPackages = with pkgs; [
@@ -84,9 +49,6 @@
     tmux
     ripgrep
     iproute2
-    #TODO: move out
-    fcitx5-configtool
-    anki-bin
   ];
   programs.zsh = {
     enable = true;
@@ -107,12 +69,12 @@
       options = "--delete-older-than 30d";
     };
     optimise = {
-      dates = [ "weekly" ];
+      dates = ["weekly"];
       automatic = true;
     };
     settings = {
-      experimental-features = [ "nix-command" "flakes" ];
-      trusted-users = [ "@wheel" ];
+      experimental-features = ["nix-command" "flakes"];
+      trusted-users = ["@wheel"];
     };
   };
 }
