@@ -1,9 +1,15 @@
-{ pkgs, config, lib, secrets, ... }@inputs: {
-  home.packages = with pkgs; [ ripgrep git-crypt keychain python3Full ];
+{
+  pkgs,
+  config,
+  lib,
+  secrets,
+  ...
+} @ inputs: {
+  home.packages = with pkgs; [ripgrep git-crypt keychain python3Full];
   home.persistence."/state/home/imikoy" = {
     allowOther = true;
-    files = [ ".zcompdump" ".config/htop/htoprc" ];
-    directories = [ ".local/share/zoxide" ".local/share/direnv" ];
+    files = [".zcompdump" ".config/htop/htoprc"];
+    directories = [".local/share/zoxide" ".local/share/direnv"];
   };
 
   programs.git = {
@@ -22,7 +28,7 @@
     signing.signByDefault = true;
 
     extraConfig = {
-      core = { editor = "vim"; };
+      core = {editor = "vim";};
       init.defaultBranch = "main";
       push.followTags = true;
     };
@@ -61,17 +67,19 @@
       save = 10000;
       share = true;
     };
-    plugins = [{
-      name = "zsh-fzf-tab";
-      src = pkgs.zsh-fzf-tab;
-      file = "share/fzf-tab/fzf-tab.plugin.zsh";
-    }];
+    plugins = [
+      {
+        name = "zsh-fzf-tab";
+        src = pkgs.zsh-fzf-tab;
+        file = "share/fzf-tab/fzf-tab.plugin.zsh";
+      }
+    ];
     completionInit = "autoload -U compinit && compinit ";
     initExtra = ''
-      	set -o vi
-        zstyle ':fzf-tab:complete:cd:*' fzf-preview 'exa -1 --color=always $realpath'
-        unsetopt cdablevars '';
-    localVariables = { EDITOR = "nvim"; };
+      set -o vi
+       zstyle ':fzf-tab:complete:cd:*' fzf-preview 'exa -1 --color=always $realpath'
+       unsetopt cdablevars '';
+    localVariables = {EDITOR = "nvim";};
   };
   programs = {
     atuin = {
@@ -133,7 +141,7 @@
           symbol = "∙";
           style = "238";
         };
-        cmd_duration = { format = "⌛ [$duration]($style)"; };
+        cmd_duration = {format = "⌛ [$duration]($style)";};
         directory = {
           truncation_length = 7;
           truncation_symbol = "… /";
@@ -154,7 +162,7 @@
       };
     };
 
-    fzf = { enable = true; };
+    fzf = {enable = true;};
 
     bat.enable = true;
     exa.enable = true;

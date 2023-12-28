@@ -1,18 +1,27 @@
-inputs@{ lib, config, pkgs, secrets, extra, modulesPath, ... }: {
+inputs @ {
+  lib,
+  config,
+  pkgs,
+  secrets,
+  extra,
+  modulesPath,
+  ...
+}: {
   imports = [
     ./hardware.nix
     ../../modules/nixos/audio.nix
     ../../modules/nixos/x.nix
     ../../modules/nixos/common.nix
-    ../../modules/nixos/avahi.nix
-    ../../modules/nixos/sshd.nix
-    ../../modules/nixos/imikoy.nix
+    # ../../modules/nixos/sshd.nix
+    # ../../modules/nixos/imikoy.nix
   ];
 
-  defaultFilesystems = true;
-  stateRemoval.enable = true;
+  #TODO: rewrite once modules are rewritten
 
-  services.avahi.allowInterfaces = [ "enp1s0f0" ];
+  hlk = {
+    defaultFilesystems = true;
+    stateRemoval.enable = true;
+  };
 
   hardware.bluetooth.enable = true;
 

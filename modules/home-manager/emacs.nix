@@ -1,10 +1,15 @@
-{ config, lib, pkgs, flake_inputs, ... }@inputs:
-let
+{
+  config,
+  lib,
+  pkgs,
+  flake_inputs,
+  ...
+} @ inputs: let
   emacs-everywhere = pkgs.writeScriptBin "emacs-everywhere" ''
     emacsclient --eval "(emacs-everywhere)"
   '';
 in {
-  imports = [ flake_inputs.nix-doom-emacs.hmModule ];
+  imports = [flake_inputs.nix-doom-emacs.hmModule];
   home.packages = with pkgs; [
     xorg.xwininfo
     xclip
@@ -44,6 +49,6 @@ in {
   };
   home.persistence."/local_state/home/imikoy" = {
     allowOther = true;
-    directories = [ ".cache/doom" ];
+    directories = [".cache/doom"];
   };
 }

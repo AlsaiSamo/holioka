@@ -1,8 +1,13 @@
-{ connfig, lib, pkgs, ... }@inputs:
+{
+  connfig,
+  lib,
+  pkgs,
+  ...
+} @ inputs:
 #TODO: look into profiles and using them to install extensions.
 let
   myFirefox = pkgs.wrapFirefox pkgs.firefox-esr-unwrapped {
-    nativeMessagingHosts = with pkgs; [ pkgs.tridactyl-native ];
+    nativeMessagingHosts = with pkgs; [pkgs.tridactyl-native];
     extraPolicies = {
       OverrideFirstRunPage = "";
       OverridePostUpdatePage = "";
@@ -38,7 +43,7 @@ in {
     package = myFirefox;
   };
   home.persistence."/state/home/imikoy" = {
-    files = [ ".config/tridactyl/tridactylrc" ];
+    files = [".config/tridactyl/tridactylrc"];
     directories = [
       #Has the profile
       ".mozilla/firefox"
@@ -48,6 +53,6 @@ in {
     ];
   };
   home.persistence."/local_state/home/imikoy" = {
-    directories = [ ".cache/mozilla" ];
+    directories = [".cache/mozilla"];
   };
 }
