@@ -6,28 +6,10 @@
   lib,
   pkgs,
   modulesPath,
+  volatile,
   ...
 }: {
-  imports = [(modulesPath + "/installer/scan/not-detected.nix")];
-
-  #TODO: replace with uuid
-  swapDevices = [
-    {
-      device = "/dev/disk/by-partuuid/4ef7c7f0-53e6-4051-a37b-8231ecec6207";
-      randomEncryption.enable = true;
-    }
-  ];
-
-  fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/0784-493A";
-    fsType = "vfat";
-  };
-
-  boot.initrd.luks.devices = {
-    cryptroot = {
-      device = "/dev/disk/by-uuid/c0a2fe90-f87e-491d-aaff-ecb28718e396";
-    };
-  };
+  imports = [(modulesPath + "/installer/scan/not-detected.nix") volatile.east];
 
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.grub = {
