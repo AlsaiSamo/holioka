@@ -3,6 +3,8 @@
   lib,
   pkgs,
   secrets,
+  hmModules,
+  flake_inputs,
   ...
 } @ inputs: let
   cfg = config.hlk.mainUser;
@@ -60,7 +62,24 @@ in {
         value = "95";
       }
     ];
+
     services.xserver.displayManager.autoLogin.user = cfg.userName;
     services.kmscon.autologinUser = cfg.userName;
+
+    home-manager = {
+      useUserPackages = false;
+      useGlobalPkgs = false;
+      verbose = true;
+      extraSpecialArgs = {
+        inherit flake_inputs;
+        inherit secrets;
+      };
+    };
+    home-manager.users.${cfg.userName} =
+      import ../../users/${cfg.hmProfile}.nix
+      {
+        inherit flake_inputs hmModules pkgs config lib;
+        userName = cfg.userName;
+      };
   };
 }

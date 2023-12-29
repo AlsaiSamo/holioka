@@ -10,6 +10,8 @@ in {
     hlk.xserver.default.enable = lib.mkEnableOption "default X configuration";
   };
   config = {
+    #TODO: parametrize this?
+    #TODO: add alacritty?
     programs.light.enable = true;
     services.xserver = lib.mkIf cfg.default.enable {
       xkbOptions = "grp:caps_toggle";
@@ -19,8 +21,6 @@ in {
       layout = "us,ru";
       displayManager = {
         defaultSession = "none+i3";
-        #TODO: should be username-agnostic and probably moved out
-        # autoLogin.user = "imikoy";
       };
       windowManager.i3.enable = true;
     };

@@ -25,7 +25,7 @@
       default.enable = true;
       desktop.enable = true;
     };
-    avahi.default.enable = true;
+    # avahi.default.enable = true;
     virt.default.enable = true;
     network = {
       default.enable = true;

@@ -20,21 +20,27 @@
     nur,
     nix-doom-emacs,
     ...
-  } @ inputs: let
+  } @ flake_inputs: let
     #Secrets may be distributed together with state, but they are encrypted in the repo.
     secrets = import ./secrets.nix {};
+    volatile = import ./volatile.nix {};
     #These modules add options for all systems.
-    commonNixosModules =
-      [impermanence.nixosModule]
-      ++ [(import ./modules)];
-  in {
+    commonNixosModules = [
+      impermanence.nixosModule
+      home-manager.nixosModules.home-manager
+      (import ./modules)
+    ];
+    hmModules = [
+      nix-doom-emacs.hmModule
+      impermanence.nixosModules.home-manager.impermanence
+    ];
     #TODO: overlays (when I need them)
+  in {
     nixosConfigurations = {
       east = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         specialArgs = {
-          inherit secrets inputs;
-          outputs = self.outputs;
+          inherit flake_inputs secrets volatile hmModules;
         };
         modules =
           commonNixosModules
@@ -42,27 +48,12 @@
           ++ [
             nixos-hardware.nixosModules.common-gpu-amd
             {nixpkgs.overlays = [nur.overlay];}
-            home-manager.nixosModules.home-manager
-            {
-              home-manager = {
-                useUserPackages = true;
-                useGlobalPkgs = true;
-                verbose = true;
-                extraSpecialArgs = {
-                  flake_inputs = inputs;
-                  flake_outputs = self.outputs;
-                  inherit secrets;
-                };
-              };
-              home-manager.users.imikoy = import ./users/imikoyFull.nix;
-            }
           ];
       };
       west = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         specialArgs = {
-          inherit secrets inputs;
-          outputs = self.outputs;
+          inherit flake_inputs secrets volatile hmModules;
         };
         modules =
           commonNixosModules
@@ -71,20 +62,6 @@
             nixos-hardware.nixosModules.lenovo-ideapad-15arh05
             {nixpkgs.overlays = [nur.overlay];}
             {nixpkgs.config.allowUnfree = true;}
-            home-manager.nixosModules.home-manager
-            {
-              home-manager = {
-                useUserPackages = true;
-                useGlobalPkgs = true;
-                verbose = true;
-                extraSpecialArgs = {
-                  flake_inputs = inputs;
-                  flake_outputs = self.outputs;
-                  inherit secrets;
-                };
-              };
-              home-manager.users.imikoy = import ./users/imikoyFull.nix;
-            }
           ];
       };
     };

@@ -2,6 +2,7 @@
   lib,
   config,
   pkgs,
+  userName,
   ...
 } @ inputs: {
   imports = [
@@ -12,12 +13,13 @@
     ./nvim.nix
     ./emacs.nix
     ./programming.nix
+    ./gaming.nix
   ];
   #TODO: move messaging out
   #also use fluffychat and look into configuring nheko here
-  home.packages = with pkgs; [fluffychat cmus xonotic];
+  home.packages = with pkgs; [fluffychat cmus];
   programs.nheko.enable = true;
-  home.persistence."/state/home/imikoy" = {
+  home.persistence."/state/home/${userName}" = {
     files = [];
     directories = [
       ".cache/nheko"
@@ -27,13 +29,6 @@
       ".local/state/wireplumber"
 
       ".config/cmus"
-    ];
-  };
-  home.persistence."/local_state/home/imikoy" = {
-    directories = [
-      #Big.
-      ".xonotic"
-      ".local/share/osu"
     ];
   };
 }

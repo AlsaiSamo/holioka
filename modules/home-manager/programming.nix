@@ -4,5 +4,14 @@
   pkgs,
   ...
 }: {
-  home.packages = with pkgs; [cargo rustc rust-analyzer rustfmt];
+  home.packages = with pkgs; [
+    #Rust
+    cargo
+    rustc
+    rust-analyzer
+    rustfmt
+    #Nix
+    nixd
+    alejandra
+  ];
 }
