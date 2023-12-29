@@ -1,6 +1,12 @@
-{ flake_inputs, lib, pkgs, config, ... }: {
+{
+  flake_inputs,
+  lib,
+  pkgs,
+  config,
+  ...
+}: {
   home.packages = with pkgs; [
-    (nerdfonts.override { fonts = [ "FiraCode" "Iosevka" "Hack" ]; })
+    (nerdfonts.override {fonts = ["FiraCode" "Iosevka" "Hack"];})
     mpv
     xawtv
     #TODO: patch with nerd font and use everywhere
@@ -56,7 +62,7 @@
       package = pkgs.gnome.gnome-themes-extra;
       name = "Adwaita";
     };
-    gtk3.extraConfig = { gtk-application-prefer-dark-theme = 1; };
+    gtk3.extraConfig = {gtk-application-prefer-dark-theme = 1;};
   };
   qt = {
     enable = true;
@@ -98,7 +104,7 @@
     cycle = true;
     location = "center";
     theme = "gruvbox-dark-soft";
-    plugins = with pkgs; [ rofi-power-menu ];
+    plugins = with pkgs; [rofi-power-menu];
     extraConfig = {
       width = 50;
       lines = 20;
@@ -110,7 +116,7 @@
   services.betterlockscreen = {
     enable = true;
     inactiveInterval = 5;
-    arguments = [ "blur" "0.5" ];
+    arguments = ["blur" "0.5"];
   };
 
   services.picom = {
@@ -118,12 +124,12 @@
     shadow = false;
     fade = true;
     fadeDelta = 2;
-    fadeExclude = [ "x = 0 && y = 0 && override_redirect = true" ];
+    fadeExclude = ["x = 0 && y = 0 && override_redirect = true"];
 
     inactiveOpacity = 1.0;
     menuOpacity = 1.0;
     activeOpacity = 1.0;
-    opacityRules = [ "95:class_g = 'Alacritty' && !focused" ];
+    opacityRules = ["95:class_g = 'Alacritty' && !focused"];
     vSync = true;
   };
 

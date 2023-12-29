@@ -1,8 +1,15 @@
-{ connfig, lib, pkgs, ... }@inputs:
+{
+  config,
+  lib,
+  pkgs,
+  userName,
+  ...
+} @ inputs:
 #TODO: look into profiles and using them to install extensions.
 let
+  cfg = config.hlk.firefox;
   myFirefox = pkgs.wrapFirefox pkgs.firefox-esr-unwrapped {
-    nativeMessagingHosts = with pkgs; [ pkgs.tridactyl-native ];
+    nativeMessagingHosts = with pkgs; [pkgs.tridactyl-native];
     extraPolicies = {
       OverrideFirstRunPage = "";
       OverridePostUpdatePage = "";
@@ -33,21 +40,26 @@ let
     # ];
   };
 in {
-  programs.firefox = {
-    enable = true;
-    package = myFirefox;
+  options.hlk.firefox = {
+    default.enable = lib.mkEnableOption "default Firefox configuration";
   };
-  home.persistence."/state/home/imikoy" = {
-    files = [ ".config/tridactyl/tridactylrc" ];
-    directories = [
-      #Has the profile
-      ".mozilla/firefox"
-      #".cache/mozilla"
-      #Keepassxc
-      ".mozilla/native-messaging-hosts"
-    ];
-  };
-  home.persistence."/local_state/home/imikoy" = {
-    directories = [ ".cache/mozilla" ];
+  config = lib.mkIf cfg.default.enable {
+    programs.firefox = {
+      enable = true;
+      package = myFirefox;
+    };
+    home.persistence."/state/home/${userName}" = {
+      files = [".config/tridactyl/tridactylrc"];
+      directories = [
+        #Has the profile
+        ".mozilla/firefox"
+        #".cache/mozilla"
+        #Keepassxc
+        ".mozilla/native-messaging-hosts"
+      ];
+    };
+    home.persistence."/local_state/home/${userName}" = {
+      directories = [".cache/mozilla"];
+    };
   };
 }

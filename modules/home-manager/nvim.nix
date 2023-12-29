@@ -1,6 +1,11 @@
-{ config, lib, pkgs, ... }@inputs: {
+{
+  config,
+  lib,
+  pkgs,
+  ...
+} @ inputs: {
   home.persistence."/local_state/home/imikoy" = {
-    directories = [ ".local/share/nvim" ];
+    directories = [".local/share/nvim"];
   };
   programs.neovim = {
     enable = true;
@@ -25,8 +30,8 @@
         plugin = comment-nvim;
         type = "lua";
         config = ''
-          	  --
-                    require('Comment').setup()
+          --
+                 require('Comment').setup()
         '';
       }
       {
@@ -165,7 +170,7 @@
               return npairs.autopairs_bs()
           end
           end
-          remap('i', '<bs>', 'v:lua.MUtils.BS()', { expr = true, noremap = true })   
+          remap('i', '<bs>', 'v:lua.MUtils.BS()', { expr = true, noremap = true })
         '';
       }
     ];

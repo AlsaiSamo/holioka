@@ -1,5 +1,9 @@
-{ config, lib, pkgs, ... }@inputs:
-
+{
+  config,
+  lib,
+  pkgs,
+  ...
+} @ inputs:
 #TODO: store personal key in repo
 {
   programs.ssh = {

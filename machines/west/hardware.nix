@@ -1,5 +1,12 @@
-{ config, lib, pkgs, modulesPath, ... }: {
-  imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
+{
+  config,
+  lib,
+  pkgs,
+  modulesPath,
+  volatile,
+  ...
+}: {
+  imports = [(modulesPath + "/installer/scan/not-detected.nix") volatile.west];
 
   hardware.nvidia = {
     #Offload is enabled in nixos-hardware module
@@ -12,20 +19,6 @@
     #will this lead to issues?
     #powerManagement.finegrained = true;
     open = false;
-  };
-
-  swapDevices =
-    [{ device = "/dev/disk/by-uuid/553de4ea-dc22-4a77-84f5-a36c6b5dab82"; }];
-
-  fileSystems."/boot" = {
-    device = "/dev/disk/by-uuid/CEEB-4273";
-    fsType = "vfat";
-  };
-
-  boot.initrd.luks.devices = {
-    cryptroot = {
-      device = "/dev/disk/by-uuid/cb49fc83-8af7-47a1-8a59-9946fa36f174";
-    };
   };
 
   boot.loader.efi.canTouchEfiVariables = true;
@@ -47,7 +40,7 @@
     "sd_mod"
     "rtsx_pci_sdmmc"
   ];
-  boot.initrd.kernelModules = [ ];
+  boot.initrd.kernelModules = [];
   #TODO: amd drivers will be missing, I believe. So, I will need to see if this causes issues.
   #boot.kernelModules = [ "kvm-amd" "amdgpu" "acpi_call" ];
   #boot.extraModulePackages = with config.boot.kernelPackages; [ acpi_call ];
