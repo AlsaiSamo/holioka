@@ -24,6 +24,7 @@
     audio = {
       default.enable = true;
       desktop.enable = true;
+      lowLatency.enable = true;
     };
     # avahi.default.enable = true;
     virt.default.enable = true;
