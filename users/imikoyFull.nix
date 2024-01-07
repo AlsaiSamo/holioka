@@ -23,6 +23,7 @@
       xonotic.state.enable = true;
       xonotic.enable = true;
     };
+    gpg.default.enable = true;
   };
 
   home.persistence."/state/home/${userName}" = {
