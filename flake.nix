@@ -24,6 +24,19 @@
     #Secrets may be distributed together with state, but they are encrypted in the repo.
     secrets = import ./secrets.nix {};
     volatile = import ./volatile.nix {};
+
+    #all overlays together
+    #stolen from chayleaf
+    overlays = args: final: prev:
+      import ./overlays ({
+          pkgsPrev = prev;
+          pkgsFinal = final;
+          lib = nixpkgs.lib;
+          inherit flake_inputs;
+        }
+        // args);
+    overlaysDefault = overlays {};
+
     #These modules add options for all systems.
     commonNixosModules = [
       impermanence.nixosModule
@@ -34,7 +47,7 @@
       nix-doom-emacs.hmModule
       impermanence.nixosModules.home-manager.impermanence
     ];
-    #TODO: overlays (when I need them)
+    hmOverlay = overlaysDefault;
   in {
     nixosConfigurations = {
       east = nixpkgs.lib.nixosSystem {
@@ -54,13 +67,15 @@
         system = "x86_64-linux";
         specialArgs = {
           inherit flake_inputs secrets volatile hmModules;
+          #TODO: make it nicer
+          inherit hmOverlay;
         };
         modules =
           commonNixosModules
           ++ [(import ./machines/west)]
           ++ [
             nixos-hardware.nixosModules.lenovo-ideapad-15arh05
-            {nixpkgs.overlays = [nur.overlay];}
+            {nixpkgs.overlays = [nur.overlay overlaysDefault];}
             {nixpkgs.config.allowUnfree = true;}
           ];
       };

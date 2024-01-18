@@ -5,11 +5,13 @@
   config,
   lib,
   hmModules,
+  hmOverlay,
   userName,
   ...
 } @ inputs: {
   #TODO: move to somewhere else to generalise?
   _module.args.userName = userName;
+  nixpkgs.overlays = [hmOverlay];
   #TODO: move modules/home-manager/default.nix to hmModules after rewriting all modules
   imports = hmModules ++ [../modules/home-manager/default.nix];
   programs.home-manager.enable = true;

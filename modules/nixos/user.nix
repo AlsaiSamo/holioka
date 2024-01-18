@@ -4,6 +4,7 @@
   pkgs,
   secrets,
   hmModules,
+  hmOverlay,
   flake_inputs,
   ...
 } @ inputs: let
@@ -78,7 +79,7 @@ in {
     home-manager.users.${cfg.userName} =
       import ../../users/${cfg.hmProfile}.nix
       {
-        inherit flake_inputs hmModules pkgs config lib;
+        inherit flake_inputs hmModules hmOverlay pkgs config lib;
         userName = cfg.userName;
       };
   };
