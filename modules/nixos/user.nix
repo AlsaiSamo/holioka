@@ -35,7 +35,7 @@ in {
       isNormalUser = true;
       group = cfg.userName;
       shell = pkgs.zsh;
-      extraGroups = ["wheel" "realtime" "pipewire" "jackaudio" "libvirt" "audio" "video"];
+      extraGroups = ["wheel" "realtime" "pipewire" "jackaudio" "libvirt" "libvirtd" "audio" "video"];
     };
     security.pam.loginLimits = [
       {

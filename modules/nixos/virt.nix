@@ -15,7 +15,12 @@ in {
       dockerSocket.enable = true;
       defaultNetwork.settings.dns_enabled = true;
     };
+    virtualisation.libvirtd = {
+      enable = true;
+    };
+    #TODO: this is graphocal option
+    programs.virt-manager.enable = true;
 
-    environment.systemPackages = with pkgs; [podman-compose qemu gvfs];
+    environment.systemPackages = with pkgs; [podman-compose qemu gvfs virtiofsd];
   };
 }
