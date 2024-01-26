@@ -57,13 +57,13 @@
 
 (use-package! alert
   :init (setq alert-default-style 'libnotify
-              alert-fade-time 60
+              alert-fade-time 120
               alert-persist-idle-time 6)
 )
 
 (use-package! org-alert
   :init (setq
-         org-alert-interval 180
+         org-alert-interval 900
          org-alert-notify-cutoff 10
          org-alert-notify-after-event-cutoff 10
          org-alert-notification-title "Org")
@@ -72,6 +72,24 @@
 (after! org-alert
   (org-alert-enable)
   )
+
+;;TODO: package of version 0.1, while I want 1.0
+;;This package suits me better than alert because it does exactly what I want,
+;;that is - notifying me always, including when I am idle.
+;;
+;;TODO: I could later build upon it to make task rotation (record time I was working
+;;on some task and forcing me to switch. Would need to also ask me to start/stop timer tho)
+(use-package! org-clock-reminder
+  :init (setq
+         org-clock-reminder-interval 900
+         org-clock-reminder-notification-title "Org"
+         org-clock-reminder-format-string "Time: %s on task %s"
+         org-clock-reminder-empty-text "No task clocked"
+         ;; org-clock-reminder-inactive-notifications-p 't
+         ))
+
+;; (after! org-clock-reminder
+;;   (org-clock-reminder-mode))
 
 ;;Completion
 (setq orderless-matching-styles '(orderless-literal orderless-prefixes orderless-regexp)
@@ -84,6 +102,13 @@
 (setq fill-column 80)
 (add-hook 'prog-mode-hook 'display-fill-column-indicator-mode)
 ;(add-hook 'text-mode-hook 'display-fill-column-indicator-mode)
+
+;TODO: formatter is not applied on save?
+(set-formatter! 'alejandra "alejandra -q - " :modes '(nix-mode))
+;; (setq-hook! 'nix-mode-hook +format-with 'alejandra)
+; Requires format without +onsave (replaces it)
+(add-hook 'nix-mode-hook #'format-all-mode)
+(add-hook 'rustic-mode-hook #'format-all-mode)
 
 ;;SSH, GPG
 ;;TODO: look into load-env-vars package and something that would create a file with vars
