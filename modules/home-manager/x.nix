@@ -44,8 +44,8 @@
   };
 
   xdg.configFile."i3/config".source = ../../dotfiles/i3/config;
-  xdg.configFile."alacritty/alacritty.yml".source =
-    ../../dotfiles/alacritty.yml;
+  xdg.configFile."alacritty/alacritty.toml".source =
+    ../../dotfiles/alacritty.toml;
 
   dconf.enable = true;
   gtk = {
