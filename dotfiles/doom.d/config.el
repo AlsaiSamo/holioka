@@ -61,12 +61,13 @@
               alert-persist-idle-time 6)
 )
 
+; I currently use org-alert for hourly reminders for the day/week
 (use-package! org-alert
   :init (setq
-         org-alert-interval 900
+         org-alert-interval 3600
          org-alert-notify-cutoff 10
          org-alert-notify-after-event-cutoff 10
-         org-alert-notification-title "Org")
+         org-alert-notification-title "Org daily/weekly")
 )
 
 (after! org-alert
@@ -82,11 +83,14 @@
 (use-package! org-clock-reminder
   :init (setq
          org-clock-reminder-interval 900
-         org-clock-reminder-notification-title "Org"
+         org-clock-reminder-notification-title "Org activity"
          org-clock-reminder-format-string "Time: %s on task %s"
          org-clock-reminder-empty-text "No task clocked"
+         org-clock-reminder-remind-inactivity 't
          ;; org-clock-reminder-inactive-notifications-p 't
          ))
+(after! org-clock-reminder
+  (org-clock-reminder-activate))
 
 ;; (after! org-clock-reminder
 ;;   (org-clock-reminder-mode))
