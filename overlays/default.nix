@@ -8,7 +8,7 @@
     patches =
       (old.patches or [])
       ++ [
-        ./0001-make-atuin-on-zfs-fast-again.patch
+        ./0001-ZFS.patch
       ];
   });
 

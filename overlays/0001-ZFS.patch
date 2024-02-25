@@ -1,0 +1,55 @@
+From 5afdb9ad17f0d714f309ba498a23b2791fa09adb Mon Sep 17 00:00:00 2001
+From: Alsai Samo <alsai_imikoy@proton.me>
+Date: Sun, 25 Feb 2024 16:04:10 +0700
+Subject: [PATCH] ZFS >:(
+
+---
+ atuin-client/src/database.rs            | 4 ++--
+ atuin-client/src/record/sqlite_store.rs | 8 ++++++--
+ 2 files changed, 8 insertions(+), 4 deletions(-)
+
+diff --git a/atuin-client/src/database.rs b/atuin-client/src/database.rs
+index 572955f8..b13dade6 100644
+--- a/atuin-client/src/database.rs
++++ b/atuin-client/src/database.rs
+@@ -139,9 +139,9 @@ impl Sqlite {
+         }
+ 
+         let opts = SqliteConnectOptions::from_str(path.as_os_str().to_str().unwrap())?
+-            .journal_mode(SqliteJournalMode::Wal)
++            .journal_mode(SqliteJournalMode::Memory)
+             .optimize_on_close(true, None)
+-            .synchronous(SqliteSynchronous::Normal)
++            .synchronous(SqliteSynchronous::Off)
+             .create_if_missing(true);
+ 
+         let pool = SqlitePoolOptions::new()
+diff --git a/atuin-client/src/record/sqlite_store.rs b/atuin-client/src/record/sqlite_store.rs
+index 6333bb27..ffc1fbed 100644
+--- a/atuin-client/src/record/sqlite_store.rs
++++ b/atuin-client/src/record/sqlite_store.rs
+@@ -10,7 +10,10 @@ use eyre::{eyre, Result};
+ use fs_err as fs;
+ 
+ use sqlx::{
+-    sqlite::{SqliteConnectOptions, SqliteJournalMode, SqlitePool, SqlitePoolOptions, SqliteRow},
++    sqlite::{
++        SqliteConnectOptions, SqliteJournalMode, SqlitePool, SqlitePoolOptions, SqliteRow,
++        SqliteSynchronous,
++    },
+     Row,
+ };
+ 
+@@ -41,7 +44,8 @@ impl SqliteStore {
+         }
+ 
+         let opts = SqliteConnectOptions::from_str(path.as_os_str().to_str().unwrap())?
+-            .journal_mode(SqliteJournalMode::Wal)
++            .journal_mode(SqliteJournalMode::Memory)
++            .synchronous(SqliteSynchronous::Off)
+             .foreign_keys(true)
+             .create_if_missing(true);
+ 
+-- 
+2.43.0
+
