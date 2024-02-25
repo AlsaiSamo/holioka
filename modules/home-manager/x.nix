@@ -139,6 +139,8 @@
       ".cache/betterlockscreen"
 
       ".config/fcitx5"
+      #Appears when adding something like quick phrase
+      ".local/share/fcitx5"
       ".config/mozc"
       ".local/share/Anki2"
     ];
