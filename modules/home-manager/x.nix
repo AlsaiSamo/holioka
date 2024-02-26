@@ -17,11 +17,12 @@
     #Requires the user to be in "video" group
     light
     warpd
-    maim
     xclip
     alacritty
     xdotool
-    maim
+    shotgun
+    hacksaw
+    imagemagick
     dconf
     keepassxc
     libsecret

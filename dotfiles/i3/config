@@ -225,7 +225,7 @@ exec_always --no-startup-id "systemctl restart --user polybar.service"
 
 bindsym $mod+ctrl+p exec --no-startup-id "rofi -show power-menu -modi power-menu:rofi-power-menu"
 
-bindsym --release Print exec --no-startup-id "maim ~/Pictures/$(date +%F-%T).png"
-bindsym shift+Print exec --no-startup-id "maim -s | xclip -selection clipboard -t image/png"
+bindsym --release Print exec --no-startup-id shotgun "$(readlink -f ~)/Pictures/$(date).png"
+bindsym shift+Print exec --no-startup-id "shotgun $(hacksaw -f '-i %i -g %g') - | xclip -t 'image/png' -selection clipboard"
 
 bindsym $mod+shift+f move workspace to output next
