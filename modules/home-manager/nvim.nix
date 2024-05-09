@@ -110,7 +110,7 @@
       {
         plugin = lspsaga-nvim;
         type = "lua";
-        config = ''require("lspsaga").init_lsp_saga({})'';
+        config = ''require("lspsaga").setup({})'';
       }
       {
         plugin = leap-nvim;
