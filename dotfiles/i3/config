@@ -62,7 +62,7 @@ bindsym XF86MonBrightnessDown exec --no-startup-id light -U 5
 # start a terminal
 bindsym $mod+Return exec "WINIT_X11_SCALE_FACTOR=1.5 alacritty"
 
-bindsym $mod+Shift+q kill
+bindsym --release $mod+Shift+q kill
 
 bindsym $mod+n exec warpd --normal
 bindsym $mod+m exec warpd --hint
