@@ -41,11 +41,14 @@
     commonNixosModules = [
       impermanence.nixosModule
       home-manager.nixosModules.home-manager
+      nur.nixosModules.nur
       (import ./modules)
     ];
     hmModules = [
       nix-doom-emacs.hmModule
       impermanence.nixosModules.home-manager.impermanence
+      #This is actually nur.nixosModules.nur
+      nur.hmModules.nur
     ];
     hmOverlay = overlaysDefault;
   in {
@@ -75,7 +78,9 @@
           ++ [(import ./machines/west)]
           ++ [
             nixos-hardware.nixosModules.lenovo-ideapad-15arh05
-            {nixpkgs.overlays = [nur.overlay overlaysDefault];}
+            #TODO: I have had "nur.overlay" here, if it is not really needed remove
+            #this comment
+            {nixpkgs.overlays = [overlaysDefault];}
             {nixpkgs.config.allowUnfree = true;}
           ];
       };

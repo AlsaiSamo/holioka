@@ -16,6 +16,11 @@
   imports = hmModules ++ [../modules/home-manager/default.nix];
   programs.home-manager.enable = true;
 
+  home.packages = with pkgs; [
+  tartube
+  yt-dlp
+  ];
+
   hlk = {
     cli.default.enable = true;
     emacs.default.enable = true;
@@ -23,7 +28,7 @@
     games = {
       osu.state.enable = true;
       xonotic.state.enable = true;
-      xonotic.enable = true;
+      # xonotic.enable = true;
     };
     gpg.default.enable = true;
   };

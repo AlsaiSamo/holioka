@@ -1,7 +1,12 @@
 {...}: {
   west = {
     #TODO: random encryption
-    swapDevices = [{device = "/dev/disk/by-uuid/553de4ea-dc22-4a77-84f5-a36c6b5dab82";}];
+    swapDevices = [
+    {
+        device = "/dev/disk/by-uuid/553de4ea-dc22-4a77-84f5-a36c6b5dab82";
+        priority = 2048;
+        }
+    ];
     fileSystems."/boot" = {
       device = "/dev/disk/by-uuid/CEEB-4273";
       fsType = "vfat";
