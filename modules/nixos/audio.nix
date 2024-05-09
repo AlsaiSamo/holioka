@@ -60,15 +60,17 @@ in {
       #TODO: pulseaudio and devices
       #NOTE: json.generate might be generating incorrect things for this?
       #encasing everything in ""
-      environment.etc = {
-        "pipewire/pipewire.conf.d/92-low-latency.conf".text = ''
-          clock.power-of-two-quantum = true
+      # environment.etc = {
+        # "pipewire/pipewire.conf.d/92-low-latency.conf".text = ''
+      services.pipewire.extraConfig.pipewire."92-low-latency" = 
+      {
+          clock.power-of-two-quantum = true;
           context.properties = {
-            default.clock.rate = 48000
-            default.clock.quantum = 128
-            default.clock.min-quantum = 32
-            default.clock.max-quantum = 256
-          }
+            default.clock.rate = 48000;
+            "default.clock.quantum" = 128;
+            "default.clock.min-quantum" = 32;
+            "default.clock.max-quantum" = 256;
+          };
           # Attempt to configure pulse
           # stream.properties = {
           #   node.latency = 256/48000
@@ -85,28 +87,11 @@ in {
           #         pulse.min.quantum = 32/48000
           #         pulse.max.quantum = 256/48000
           #       }
-        '';
-        # "pipewire/pipewire-pulse.conf.d/92-low-latency.conf".text = ''
-        #   context.properties = {
-        #   }
-        # '';
-        # "pipewire/pipewire-pulse.conf.d/92-low-latency.conf".text = ''
-        #   stream.properties = {
-        #     node.latency = 256/48000
-        #   }
-        #   context.modules = [
-        #     { name = libpipewire-module-protocol-pulse
-        #       args = {
-        #         pulse.min.req = 32/48000
-        #         pulse.default.req = 128/48000
-        #         pulse.max.req = 256/48000
-        #         pulse.min.quantum = 32/48000
-        #         pulse.max.quantum = 256/48000
-        #       }
-        #     }
-        #   ]
         # '';
       };
+    services.pipewire.extraConfig.jack."92-low-latency" = {
+        "node.latency" = "256/48000";
+    };
     })
   ];
 }

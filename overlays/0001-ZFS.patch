@@ -1,18 +1,18 @@
-From 5afdb9ad17f0d714f309ba498a23b2791fa09adb Mon Sep 17 00:00:00 2001
+From 8eccd99a4cb3eade342e42abc2a22ad6f5daa14f Mon Sep 17 00:00:00 2001
 From: Alsai Samo <alsai_imikoy@proton.me>
-Date: Sun, 25 Feb 2024 16:04:10 +0700
-Subject: [PATCH] ZFS >:(
+Date: Fri, 29 Mar 2024 00:57:32 +0700
+Subject: [PATCH] ZFS
 
 ---
  atuin-client/src/database.rs            | 4 ++--
- atuin-client/src/record/sqlite_store.rs | 8 ++++++--
- 2 files changed, 8 insertions(+), 4 deletions(-)
+ atuin-client/src/record/sqlite_store.rs | 5 +++--
+ 2 files changed, 5 insertions(+), 4 deletions(-)
 
 diff --git a/atuin-client/src/database.rs b/atuin-client/src/database.rs
-index 572955f8..b13dade6 100644
+index b0bcae31..0b22353b 100644
 --- a/atuin-client/src/database.rs
 +++ b/atuin-client/src/database.rs
-@@ -139,9 +139,9 @@ impl Sqlite {
+@@ -137,9 +137,9 @@ impl Sqlite {
          }
  
          let opts = SqliteConnectOptions::from_str(path.as_os_str().to_str().unwrap())?
@@ -21,26 +21,23 @@ index 572955f8..b13dade6 100644
              .optimize_on_close(true, None)
 -            .synchronous(SqliteSynchronous::Normal)
 +            .synchronous(SqliteSynchronous::Off)
+             .with_regexp()
              .create_if_missing(true);
  
-         let pool = SqlitePoolOptions::new()
 diff --git a/atuin-client/src/record/sqlite_store.rs b/atuin-client/src/record/sqlite_store.rs
-index 6333bb27..ffc1fbed 100644
+index 6333bb27..e028abbe 100644
 --- a/atuin-client/src/record/sqlite_store.rs
 +++ b/atuin-client/src/record/sqlite_store.rs
-@@ -10,7 +10,10 @@ use eyre::{eyre, Result};
+@@ -10,7 +10,7 @@ use eyre::{eyre, Result};
  use fs_err as fs;
  
  use sqlx::{
 -    sqlite::{SqliteConnectOptions, SqliteJournalMode, SqlitePool, SqlitePoolOptions, SqliteRow},
-+    sqlite::{
-+        SqliteConnectOptions, SqliteJournalMode, SqlitePool, SqlitePoolOptions, SqliteRow,
-+        SqliteSynchronous,
-+    },
++    sqlite::{SqliteConnectOptions, SqliteJournalMode, SqlitePool, SqlitePoolOptions, SqliteRow, SqliteSynchronous},
      Row,
  };
  
-@@ -41,7 +44,8 @@ impl SqliteStore {
+@@ -41,7 +41,8 @@ impl SqliteStore {
          }
  
          let opts = SqliteConnectOptions::from_str(path.as_os_str().to_str().unwrap())?

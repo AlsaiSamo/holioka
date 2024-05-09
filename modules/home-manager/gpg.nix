@@ -22,7 +22,7 @@ in {
       enableSshSupport = true;
       enableZshIntegration = true;
       defaultCacheTtlSsh = 300;
-      pinentryFlavor = "qt";
+      pinentryPackage = pkgs.pinentry-qt;
       sshKeys = ["50AF8896441CF20361687883C53B1A8D9D0FB49E"];
       verbose = true;
       #This does not work, GPG uses config from the state
