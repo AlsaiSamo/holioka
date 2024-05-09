@@ -46,7 +46,7 @@
   #boot.extraModulePackages = with config.boot.kernelPackages; [ acpi_call ];
   #boot.kernelParams = [ "iommu=soft" "i8042.nomux=1" "i8042.reset" ];
 
-  services.xserver.libinput = lib.mkIf config.services.xserver.enable {
+  services.libinput = lib.mkIf config.services.xserver.enable {
     enable = true;
     touchpad = {
       naturalScrolling = true;

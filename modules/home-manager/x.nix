@@ -39,8 +39,10 @@
   fonts.fontconfig.enable = true;
 
   home.pointerCursor = {
-    name = "phinger-cursors";
-    package = pkgs.phinger-cursors;
+    x11.enable = true;
+    gtk.enable = true;
+    package = pkgs.catppuccin-cursors.macchiatoDark;
+    name = "Catppuccin-Macchiato-Dark-Cursors";
     size = 32;
   };
 
@@ -63,7 +65,13 @@
       package = pkgs.gnome.gnome-themes-extra;
       name = "Adwaita";
     };
+    cursorTheme = {
+        package = pkgs.catppuccin-cursors.macchiatoDark;
+        name = "Catppuccin-Macchiato-Dark-Cursors";
+        size = 32;
+    };
     gtk3.extraConfig = {gtk-application-prefer-dark-theme = 1;};
+    gtk4.extraConfig = {gtk-application-prefer-dark-theme = 1;};
   };
   qt = {
     enable = true;

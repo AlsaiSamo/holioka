@@ -61,6 +61,7 @@
     gvfs
     nixd
     redshift
+    blueberry
   ];
 
   system.stateVersion = "23.11";

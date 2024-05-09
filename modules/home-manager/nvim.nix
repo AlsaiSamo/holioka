@@ -260,7 +260,7 @@
 
     extraPackages = with pkgs; [
       nixd
-      nixfmt
+      nixfmt-classic
       ccls
       tree-sitter
       nodePackages.pyright

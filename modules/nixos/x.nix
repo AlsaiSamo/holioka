@@ -14,15 +14,15 @@ in {
     #TODO: add alacritty?
     programs.light.enable = true;
     services.xserver = lib.mkIf cfg.default.enable {
-      xkbOptions = "grp:caps_toggle";
+      xkb.options = "grp:caps_toggle";
       autoRepeatDelay = 200;
       autoRepeatInterval = 30;
       enable = true;
-      layout = "us,ru";
-      displayManager = {
-        defaultSession = "none+i3";
-      };
+      xkb.layout = "us,ru";
       windowManager.i3.enable = true;
+    };
+    services.displayManager = {
+      defaultSession = "none+i3";
     };
     fonts = {fontconfig = {subpixel.rgba = "none";};};
   };

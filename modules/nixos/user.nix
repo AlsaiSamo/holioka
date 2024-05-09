@@ -75,7 +75,7 @@ in {
       }
     ];
 
-    services.xserver.displayManager.autoLogin.user = cfg.userName;
+    services.displayManager.autoLogin.user = cfg.userName;
     services.kmscon.autologinUser = cfg.userName;
 
     home-manager = {

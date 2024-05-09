@@ -47,7 +47,7 @@ in {
     '';
     programs.zsh = {
       enable = true;
-      enableAutosuggestions = true;
+      autosuggestion.enable = true;
       autocd = true;
       enableCompletion = true;
       syntaxHighlighting.enable = true;
