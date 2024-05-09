@@ -17,10 +17,19 @@
   ];
   #TODO: move messaging out
   #also use fluffychat and look into configuring nheko here
-  home.packages = with pkgs; [fluffychat cmus];
+  home.packages = with pkgs; [
+    fluffychat
+    cmus
+    #TODO: move out, along with persistence
+    krita
+    ffmpeg-full
+  ];
   programs.nheko.enable = true;
   home.persistence."/state/home/${userName}" = {
-    files = [];
+    files = [
+      ".config/kritarc"
+      ".config/kritashortcutrc"
+    ];
     directories = [
       ".cache/nheko"
       ".config/nheko"
@@ -29,6 +38,8 @@
       ".local/state/wireplumber"
 
       ".config/cmus"
+
+      ".local/share/krita"
     ];
   };
 }
