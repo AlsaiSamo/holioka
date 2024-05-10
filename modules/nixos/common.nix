@@ -6,7 +6,9 @@
   ...
 } @ inputs: {
   #block the most hideous ADHD distraction
-  networking.hosts."127.0.0.1" = ["youtube.com" "https://www.youtube.com" "www.youtube.com"];
+  #upd: not needed anymore as I have developed a habit of not using youtube
+  #This also breaks things like embedded youtube
+  #networking.hosts."127.0.0.1" = ["youtube.com" "https://www.youtube.com" "www.youtube.com"];
 
   hardware.enableRedistributableFirmware = true;
   services.udisks2.enable = true;
