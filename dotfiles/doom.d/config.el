@@ -114,10 +114,16 @@
 (add-hook 'nix-mode-hook #'format-all-mode)
 (add-hook 'rustic-mode-hook #'format-all-mode)
 
+(use-package! exec-path-from-shell
+  :config (dolist (var '("SSH_AUTH_SOCK" "SSH_AGENT_PID"))
+          (add-to-list 'exec-path-from-shell-variables var))
+          (exec-path-from-shell-initialize))
 ;;SSH, GPG
-;;TODO: look into load-env-vars package and something that would create a file with vars
 (use-package! pinentry
-  :init (setq epa-pinentry-mode 'loopback)
-        (pinentry-start)
-        (setenv "SSH_AUTH_SOCK" (string-clean-whitespace (shell-command-to-string "gpgconf --list-dirs agent-ssh-socket")))
-        )
+  :init (setq
+         ;; Emacs works ok with loopback pinentry
+              epg-pinentry-mode 'loopback
+              epa-pinentry-mode 'loopback
+              epg-gpg-home-directory "/state/secrets/.gnupg")
+        (setenv "GNUPGHOME" "/state/secrets/.gnupg")
+  :config (pinentry-start))
