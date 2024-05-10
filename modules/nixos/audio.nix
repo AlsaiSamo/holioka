@@ -55,43 +55,52 @@ in {
         pavucontrol
       ];
     })
+    #TODO: I honestly don't know if sections beyond pipewire's configuration
+    #do have effect
     (lib.mkIf cfg.lowLatency.enable {
-      #TODO: this has to be configurable per-machine (specifically quantums)
-      #TODO: pulseaudio and devices
-      #NOTE: json.generate might be generating incorrect things for this?
-      #encasing everything in ""
-      # environment.etc = {
-        # "pipewire/pipewire.conf.d/92-low-latency.conf".text = ''
-      services.pipewire.extraConfig.pipewire."92-low-latency" = 
-      {
-          clock.power-of-two-quantum = true;
+      #This does not work?
+      #services.pipewire.extraConfig = {};
+      services.pipewire.configPackages = [
+        (pkgs.writeTextDir "share/pipewire/pipewire.conf.d/92-low-latency.conf" ''
           context.properties = {
-            default.clock.rate = 48000;
-            "default.clock.quantum" = 128;
-            "default.clock.min-quantum" = 32;
-            "default.clock.max-quantum" = 256;
-          };
-          # Attempt to configure pulse
-          # stream.properties = {
-          #   node.latency = 256/48000
-          # }
-          # context.modules = [
-          #   { name = libpipewire-module-protocol-pulse
-          #     args = { }
-          #   }
-          # ]
-          #       pulse.properties = {
-          #         pulse.min.req = 32/48000
-          #         pulse.default.req = 128/48000
-          #         pulse.max.req = 256/48000
-          #         pulse.min.quantum = 32/48000
-          #         pulse.max.quantum = 256/48000
-          #       }
-        # '';
-      };
-    services.pipewire.extraConfig.jack."92-low-latency" = {
-        "node.latency" = "256/48000";
-    };
+            default.clock.power-of-two-quantum = true
+            default.clock.rate = 48000
+            default.clock.quantum = 128
+            default.clock.min-quantum = 32
+            default.clock.max-quantum = 256
+          }
+        '')
+        #TODO: according to the docs, pipewire config's context section
+        #can be used here too
+        (pkgs.writeTextDir "share/pipewire/pipewire-pulse.conf.d/92-low-latency.conf"
+          ''
+            stream.properties = {
+              node.latency = 128/48000
+            }
+            pulse.properties = {
+              pulse.min.req = 32/48000
+              pulse.default.req = 128/48000
+              pulse.min.frag = 32/48000
+              # pulse.default.frag = 48000
+              # pulse.default.tlength = 48000
+              pulse.min.quantum = 32/48000
+            }
+          '')
+        (
+          pkgs.writeTextDir "share/pipewire/pipewire-client.conf.d/92-low-latency.conf" ''
+            stream.properties = {
+              node.latency = 128/48000
+            }
+          ''
+        )
+        (
+          pkgs.writeTextDir "share/pipewire/pipewire-jack.conf.d/92-low-latency.conf" ''
+            stream.properties = {
+              node.latency = 128/48000
+            }
+          ''
+        )
+      ];
     })
   ];
 }
