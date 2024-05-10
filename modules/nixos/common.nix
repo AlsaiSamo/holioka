@@ -11,18 +11,16 @@
   #networking.hosts."127.0.0.1" = ["youtube.com" "https://www.youtube.com" "www.youtube.com"];
 
   hardware.enableRedistributableFirmware = true;
+
   services.udisks2.enable = true;
   programs.fuse.userAllowOther = true;
+
   programs.neovim = {
     enable = true;
     defaultEditor = true;
     vimAlias = true;
   };
-  #BUG: systemd units using bash -l -c run this. However, "not a tty" is exported.
-  # environment.shellInit = ''
-  #     GPG_TTY=$(tty)
-  #     export GPG_TTY
-  # '';
+
   services.kmscon = {
     enable = true;
     extraConfig = "font-size=10";
@@ -38,6 +36,9 @@
     supportedLocales = ["en_US.UTF-8/UTF-8" "ru_RU.UTF-8/UTF-8" "ja_JP.UTF-8/UTF-8"];
     extraLocaleSettings = {LC_TIME = "ru_RU.UTF-8";};
   };
+
+  hardware.bluetooth.enable = true;
+
   users.users.root.hashedPassword = secrets.common.rootHashedPassword;
   environment.systemPackages = with pkgs; [
     sqlite

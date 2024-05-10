@@ -25,5 +25,7 @@ in {
       defaultSession = "none+i3";
     };
     fonts = {fontconfig = {subpixel.rgba = "none";};};
+    xdg.portal.enable = true;
+    xdg.portal.xdgOpenUsePortal = true;
   };
 }

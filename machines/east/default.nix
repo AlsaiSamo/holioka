@@ -36,8 +36,6 @@ inputs @ {
     jp.enable = true;
   };
 
-  hardware.bluetooth.enable = true;
-
   # programs.ssh = {
   #   knownHosts = {
   #     hlkwest = {
