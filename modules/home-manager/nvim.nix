@@ -55,7 +55,6 @@
       {
         plugin = nvim-lspconfig;
         type = "lua";
-        #TODO: install lsp servers
         config = ''
           --
           coq = require "coq"

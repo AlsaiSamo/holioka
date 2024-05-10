@@ -61,9 +61,9 @@
       name = "Adwaita";
     };
     cursorTheme = {
-        package = pkgs.catppuccin-cursors.macchiatoDark;
-        name = "Catppuccin-Macchiato-Dark-Cursors";
-        size = 32;
+      package = pkgs.catppuccin-cursors.macchiatoDark;
+      name = "Catppuccin-Macchiato-Dark-Cursors";
+      size = 32;
     };
     gtk3.extraConfig = {gtk-application-prefer-dark-theme = 1;};
     gtk4.extraConfig = {gtk-application-prefer-dark-theme = 1;};
@@ -84,6 +84,7 @@
   };
 
   #TODO: use osConfig to determine monitors and backlight
+  #TODO: polybar per-system
   services.polybar = {
     enable = true;
     package = pkgs.polybar.override {
