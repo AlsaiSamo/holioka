@@ -15,12 +15,10 @@
     ./programming.nix
     ./gaming.nix
   ];
-  #TODO: move messaging out
-  #also use fluffychat and look into configuring nheko here
   home.packages = with pkgs; [
-    fluffychat
+    # fluffychat
     cmus
-    #TODO: move out, along with persistence
+
     krita
     ffmpeg-full
   ];

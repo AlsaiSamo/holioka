@@ -61,8 +61,6 @@
 
   # services.avahi.allowInterfaces = [ "eno1" ];
 
-  #nixpkgs.config.allowUnfree = lib.mkForce true;
-
   nix.settings.cores = 11;
   time.timeZone = secrets.common.timeZone;
 

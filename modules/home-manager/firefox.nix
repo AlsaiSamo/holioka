@@ -29,15 +29,6 @@ let
       DisableSetDesktopBackground = true;
       DisableTelemetry = true;
     };
-    #TODO: I cannot use addons packaged by rycee due to missing extid.
-    # nixExtensions = with pkgs.nur.repos.rycee.firefox-addons; [
-    #     # keepassxc-browser
-    #     # firefox-color
-    #     # tridactyl
-    #     ublock-origin
-    #     #enhanced-h264ify
-    #     # enhanced-h264ify
-    # ];
   };
 in {
   options.hlk.firefox = {
