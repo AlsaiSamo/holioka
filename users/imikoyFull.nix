@@ -17,8 +17,8 @@
   programs.home-manager.enable = true;
 
   home.packages = with pkgs; [
-  tartube
-  yt-dlp
+    tartube
+    yt-dlp
   ];
 
   hlk = {

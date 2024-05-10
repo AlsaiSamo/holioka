@@ -41,6 +41,8 @@
 
   users.users.root.hashedPassword = secrets.common.rootHashedPassword;
   environment.systemPackages = with pkgs; [
+    jq
+    gvfs
     sqlite
     p7zip
     htop
@@ -53,6 +55,10 @@
     ripgrep
     iproute2
     jq
+    ntfs3g
+    udiskie
+    libsecret
+    libnotify
   ];
   programs.zsh = {
     enable = true;
