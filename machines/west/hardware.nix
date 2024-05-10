@@ -30,6 +30,18 @@
   };
   zramSwap.enable = true;
 
+  boot.kernelPackages = pkgs.linuxPackagesFor pkgs.linux-rt_latest;
+
+  #TODO: configure, by default it does not touch programs like Firefox
+  services.ananicy = {
+    enable = true;
+    package = pkgs.ananicy-cpp;
+  };
+
+  boot.kernel.sysctl = {
+    "vm.swappiness" = 10;
+  };
+
   boot.initrd.availableKernelModules = [
     "xhci_pci"
     "ahci"
