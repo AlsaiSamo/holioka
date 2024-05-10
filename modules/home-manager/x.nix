@@ -25,15 +25,10 @@
     imagemagick
     dconf
     keepassxc
-    libsecret
-    udiskie
     pcmanfm
-    gvfs
-    ntfs3g
     poppler
     ffmpegthumbnailer
     haskellPackages.freetype2
-    libnotify
   ];
 
   fonts.fontconfig.enable = true;

@@ -16,6 +16,18 @@
   #   hlkeast = { publicKeyFile = ../../secrets/east/ssh_host_ed25519_key.pub; };
   # };
 
+  #Learning
+  services.postgresql = {
+    enable = true;
+    ensureDatabases = [
+      "learning"
+    ];
+    authentication = pkgs.lib.mkOverride 10 ''
+      #type database  DBuser  auth-method
+      local all       all     trust
+    '';
+  };
+
   hlk = {
     defaultFilesystems = true;
     stateRemoval.enable = true;
@@ -54,14 +66,14 @@
   time.timeZone = secrets.common.timeZone;
 
   environment.systemPackages = with pkgs; [
-    jq
     wineWowPackages.stable
     qemu
     alacritty
-    gvfs
-    nixd
     redshift
     blueberry
+
+    #work
+    zoom-us
   ];
 
   system.stateVersion = "23.11";
