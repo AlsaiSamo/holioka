@@ -12,10 +12,6 @@
     ../../modules/nixos/common.nix
   ];
 
-  # programs.ssh.knownHosts = {
-  #   hlkeast = { publicKeyFile = ../../secrets/east/ssh_host_ed25519_key.pub; };
-  # };
-
   #Learning
   services.postgresql = {
     enable = true;
@@ -57,8 +53,6 @@
     ../../secrets/east/ssh_host_ed25519_key.pub
     ../../secrets/east/ssh_host_rsa_key.pub
   ];
-
-  # services.avahi.allowInterfaces = [ "eno1" ];
 
   nix.settings.cores = 11;
   time.timeZone = secrets.common.timeZone;

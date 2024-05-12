@@ -36,21 +36,6 @@ inputs @ {
     jp.enable = true;
   };
 
-  # programs.ssh = {
-  #   knownHosts = {
-  #     hlkwest = {
-  #       publicKeyFile = ../../secrets/west/ssh_host_ed25519_key.pub;
-  #     };
-  #   };
-  #   #TODO: i have to make the network nuuuuuuu
-  #   extraConfig = ''
-  #     #This allows using root to log in as root
-  #     #AddKeysToAgent will probably not work with non-root ssh agent
-  #           Host 192.168.0.185
-  #           IdentityFile /state/secrets/ssh/ssh_host_ed25519_key
-  #   '';
-  # };
-
   #TODO: automate this when doing SSH
   users.users.root.openssh.authorizedKeys.keyFiles = [
     ../../secrets/west/ssh_host_ed25519_key.pub
@@ -58,17 +43,14 @@ inputs @ {
   ];
 
   nix.settings.cores = 3;
-  # networking = {
-  #   hostName = secrets.east.hostName;
-  #   hostId = secrets.east.hostId;
-  #   nftables.enable = true;
-  #   networkmanager.enable = true;
-  # };
   time.timeZone = secrets.common.timeZone;
 
   environment.systemPackages = with pkgs; [
     wineWowPackages.stable
+    qemu
     alacritty
+    redshift
+
     blueberry
   ];
 
