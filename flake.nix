@@ -57,6 +57,7 @@
         system = "x86_64-linux";
         specialArgs = {
           inherit flake_inputs secrets volatile hmModules;
+          inherit hmOverlay;
         };
         modules =
           commonNixosModules
@@ -64,6 +65,7 @@
           ++ [
             nixos-hardware.nixosModules.common-gpu-amd
             {nixpkgs.overlays = [nur.overlay];}
+            {nixpkgs.config.allowUnfree = true;}
           ];
       };
       west = nixpkgs.lib.nixosSystem {
