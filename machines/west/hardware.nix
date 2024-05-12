@@ -71,14 +71,6 @@
     settings = {
       #keyboard
       USB_DENYLIST = "8114:5981";
-      # CPU_SCALING_GOVERNOR_ON_AC = "performance";
-      # CPU_SCALING_GOVERNOR_ON_BAT = "schedutil";
-      # CPU_MAX_PERF_ON_AC = 100;
-      # CPU_MAX_PERF_ON_BAT = 75;
-      # START_CHARGE_THRESH_BAT1 = 80;
-      # STOP_CHARGE_THRESH_BAT1 = 85;
-      # START_CHARGE_THRESH_BAT0 = 75;
-      # STOP_CHARGE_THRESH_BAT0 = 80;
     };
   };
 
