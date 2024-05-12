@@ -5,7 +5,6 @@
   userName,
   ...
 } @ inputs:
-#TODO: look into profiles and using them to install extensions.
 let
   cfg = config.hlk.firefox;
   myFirefox = pkgs.wrapFirefox pkgs.firefox-esr-unwrapped {
@@ -38,6 +37,23 @@ in {
     programs.firefox = {
       enable = true;
       package = myFirefox;
+      policies = {
+        # DefaultDownloadDirectory = "\${home}/Downloads";
+      };
+      profiles."alsaisamo" = {
+        #TODO containers
+        search.default = "DuckDuckGo";
+        extensions = with config.nur.repos.rycee.firefox-addons; [
+          ublock-origin
+          tridactyl
+          keepassxc-browser
+          #TODO: either this or userChrome
+          #firefox-color
+          #TODO: yomitan or rikaitan
+        ];
+        #userChrome
+        #userContent
+      };
     };
     home.persistence."/state/home/${userName}" = {
       files = [".config/tridactyl/tridactylrc"];
