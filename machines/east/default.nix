@@ -28,7 +28,7 @@ inputs @ {
       desktop.enable = true;
       hostName = "east";
     };
-    # sshd.default.enable = true;
+    sshd.default.enable = true;
     xserver.default.enable = true;
     mainUser = {
       default.enable = true;
@@ -37,10 +37,7 @@ inputs @ {
   };
 
   #TODO: automate this when doing SSH
-  users.users.root.openssh.authorizedKeys.keyFiles = [
-    ../../secrets/west/ssh_host_ed25519_key.pub
-    ../../secrets/west/ssh_host_rsa_key.pub
-  ];
+  users.users.root.openssh.authorizedKeys.keyFiles = secrets.east.authorizedKeyFiles;
 
   nix.settings.cores = 3;
   time.timeZone = secrets.common.timeZone;

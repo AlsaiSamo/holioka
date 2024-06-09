@@ -42,18 +42,16 @@
       desktop.enable = true;
       hostName = "west";
     };
-    # sshd.default.enable = true;
+    sshd.default.enable = true;
     xserver.default.enable = true;
     mainUser = {
       default.enable = true;
     };
     jp.enable = true;
   };
-
-  users.users.root.openssh.authorizedKeys.keyFiles = [
-    ../../secrets/east/ssh_host_ed25519_key.pub
-    ../../secrets/east/ssh_host_rsa_key.pub
-  ];
+  
+  #TODO: automate
+  users.users.root.openssh.authorizedKeys.keyFiles = secrets.east.authorizedKeyFiles;
 
   nix.settings.cores = 11;
   time.timeZone = secrets.common.timeZone;
