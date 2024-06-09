@@ -4,7 +4,6 @@
   pkgs,
   ...
 } @ inputs:
-#TODO: store personal key in repo
 {
   programs.ssh = {
     enable = true;

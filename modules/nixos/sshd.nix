@@ -4,8 +4,6 @@
   pkgs,
   ...
 } @ inputs:
-#TODO: currently unused, rewrite
-#This only sets up autogeneration of the keys
 let
   cfg = config.hlk.sshd;
 in {
@@ -14,17 +12,19 @@ in {
       default.enable = lib.mkEnableOption "default SSHD configuration";
     };
   };
-  config = lib.mkIf cfg.default.enable {
-    #TODO: make this properly
-    services.openssh = lib.warnIf cfg.default.enable "SSHD configuration is yet to be overhauled" {
+  config = {
+    services.openssh = lib.mkIf cfg.default.enable {
       enable = true;
+      openFirewall = true;
       settings = {
-        #Currently I am going to rely on root
-        #PermitRootLogin =
+#Root login via pkey permitted
+        PermitRootLogin = "prohibit-password";
         PasswordAuthentication = false;
         LogLevel = "VERBOSE";
         KbdInteractiveAuthentication = false;
+        X11Forwarding = false;
       };
+#Autogeneration of keys
       hostKeys = [
         {
           bits = 4096;
