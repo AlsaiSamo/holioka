@@ -29,7 +29,7 @@ in {
   #TODO: load the home manager stuff from here
   config = {
     users.mutableUsers = false;
-    users.groups.imikoy.gid = 1000;
+    users.groups.${cfg.userName}.gid = 1000;
     users.users.${cfg.userName} = {
       hashedPassword = secrets.common.userHashedPassword;
 #user's key always allows accessing the user

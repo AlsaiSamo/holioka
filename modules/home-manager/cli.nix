@@ -43,7 +43,7 @@ in {
     programs.bash.profileExtra = ''
       GPG_TTY=$(tty)
       export GPG_TTY
-      keychain --agents ssh,gpg
+      # keychain --agents ssh,gpg
     '';
     programs.zsh = {
       enable = true;
@@ -67,7 +67,7 @@ in {
       loginExtra = ''
         GPG_TTY=$(tty)
         export GPG_TTY
-        keychain --agents ssh,gpg
+        # keychain --agents ssh,gpg
       '';
       history = {
         ignoreSpace = true;
