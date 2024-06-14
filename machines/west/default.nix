@@ -51,7 +51,7 @@
   };
   
   #TODO: automate
-  users.users.root.openssh.authorizedKeys.keyFiles = secrets.east.authorizedKeyFiles;
+  users.users.root.openssh.authorizedKeys.keyFiles = secrets.west.authorizedKeyFiles;
 
   nix.settings.cores = 11;
   time.timeZone = secrets.common.timeZone;
