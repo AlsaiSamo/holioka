@@ -16,5 +16,6 @@
     ./nixos/user.nix
     ./nixos/x.nix
     ./nixos/jp.nix
+    ./nixos/distributed.nix
   ];
 }

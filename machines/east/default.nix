@@ -29,6 +29,7 @@ inputs @ {
       hostName = "east";
     };
     sshd.default.enable = true;
+    nix.distributed.enable = true;
     xserver.default.enable = true;
     mainUser = {
       default.enable = true;
