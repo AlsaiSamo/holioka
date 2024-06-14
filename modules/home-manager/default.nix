@@ -33,7 +33,9 @@
       ".config/nheko"
       ".local/share/nheko"
 
+    #TODO: move?
       ".local/state/wireplumber"
+      ".config/easyeffects"
 
       ".config/cmus"
 
