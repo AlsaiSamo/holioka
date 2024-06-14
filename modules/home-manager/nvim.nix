@@ -262,7 +262,7 @@
       nixfmt-classic
       ccls
       tree-sitter
-      nodePackages.pyright
+      pyright
       rust-analyzer
       cargo
       xclip
