@@ -8,7 +8,8 @@
     patches =
       (old.patches or [])
       ++ [
-        ./0001-ZFS.patch
+        # ./0001-ZFS.patch
+        ./ZFS.patch
       ];
   });
 

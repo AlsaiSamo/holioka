@@ -1,18 +1,8 @@
-From 8eccd99a4cb3eade342e42abc2a22ad6f5daa14f Mon Sep 17 00:00:00 2001
-From: Alsai Samo <alsai_imikoy@proton.me>
-Date: Fri, 29 Mar 2024 00:57:32 +0700
-Subject: [PATCH] ZFS
-
----
- atuin-client/src/database.rs            | 4 ++--
- atuin-client/src/record/sqlite_store.rs | 5 +++--
- 2 files changed, 5 insertions(+), 4 deletions(-)
-
-diff --git a/atuin-client/src/database.rs b/atuin-client/src/database.rs
-index b0bcae31..0b22353b 100644
---- a/atuin-client/src/database.rs
-+++ b/atuin-client/src/database.rs
-@@ -137,9 +137,9 @@ impl Sqlite {
+diff --git a/crates/atuin-client/src/database.rs b/crates/atuin-client/src/database.rs
+index d01dadb4..f0b22131 100644
+--- a/crates/atuin-client/src/database.rs
++++ b/crates/atuin-client/src/database.rs
+@@ -138,9 +138,9 @@ impl Sqlite {
          }
  
          let opts = SqliteConnectOptions::from_str(path.as_os_str().to_str().unwrap())?
@@ -24,10 +14,10 @@ index b0bcae31..0b22353b 100644
              .with_regexp()
              .create_if_missing(true);
  
-diff --git a/atuin-client/src/record/sqlite_store.rs b/atuin-client/src/record/sqlite_store.rs
-index 6333bb27..e028abbe 100644
---- a/atuin-client/src/record/sqlite_store.rs
-+++ b/atuin-client/src/record/sqlite_store.rs
+diff --git a/crates/atuin-client/src/record/sqlite_store.rs b/crates/atuin-client/src/record/sqlite_store.rs
+index 31de311b..5d3c501e 100644
+--- a/crates/atuin-client/src/record/sqlite_store.rs
++++ b/crates/atuin-client/src/record/sqlite_store.rs
 @@ -10,7 +10,7 @@ use eyre::{eyre, Result};
  use fs_err as fs;
  
@@ -47,6 +37,3 @@ index 6333bb27..e028abbe 100644
              .foreign_keys(true)
              .create_if_missing(true);
  
--- 
-2.43.0
-
