@@ -47,7 +47,7 @@
     enable = true;
     speed = 80;
   };
-  services.xserver.libinput = lib.mkIf config.services.xserver.enable {
+  services.libinput = lib.mkIf config.services.xserver.enable {
     enable = true;
     touchpad = {
       naturalScrolling = true;
