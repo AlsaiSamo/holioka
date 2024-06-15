@@ -37,7 +37,7 @@
     x11.enable = true;
     gtk.enable = true;
     package = pkgs.catppuccin-cursors.macchiatoDark;
-    name = "Catppuccin-Macchiato-Dark-Cursors";
+    name = "catppuccin-macchiato-dark-cursors";
     size = 32;
   };
 
@@ -62,7 +62,7 @@
     };
     cursorTheme = {
       package = pkgs.catppuccin-cursors.macchiatoDark;
-      name = "Catppuccin-Macchiato-Dark-Cursors";
+      name = "catppuccin-macchiato-dark-cursors";
       size = 32;
     };
     gtk3.extraConfig = {gtk-application-prefer-dark-theme = 1;};
