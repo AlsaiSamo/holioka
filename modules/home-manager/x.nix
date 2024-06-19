@@ -3,6 +3,7 @@
   lib,
   pkgs,
   config,
+  secrets,
   ...
 }: {
   home.packages = with pkgs; [
@@ -136,6 +137,15 @@
     activeOpacity = 1.0;
     opacityRules = ["95:class_g = 'Alacritty' && !focused"];
     vSync = true;
+  };
+
+  services.gammastep = {
+    enable = true;
+    latitude = secrets.common.latitude;
+    longitude = secrets.common.longitude;
+    tray = true;
+    settings.general.brightness-day = 1.0;
+    settings.general.brightness-night = 0.7;
   };
 
   #TODO: take fcitx (and ibus and mozc) and anki stuff out

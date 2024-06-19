@@ -60,7 +60,6 @@
     wineWowPackages.stable
     qemu
     alacritty
-    redshift
     blueberry
 
     #work
