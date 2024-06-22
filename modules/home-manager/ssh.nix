@@ -3,8 +3,7 @@
   lib,
   pkgs,
   ...
-} @ inputs:
-{
+} @ inputs: {
   programs.ssh = {
     enable = true;
     matchBlocks = {

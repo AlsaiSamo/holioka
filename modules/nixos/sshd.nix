@@ -3,8 +3,7 @@
   lib,
   pkgs,
   ...
-} @ inputs:
-let
+} @ inputs: let
   cfg = config.hlk.sshd;
 in {
   options = {
@@ -17,14 +16,14 @@ in {
       enable = true;
       openFirewall = true;
       settings = {
-#Root login via pkey permitted
+        #Root login via pkey permitted
         PermitRootLogin = "prohibit-password";
         PasswordAuthentication = false;
         LogLevel = "VERBOSE";
         KbdInteractiveAuthentication = false;
         X11Forwarding = false;
       };
-#Autogeneration of keys
+      #Autogeneration of keys
       hostKeys = [
         {
           bits = 4096;

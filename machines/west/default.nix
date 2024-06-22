@@ -34,7 +34,6 @@
       desktop.enable = true;
       lowLatency.enable = true;
     };
-    # avahi.default.enable = true;
     virt.default.enable = true;
     network = {
       default.enable = true;
@@ -48,7 +47,7 @@
     };
     jp.enable = true;
   };
-  
+
   #TODO: automate
   users.users.root.openssh.authorizedKeys.keyFiles = secrets.west.authorizedKeyFiles;
 

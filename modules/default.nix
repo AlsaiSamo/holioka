@@ -6,7 +6,6 @@
   ...
 } @ inputs: {
   imports = [
-    ./util/avahi.nix
     ./nixos/fs.nix
     ./nixos/audio.nix
     ./nixos/flatpak.nix
