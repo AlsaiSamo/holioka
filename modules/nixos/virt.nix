@@ -6,8 +6,11 @@
 }: let
   cfg = config.hlk.virt;
 in {
-  options.hlk.virt.default.enable =
-    lib.mkEnableOption "default virtualisation tools";
+  options.hlk.virt = {
+    default.enable =
+      lib.mkEnableOption "default virtualisation tools";
+    #TODO: VM and passthrough options
+  };
   config = lib.mkIf cfg.default.enable {
     virtualisation.podman = {
       enable = true;
@@ -18,9 +21,14 @@ in {
     virtualisation.libvirtd = {
       enable = true;
     };
-    #TODO: this is graphocal option
-    programs.virt-manager.enable = true;
 
-    environment.systemPackages = with pkgs; [podman-compose qemu gvfs virtiofsd];
+    programs.virt-manager.enable = lib.mkIf config.hlk.xserver.default.enable true;
+
+    environment.systemPackages = with pkgs; [
+      podman-compose
+      qemu
+      gvfs
+      virtiofsd
+    ];
   };
 }

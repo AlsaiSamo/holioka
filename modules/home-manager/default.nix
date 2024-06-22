@@ -33,7 +33,7 @@
       ".config/nheko"
       ".local/share/nheko"
 
-    #TODO: move?
+      #TODO: move?
       ".local/state/wireplumber"
       ".config/easyeffects"
 

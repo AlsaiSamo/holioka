@@ -32,7 +32,7 @@ in {
     users.groups.${cfg.userName}.gid = 1000;
     users.users.${cfg.userName} = {
       hashedPassword = secrets.common.userHashedPassword;
-#user's key always allows accessing the user
+      #user's key always allows accessing the user
       openssh.authorizedKeys.keyFiles = [../../secrets/${cfg.userName}.pub];
       isNormalUser = true;
       group = cfg.userName;

@@ -4,8 +4,7 @@
   pkgs,
   userName,
   ...
-} @ inputs:
-let
+} @ inputs: let
   cfg = config.hlk.firefox;
   myFirefox = pkgs.wrapFirefox pkgs.firefox-esr-unwrapped {
     nativeMessagingHosts = with pkgs; [pkgs.tridactyl-native];
