@@ -12,6 +12,8 @@
     xawtv
     #TODO: patch with nerd font and use everywhere
     sarasa-gothic
+    noto-fonts-color-emoji   
+    font-awesome
     i3
     feh
     rofi-power-menu
@@ -84,23 +86,17 @@
     };
   };
 
-  #TODO: use osConfig to determine monitors and backlight
-  #TODO: polybar per-system
   services.polybar = {
     enable = true;
-    package = pkgs.polybar.override {
-      i3Support = true;
-      pulseSupport = true;
-      mpdSupport = true;
-    };
+    package = pkgs.polybarFull;
     config = ../../dotfiles/polybar/config.ini;
     script = ''
       pkill polybar
-      echo "---" | tee -a /tmp/polybar1.log /tmp/polybar2.log
-      polybar default 2>&1 | tee -a /tmp/polybar1.log & disown
-      polybar extra 2>&1 | tee -a /tmp/polybar2.log & disown
-
-      echo "Bars launched..."
+      #All monitor names, the ones that don't exist will simply not launch
+      #TODO: monitor name on West with AMD
+      for m in HDMI-0 eDP-1 eDP eDP-1-0 DP-1; do
+        MONITOR=$m polybar default 2>/tmp/polybar.$m &
+      done
       exit 0
     '';
   };
