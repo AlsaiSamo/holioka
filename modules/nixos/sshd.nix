@@ -9,10 +9,15 @@ in {
   options = {
     hlk.sshd = {
       default.enable = lib.mkEnableOption "default SSHD configuration";
+      root_keys_from = lib.mkOption {
+        example = "secrets.west.authorizedKeyFiles";
+        description = "Where to take the root's keyfiles from";
+        type = lib.types.listOf lib.types.path;
+      };
     };
   };
-  config = {
-    services.openssh = lib.mkIf cfg.default.enable {
+  config = lib.mkIf cfg.default.enable {
+    services.openssh = {
       enable = true;
       openFirewall = true;
       settings = {
@@ -36,6 +41,7 @@ in {
         }
       ];
     };
+    users.users.root.openssh.authorizedKeys.keyFiles = cfg.root_keys_from;
     #TODO: fail2ban
   };
 }

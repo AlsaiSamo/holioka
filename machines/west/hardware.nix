@@ -8,6 +8,9 @@
 }: {
   imports = [(modulesPath + "/installer/scan/not-detected.nix") volatile.west];
 
+  nix.settings.cores = 11;
+
+  #default, needs to be overridable
   hardware.nvidia = {
     #Offload is enabled in nixos-hardware module
     #FIX: causes issues. See notes.

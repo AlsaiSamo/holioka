@@ -25,7 +25,7 @@ in {
     };
     environment.systemPackages = with pkgs; [
       fcitx5-configtool
-      anki-bin
+      # anki-bin
     ];
   };
 }

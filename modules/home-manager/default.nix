@@ -16,6 +16,8 @@
     ./gaming.nix
   ];
   home.packages = with pkgs; [
+    wineWowPackages.stable
+    blueberry
     # fluffychat
     cmus
 

@@ -41,7 +41,10 @@
       desktop.enable = true;
       hostName = "west";
     };
-    sshd.default.enable = true;
+    sshd = {
+      default.enable = true;
+      root_keys_from = secrets.west.authorizedKeyFiles;
+    };
     xserver.default.enable = true;
     mainUser = {
       default.enable = true;
@@ -49,21 +52,7 @@
     jp.enable = true;
   };
 
-  #TODO: automate
-  users.users.root.openssh.authorizedKeys.keyFiles = secrets.west.authorizedKeyFiles;
 
-  nix.settings.cores = 11;
-  time.timeZone = secrets.common.timeZone;
-
-  environment.systemPackages = with pkgs; [
-    wineWowPackages.stable
-    qemu
-    alacritty
-    blueberry
-
-    #work
-    zoom-us
-  ];
 
   system.stateVersion = "23.11";
 }
