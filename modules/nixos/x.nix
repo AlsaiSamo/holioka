@@ -12,6 +12,9 @@ in {
   config = {
     #TODO: parametrize this?
     #TODO: add alacritty?
+    environment.systemPackages = with pkgs; [
+      alacritty
+    ];
     programs.light.enable = true;
     services.xserver = lib.mkIf cfg.default.enable {
       xkb.options = "grp:caps_toggle";

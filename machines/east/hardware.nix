@@ -8,6 +8,8 @@
 }: {
   imports = [(modulesPath + "/installer/scan/not-detected.nix") volatile.east];
 
+  nix.settings.cores = 3;
+
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.grub = {
     enable = true;

@@ -10,6 +10,8 @@
   #This also breaks things like embedded youtube
   #networking.hosts."127.0.0.1" = ["youtube.com" "https://www.youtube.com" "www.youtube.com"];
 
+  time.timeZone = lib.mkDefault secrets.common.timeZone;
+
   hardware.enableRedistributableFirmware = true;
 
   services.udisks2.enable = true;
