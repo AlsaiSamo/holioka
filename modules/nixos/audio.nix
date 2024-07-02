@@ -46,7 +46,6 @@ in {
     })
     (lib.mkIf cfg.desktop.enable {
       environment.systemPackages = with pkgs; [
-        easyeffects
         qpwgraph
         helvum
         carla
