@@ -37,7 +37,6 @@
 
       #TODO: move?
       ".local/state/wireplumber"
-      ".config/easyeffects"
 
       ".config/cmus"
 
