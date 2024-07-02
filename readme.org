@@ -1,4 +1,4 @@
-#+title: Modules
+#+title: Readme
 #+author: Alsai Samo (imikoy)
 
 * Overview
@@ -26,3 +26,18 @@
   - User environment configuration parts
   - etc.
 + =volatile.nix= contains information that is expected to change, such as partition UUIDs.
+* Filesystem
+The filesystem is ZFS. It needs to be set up before installation.
+** Structure
+1. nix_pool
+   1. local
+      1. home
+         home@blank contains user directories, owned by the respective users, ~Downloads~ and ~large_items~ symlinks to ~../../local_state/home/<username>/<source_dir>~
+      2. log
+      3. nix
+      4. root
+         root@blank contains nothing
+      5. local_state
+   2. safe
+      1. secrets
+      2. state
