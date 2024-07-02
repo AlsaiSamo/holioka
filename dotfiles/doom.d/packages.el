@@ -15,3 +15,5 @@
 ;; TODO: org-random-todo or something similar
 
 (package! org-bullets)
+
+;; TODO: mpdel - an mpd client that needs to also be reconfigured

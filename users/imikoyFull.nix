@@ -31,6 +31,12 @@
       # xonotic.enable = true;
     };
     gpg.default.enable = true;
+    music = {
+      mpd.enable = true;
+      mpd.musicDir = "/home/${userName}/large_items/Music/Tracks";
+      mpd.dataDir = "/home/${userName}/large_items/Music/data";
+      ncmpcpp.enable = true;
+    };
   };
 
   home.persistence."/state/home/${userName}" = {
@@ -42,7 +48,8 @@
       "Documents"
       #Was persisted before, not now
       #"Downloads"
-      "Music"
+      # Redundant
+      #"Music"
       "Pictures"
       "Projects"
     ];

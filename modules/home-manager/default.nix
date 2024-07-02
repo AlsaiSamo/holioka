@@ -14,6 +14,7 @@
     ./emacs.nix
     ./programming.nix
     ./gaming.nix
+    ./music.nix
   ];
   home.packages = with pkgs; [
     wineWowPackages.stable
