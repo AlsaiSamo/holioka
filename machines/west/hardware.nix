@@ -15,8 +15,8 @@
     #Offload is enabled in nixos-hardware module
     #FIX: causes issues. See notes.
     #prime.reverseSync.enable = true;
-    prime.sync.enable = lib.mkForce true;
-    prime.offload.enable = lib.mkForce false;
+    prime.sync.enable = true;
+    prime.offload.enable = false;
     modesetting.enable = true;
     powerManagement.enable = true;
     #will this lead to issues?
@@ -39,10 +39,6 @@
   services.ananicy = {
     enable = true;
     package = pkgs.ananicy-cpp;
-  };
-
-  boot.kernel.sysctl = {
-    "vm.swappiness" = 10;
   };
 
   boot.initrd.availableKernelModules = [
