@@ -41,7 +41,10 @@ in {
         }
       ];
     };
+    services.fail2ban = {
+      enable = true;
+      bantime = "30m";
+    };
     users.users.root.openssh.authorizedKeys.keyFiles = cfg.root_keys_from;
-    #TODO: fail2ban
   };
 }
