@@ -16,5 +16,7 @@
     ./nixos/x.nix
     ./nixos/jp.nix
     ./nixos/distributed.nix
+    ./nixos/avahi.nix
+    ./nixos/barrier.nix
   ];
 }
