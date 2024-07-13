@@ -6,9 +6,8 @@
   ...
 } @ inputs: {
   #block the most hideous ADHD distraction
-  #upd: not needed anymore as I have developed a habit of not using youtube
   #This also breaks things like embedded youtube
-  #networking.hosts."127.0.0.1" = ["youtube.com" "https://www.youtube.com" "www.youtube.com"];
+  networking.hosts."127.0.0.1" = ["youtube.com" "https://www.youtube.com" "www.youtube.com"];
 
   time.timeZone = lib.mkDefault secrets.common.timeZone;
 
