@@ -2,6 +2,10 @@
   inputs = {
     nixpkgs.url = "github:nixOS/nixpkgs/nixos-unstable";
     nixos-hardware.url = "github:nixOS/nixos-hardware";
+    lix-mod = {
+        url = "https://git.lix.systems/lix-project/nixos-module/archive/2.90.0.tar.gz";
+        inputs.nixpkgs.follows = "nixpkgs";
+    };
     impermanence.url = "github:nix-community/impermanence";
     home-manager = {
       url = "github:nix-community/home-manager";
@@ -15,6 +19,7 @@
     self,
     nixpkgs,
     nixos-hardware,
+    lix-mod,
     impermanence,
     home-manager,
     nur,
@@ -42,6 +47,7 @@
       impermanence.nixosModule
       home-manager.nixosModules.home-manager
       nur.nixosModules.nur
+      lix-mod.nixosModules.default
       (import ./modules)
     ];
     hmModules = [
