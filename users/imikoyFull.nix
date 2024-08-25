@@ -19,6 +19,10 @@
   home.packages = with pkgs; [
     tartube
     yt-dlp
+
+    thunderbird
+    zoom-us
+    telegram-desktop
   ];
 
   hlk = {
@@ -45,6 +49,9 @@
       "Music"
       "Pictures"
       "Projects"
+
+      ".thunderbird"
+      ".local/share/TelegramDesktop"
     ];
   };
 
