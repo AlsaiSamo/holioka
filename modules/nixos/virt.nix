@@ -27,6 +27,7 @@ in {
       enable = true;
     };
     networking.firewall.interfaces."virbr*".allowedUDPPorts = [ 53 67 ];
+    networking.firewall.interfaces."virbr*".allowedTCPPorts = [ 24800 ];
 
     programs.virt-manager.enable = lib.mkIf config.hlk.xserver.default.enable true;
 

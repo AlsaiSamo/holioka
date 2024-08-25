@@ -35,6 +35,10 @@
       ".config/nheko"
       ".local/share/nheko"
 
+#TODO: move out since it is strictly for VMing
+      ".local/share/InputLeap"
+      ".config/InputLeap"
+
       #TODO: move?
       ".local/state/wireplumber"
 
