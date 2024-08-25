@@ -44,8 +44,8 @@ in {
         "jackaudio"
         "libvirt"
         "libvirtd"
-        "audio"
-        "video"
+        # "audio"
+        # "video"
         #access to serial interfaces
         "dialout"
       ];

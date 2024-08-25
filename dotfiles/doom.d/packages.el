@@ -11,7 +11,7 @@
   ;;  )
   ;; :pin "a56cedc42c55")
   )
-(package! alert)
+;; (package! alert)
 ;; TODO: org-random-todo or something similar
 
 (package! org-bullets)

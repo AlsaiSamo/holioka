@@ -34,11 +34,11 @@
     haskellPackages.freetype2
   ];
 
-  services.easyeffects = {
-    enable = true;
-    preset = "\"Sony Wired\"";
-  };
-  xdg.configFile."easyeffects/output/Sony Wired.json".source = ../../dotfiles/easyeffects/output/sony.json;
+  # services.easyeffects = {
+  #   enable = true;
+  #   preset = "Sony Wired";
+  # };
+  # xdg.configFile."easyeffects/output/Sony Wired.json".source = ../../dotfiles/easyeffects/output/sony.json;
 
   fonts.fontconfig.enable = true;
 
