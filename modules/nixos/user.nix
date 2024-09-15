@@ -31,6 +31,7 @@ in {
     users.mutableUsers = false;
     users.groups.${cfg.userName}.gid = 1000;
     users.users.${cfg.userName} = {
+      uid = 1000;
       hashedPassword = secrets.common.userHashedPassword;
       #user's key always allows accessing the user
       openssh.authorizedKeys.keyFiles = [../../secrets/${cfg.userName}.pub];

@@ -17,13 +17,15 @@ in {
       xclip
       xorg.xprop
       xdotool
+
+      nil
     ];
     services.emacs.enable = true;
     programs.doom-emacs = {
       enable = true;
-      #TODO: NDE issue
-      emacsPackage = pkgs.emacs28;
-      doomPrivateDir = ../../dotfiles/doom.d;
+      emacs = pkgs.emacsFDLimit;
+      doomDir = ../../dotfiles/doom.d;
+      #TODO: I can use extraPackages to add packages to Emacs
     };
     home.persistence."/state/home/${userName}/" = {
       allowOther = true;

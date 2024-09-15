@@ -3,8 +3,8 @@
     nixpkgs.url = "github:nixOS/nixpkgs/nixos-unstable";
     nixos-hardware.url = "github:nixOS/nixos-hardware";
     lix-mod = {
-        url = "https://git.lix.systems/lix-project/nixos-module/archive/2.90.0.tar.gz";
-        inputs.nixpkgs.follows = "nixpkgs";
+      url = "https://git.lix.systems/lix-project/nixos-module/archive/2.90.0.tar.gz";
+      inputs.nixpkgs.follows = "nixpkgs";
     };
     impermanence.url = "github:nix-community/impermanence";
     home-manager = {
@@ -12,7 +12,10 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
     nur.url = "github:nix-community/NUR";
-    nix-doom-emacs = {url = "github:nix-community/nix-doom-emacs";};
+    ndeu = {
+      url = "github:marienz/nix-doom-emacs-unstraightened";
+      inputs.nixpkgs.follows = "";
+    };
   };
 
   outputs = {
@@ -23,11 +26,12 @@
     impermanence,
     home-manager,
     nur,
-    nix-doom-emacs,
+    ndeu,
     ...
   } @ flake_inputs: let
     #Secrets may be distributed together with state, but they are encrypted in the repo.
     secrets = import ./secrets.nix {};
+    #Volatile configuration is different between physical machines and reinstalls
     volatile = import ./volatile.nix {};
 
     #all overlays together
@@ -41,6 +45,7 @@
         }
         // args);
     overlaysDefault = overlays {};
+    allOverlays = [overlaysDefault nur.overlay];
 
     #These modules add options for all systems.
     commonNixosModules = [
@@ -51,9 +56,8 @@
       (import ./modules)
     ];
     hmModules = [
-      nix-doom-emacs.hmModule
+      ndeu.hmModule
       impermanence.nixosModules.home-manager.impermanence
-      #This is actually nur.nixosModules.nur
       nur.hmModules.nur
     ];
     hmOverlay = overlaysDefault;
@@ -67,29 +71,30 @@
         };
         modules =
           commonNixosModules
-          ++ [(import ./machines/east)]
           ++ [
+            (import ./machines/east)
             nixos-hardware.nixosModules.common-gpu-amd
-            {nixpkgs.overlays = [nur.overlay];}
-            {nixpkgs.config.allowUnfree = true;}
+            {
+              nixpkgs.config.allowUnfree = true;
+              nixpkgs.overlays = allOverlays;
+            }
           ];
       };
       west = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         specialArgs = {
           inherit flake_inputs secrets volatile hmModules;
-          #TODO: make it nicer
           inherit hmOverlay;
         };
         modules =
           commonNixosModules
-          ++ [(import ./machines/west)]
           ++ [
+            (import ./machines/west)
             nixos-hardware.nixosModules.lenovo-ideapad-15arh05
-            #TODO: I have had "nur.overlay" here, if it is not really needed remove
-            #this comment
-            {nixpkgs.overlays = [overlaysDefault];}
-            {nixpkgs.config.allowUnfree = true;}
+            {
+              nixpkgs.config.allowUnfree = true;
+              nixpkgs.overlays = allOverlays;
+            }
           ];
       };
     };

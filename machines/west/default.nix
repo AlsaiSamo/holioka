@@ -42,6 +42,7 @@
   services.openvpn.servers.work = {
     updateResolvConf = true;
     config = secrets.work.vpn_conf;
+    extraArgs = [];
   };
   environment.systemPackages = with pkgs; [
     openvpn
@@ -53,7 +54,7 @@
       system.nixos.tags = ["nvidia-vfio"];
       hlk = {
         virt = {
-          VMConfigsToLink = [ "fedora40" ];
+          VMConfigsToLink = ["fedora40"];
         };
         input-leap.enable = true;
       };

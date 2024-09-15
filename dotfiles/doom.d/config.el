@@ -2,7 +2,7 @@
 ;;Cosmetic
 (setq doom-font (font-spec :family "Sarasa Mono J" :size 14 :weight 'regular)
       doom-variable-pitch-font (font-spec :family "Sarasa Mono J" :weight 'normal)
-      doom-unicode-font (font-spec :family "Sarasa Mono J" :weight 'normal)
+      doom-symbol-font (font-spec :family "Iosevka Nerd Font" :weight 'normal)
       )
 (setq doom-theme 'doom-gruvbox
       fancy-splash-image "~/org/mhk.png")
@@ -54,46 +54,6 @@
 (add-hook 'org-todo-repeat-hook #'org-reset-checkbox-state-subtree)
 (doom/reload-font)
 )
-
-;; (use-package! alert
-;;   :init (setq alert-default-style 'libnotify
-;;               alert-fade-time 120
-;;               alert-persist-idle-time 6)
-;; )
-
-; I currently use org-alert for hourly reminders for the day/week
-;; (use-package! org-alert
-;;   :init (setq
-;;          org-alert-interval 3600
-;;          org-alert-notify-cutoff 10
-;;          org-alert-notify-after-event-cutoff 10
-;;          org-alert-notification-title "Org daily/weekly")
-;; )
-;;
-;; (after! org-alert
-;;   (org-alert-enable)
-;;   )
-
-;;TODO: package of version 0.1, while I want 1.0
-;;This package suits me better than alert because it does exactly what I want,
-;;that is - notifying me always, including when I am idle.
-;;
-;;TODO: I could later build upon it to make task rotation (record time I was working
-;;on some task and forcing me to switch. Would need to also ask me to start/stop timer tho)
-;; (use-package! org-clock-reminder
-;;   :init (setq
-;;          org-clock-reminder-interval 900
-;;          org-clock-reminder-notification-title "Org activity"
-;;          org-clock-reminder-format-string "Time: %s on task %s"
-;;          org-clock-reminder-empty-text "No task clocked"
-;;          org-clock-reminder-remind-inactivity 't
-;;          ;; org-clock-reminder-inactive-notifications-p 't
-;;          ))
-;; (after! org-clock-reminder
-;;   (org-clock-reminder-activate))
-
-;; (after! org-clock-reminder
-;;   (org-clock-reminder-mode))
 
 ;;Completion
 (setq orderless-matching-styles '(orderless-literal orderless-prefixes orderless-regexp)

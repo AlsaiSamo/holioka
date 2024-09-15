@@ -26,16 +26,18 @@ in {
     virtualisation.libvirtd = {
       enable = true;
     };
-    networking.firewall.interfaces."virbr*".allowedUDPPorts = [ 53 67 ];
-    networking.firewall.interfaces."virbr*".allowedTCPPorts = [ 24800 ];
+    networking.firewall.interfaces."virbr*".allowedUDPPorts = [53 67];
+    networking.firewall.interfaces."virbr*".allowedTCPPorts = [24800];
 
     programs.virt-manager.enable = lib.mkIf config.hlk.xserver.default.enable true;
 
-    environment.persistence."/state".files = lib.mkIf (cfg.VMConfigsToLink != [])
+    environment.persistence."/state".files =
+      lib.mkIf (cfg.VMConfigsToLink != [])
       (lib.lists.flatten (map (x: [
-        ("/var/lib/libvirt/qemu/" + x + ".xml")
-        ("/var/lib/libvirt/qemu/nvram/" + x + "_VARS.fd")
-      ]) cfg.VMConfigsToLink));
+          ("/var/lib/libvirt/qemu/" + x + ".xml")
+          ("/var/lib/libvirt/qemu/nvram/" + x + "_VARS.fd")
+        ])
+        cfg.VMConfigsToLink));
 
     environment.persistence."/state" = {
       directories = [

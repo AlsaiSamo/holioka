@@ -14,7 +14,7 @@
   });
 
   #The limit originally is 1024, which makes emacs hit "too many open files".
-  emacs28 = pkgsPrev.emacs28.overrideAttrs (old: {
+  emacsFDLimit = pkgsPrev.emacs.overrideAttrs (old: {
     configureFlags = (old.configureFlags or []) ++ ["CFLAGS=-DFD_SETSIZE=10000"];
   });
 }

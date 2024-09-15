@@ -66,7 +66,7 @@ in {
         neededForBoot = true;
       };
     };
-    boot.initrd.postDeviceCommands =
+    boot.initrd.postMountCommands =
       lib.mkIf cfg.stateRemoval.enable
       (lib.mkAfter ''
         zfs rollback -r nix_pool/local/home@blank

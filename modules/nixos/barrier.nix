@@ -1,7 +1,11 @@
-{ config, lib, pkgs, ... }@ inputs: let
-  cfg = config.hlk.input-leap;
-in
 {
+  config,
+  lib,
+  pkgs,
+  ...
+} @ inputs: let
+  cfg = config.hlk.input-leap;
+in {
   options.hlk.input-leap = {
     enable = lib.mkEnableOption "input-leap - software KVM switch";
     #TODO: option to give a config
