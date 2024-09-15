@@ -34,12 +34,6 @@
     haskellPackages.freetype2
   ];
 
-  # services.easyeffects = {
-  #   enable = true;
-  #   preset = "Sony Wired";
-  # };
-  # xdg.configFile."easyeffects/output/Sony Wired.json".source = ../../dotfiles/easyeffects/output/sony.json;
-
   fonts.fontconfig.enable = true;
 
   home.pointerCursor = {
@@ -66,7 +60,7 @@
       name = "Papirus-Dark";
     };
     theme = {
-      package = pkgs.gnome.gnome-themes-extra;
+      package = pkgs.gnome-themes-extra;
       name = "Adwaita";
     };
     cursorTheme = {
@@ -160,7 +154,7 @@
       #Appears when adding something like quick phrase
       ".local/share/fcitx5"
       ".config/mozc"
-      ".local/share/Anki2"
+      # ".local/share/Anki2"
     ];
     files = [
       ".cache/rofi3.druncache"

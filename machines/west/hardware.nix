@@ -11,18 +11,23 @@
   nix.settings.cores = 11;
 
   #default, needs to be overridable
-  hardware.nvidia = {
-    #Offload is enabled in nixos-hardware module
-    #FIX: causes issues. See notes.
-    #prime.reverseSync.enable = true;
-    prime.sync.enable = true;
-    prime.offload.enable = false;
-    modesetting.enable = true;
-    powerManagement.enable = true;
-    #will this lead to issues?
-    #powerManagement.finegrained = true;
-    open = false;
-  };
+  # hardware.nvidia = {
+  #   #Offload is enabled in nixos-hardware module
+  #   #FIX: causes issues. See notes.
+  #   #prime.reverseSync.enable = true;
+  #   prime.sync.enable = true;
+  #   prime.offload.enable = false;
+  #   modesetting.enable = true;
+  #   powerManagement.enable = true;
+  #   #will this lead to issues?
+  #   #powerManagement.finegrained = true;
+  #   open = false;
+  # };
+
+  # TODO: one-display only!
+  boot.blacklistedKernelModules = ["nouveau" "nvidia" "nvidia_drm" "nvidia_modeset"];
+  boot.kernelModules = ["kvm-amd" "amdgpu" "acpi_call"];
+  services.xserver.videoDrivers = ["amdgpu"];
 
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.grub = {

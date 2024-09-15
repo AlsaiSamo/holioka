@@ -24,7 +24,7 @@
     krita
     ffmpeg-full
   ];
-  programs.nheko.enable = true;
+  #programs.nheko.enable = true;
   home.persistence."/state/home/${userName}" = {
     files = [
       ".config/kritarc"
