@@ -150,6 +150,7 @@
     settings.general.brightness-night = 0.7;
   };
 
+  xdg.configFile."warpd/config".source = ../../dotfiles/warpd/config;
   #TODO: take fcitx (and ibus and mozc) and anki stuff out
   home.persistence."/state/home/imikoy" = {
     directories = [
@@ -165,7 +166,7 @@
       ".cache/rofi3.druncache"
       ".config/keepassxc/keepassxc.ini"
       ".cache/keepassxc/keepassxc.ini"
-      ".config/warpd/config"
+      # ".config/warpd/config"
     ];
   };
 }
