@@ -7,16 +7,25 @@
   hmModules,
   hmOverlay,
   userName,
+  extraUserConfig,
   ...
-} @ inputs: {
-  #TODO: move to somewhere else to generalise?
+}: {
   _module.args.userName = userName;
   nixpkgs.overlays = [hmOverlay];
-  #TODO: move modules/home-manager/default.nix to hmModules after rewriting all modules
-  imports = hmModules ++ [../modules/home-manager/default.nix];
+  imports = hmModules;
   programs.home-manager.enable = true;
 
+  #TODO: matrix is a broken mess (libolm is deprecated and is used by most clients)
+  #programs.nheko.enable = true;
+  #TODO: move things out into modules
   home.packages = with pkgs; [
+    wineWowPackages.stable
+    blueberry
+    # fluffychat
+    cmus
+    krita
+
+    ffmpeg-full
     # tartube
     yt-dlp
 
@@ -39,6 +48,10 @@
 
   home.persistence."/state/home/${userName}" = {
     allowOther = true;
+    files = [
+      ".config/kritarc"
+      ".config/kritashortcutrc"
+    ];
     directories = [
       #Never used it
       #"Scripts"
@@ -52,8 +65,24 @@
 
       ".thunderbird"
       ".local/share/TelegramDesktop"
+
+      #TODO: move out into modules
+      ".cache/nheko"
+      ".config/nheko"
+      ".local/share/nheko"
+
+      #TODO: move out since it is strictly for VMing
+      ".local/share/InputLeap"
+      ".config/InputLeap"
+
+      #TODO: move?
+      ".local/state/wireplumber"
+
+      ".config/cmus"
+
+      ".local/share/krita"
     ];
   };
 
   home.stateVersion = "23.11";
-}
+} // extraUserConfig

@@ -24,6 +24,12 @@ in {
         description = "Home Manager profile";
         type = lib.types.str;
       };
+      extraUserConfig = lib.mkOption
+        {
+          default = {};
+          description = "Extra options to apply to the configuration of the primary user";
+          type = lib.types.attrs;
+        };
     };
   };
   #TODO: load the home manager stuff from here
@@ -95,6 +101,7 @@ in {
       {
         inherit flake_inputs hmModules hmOverlay pkgs config lib;
         userName = cfg.userName;
+        extraUserConfig = cfg.extraUserConfig;
       };
   };
 }

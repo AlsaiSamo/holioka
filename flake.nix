@@ -59,6 +59,7 @@
       ndeu.hmModule
       impermanence.nixosModules.home-manager.impermanence
       nur.hmModules.nur
+      ./modules/home-manager/default.nix
     ];
     hmOverlay = overlaysDefault;
   in {

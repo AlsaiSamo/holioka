@@ -3,6 +3,7 @@
   config,
   pkgs,
   userName,
+  extraUserConfig,
   ...
 } @ inputs: {
   imports = [
@@ -15,36 +16,4 @@
     ./programming.nix
     ./gaming.nix
   ];
-  home.packages = with pkgs; [
-    wineWowPackages.stable
-    blueberry
-    # fluffychat
-    cmus
-
-    krita
-    ffmpeg-full
-  ];
-  #programs.nheko.enable = true;
-  home.persistence."/state/home/${userName}" = {
-    files = [
-      ".config/kritarc"
-      ".config/kritashortcutrc"
-    ];
-    directories = [
-      ".cache/nheko"
-      ".config/nheko"
-      ".local/share/nheko"
-
-      #TODO: move out since it is strictly for VMing
-      ".local/share/InputLeap"
-      ".config/InputLeap"
-
-      #TODO: move?
-      ".local/state/wireplumber"
-
-      ".config/cmus"
-
-      ".local/share/krita"
-    ];
-  };
 }
