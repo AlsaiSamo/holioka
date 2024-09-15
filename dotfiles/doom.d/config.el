@@ -20,6 +20,9 @@
       ;org-startup-numerated t
       org-yank-adjusted-subtrees t)
 
+(after! dirvish
+  (setq dirvish-reuse-session t))
+
 (after! org
 (setq org-todo-keywords
       ;Work
