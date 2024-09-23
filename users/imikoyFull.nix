@@ -9,7 +9,8 @@
   userName,
   extraUserConfig,
   ...
-}: {
+}:
+{
   _module.args.userName = userName;
   nixpkgs.overlays = [hmOverlay];
   imports = hmModules;
@@ -19,7 +20,6 @@
   #programs.nheko.enable = true;
   #TODO: move things out into modules
   home.packages = with pkgs; [
-    wineWowPackages.stable
     blueberry
     # fluffychat
     cmus
@@ -28,6 +28,8 @@
     ffmpeg-full
     # tartube
     yt-dlp
+
+    alejandra
 
     thunderbird
     zoom-us
@@ -38,12 +40,17 @@
     cli.default.enable = true;
     emacs.default.enable = true;
     firefox.default.enable = true;
+    wine.enable = true;
     games = {
       osu.state.enable = true;
       xonotic.state.enable = true;
       # xonotic.enable = true;
     };
     gpg.default.enable = true;
+    graphical.windowSystem = "xorg";
+    nvim.default.enable = true;
+    krita.enable = true;
+    vmTools.enable = false;
   };
 
   home.persistence."/state/home/${userName}" = {
@@ -71,18 +78,12 @@
       ".config/nheko"
       ".local/share/nheko"
 
-      #TODO: move out since it is strictly for VMing
-      ".local/share/InputLeap"
-      ".config/InputLeap"
-
-      #TODO: move?
       ".local/state/wireplumber"
 
       ".config/cmus"
-
-      ".local/share/krita"
     ];
   };
 
   home.stateVersion = "23.11";
-} // extraUserConfig
+}
+// extraUserConfig

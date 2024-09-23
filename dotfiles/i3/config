@@ -1,14 +1,4 @@
 for_window [class=".*"] border pixel 2
-
-#DEFAULT
-# class                 border  backgr. text    indicator child_border
-#client.focused          #4c7899 #285577 #ffffff #2e9ef4   #285577
-#client.focused_inactive #333333 #5f676a #ffffff #484e50   #5f676a
-#client.unfocused        #333333 #222222 #888888 #292d2e   #222222
-#client.urgent           #2f343a #900000 #ffffff #900000   #900000
-#client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
-#client.background       #ffffff
-
 #CHANGED
 # class                 border  backgr. text    indicator child_border
 client.focused          #282828 #1c1b19 #fabd2f #fe8019   #689d6a
@@ -18,21 +8,11 @@ client.urgent           #2f343a #900000 #ffffff #900000   #900000
 client.placeholder      #000000 #0c0c0c #ffffff #000000   #0c0c0c
 client.background       #ffffff
 
-#bar {
-#	height 16
-#	mode dock
-#	position top
-#	i3bar_command i3bar -t
-#}
-
 #exec --no-startup-id "setxkbmap -option grp:caps_toggle"
 
 exec --no-startup-id picom
 exec --no-startup-id keepassxc
 exec --no-startup-id "udiskie -t --appindicator --file-manager=pcmanfm"
-
-#TODO: move this out and enable when nvidia card is present.
-#exec --no-startup-id nvidia-settings --assign CurrentMetaMode="nvidia-auto-select +0+0 { ForceFullCompositionPipeline = On }"
 
 exec --no-startup-id "betterlockscreen -w"
 exec --no-startup-id "fcitx5 -d"
@@ -56,8 +36,8 @@ bindsym XF86AudioLowerVolume exec --no-startup-id pactl set-sink-volume @DEFAULT
 bindsym XF86AudioMute exec --no-startup-id pactl set-sink-mute @DEFAULT_SINK@ toggle && $refresh_i3status
 bindsym XF86AudioMicMute exec --no-startup-id pactl set-source-mute @DEFAULT_SOURCE@ toggle && $refresh_i3status
 
-bindsym XF86MonBrightnessUp exec --no-startup-id light -A 5
-bindsym XF86MonBrightnessDown exec --no-startup-id light -U 5
+bindsym XF86MonBrightnessUp exec --no-startup-id brightnessctl s +2%
+bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl s 2%-
 
 # start a terminal
 bindsym $mod+Return exec "WINIT_X11_SCALE_FACTOR=1.5 alacritty"
@@ -188,37 +168,16 @@ mode "resize" {
 
 bindsym $mod+r mode "resize"
 
-#Plasma compatibility
-
-# Plasma compatibility improvements
 for_window [window_role="pop-up"] floating enable
 for_window [window_role="task_dialog"] floating enable
-
-#for_window [class="yakuake"]         floating enable
-#for_window [class="systemsettings"]  floating enable
-#for_window [class="plasmashell"]     floating enable;
-#for_window [class="Plasma"]          floating enable; border none
-#for_window [title="plasma-desktop"]  floating enable; border none
-#for_window [title="win7"]            floating enable; border none
-#for_window [class="krunner"]         floating enable; border none
-#for_window [class="Kmix"]            floating enable; border none
-#for_window [class="Klipper"]         floating enable; border none
-#for_window [class="Plasmoidviewer"]  floating enable; border none
-#for_window [class="(?i)*nextcloud*"] floating disable
-#for_window [title="Dolphin"]         floating enable
-#for_window [class="plasmashell" window_type="notification"] border none, move right 700px, move down 450px
-#no_focus   [class="plasmashell" window_type="notification"]
-
-#for_window [title="Desktop — Plasma"] kill; floating enable; border none
-#for_window [title="Рабочий стол по умолчанию — Plasma"] kill; floating enable; border none
 
 for_window  [instance="Godot_Engine"] floating enable
 for_window  [title="Blender Render"] floating enable
 for_window  [title="Blender Preferences"] floating enable
 for_window  [instance="qemu" class="Qemu-system-x86_64"] floating enable
-for_window	[instance="Steam"] floating enable
-no_focus	[instance="Steam"]
-for_window	[title="Origin"] floating enable, border 3
+for_window  [instance="Steam"] floating enable
+no_focus    [instance="Steam"]
+for_window  [title="Origin"] floating enable, border 3
 no_focus    [title="Zoom Meeting"]
 
 exec_always --no-startup-id "systemctl restart --user polybar.service"

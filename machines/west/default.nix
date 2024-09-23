@@ -8,8 +8,8 @@
   ...
 } @ inputs: {
   imports = [
-    ./hardware.nix
-    ../../modules/nixos/common.nix
+    # ./hardware.nix
+    # ../../modules/nixos/common.nix
   ];
 
   hlk = {
@@ -32,7 +32,9 @@
       default.enable = true;
       root_keys_from = secrets.west.authorizedKeyFiles;
     };
-    xserver.default.enable = true;
+    #TODO: make the system prefix mandatory for every module
+    #After that, do the same to home config but with different prefix
+    system.graphical.windowSystem = "xorg";
     mainUser = {
       default.enable = true;
     };
@@ -47,6 +49,17 @@
   environment.systemPackages = with pkgs; [
     openvpn
   ];
+
+  specialisation."wayland-preserve_state" = {
+    inheritParentConfig = true;
+    configuration = {
+      hlk.stateRemoval.enable = lib.mkForce false;
+      hlk.system.graphical.windowSystem = lib.mkForce "wayland";
+      hlk.mainUser.extraUserConfig = {
+        hlk.emacs.package = pkgs.emacsPGTK_FD;
+      };
+    };
+  };
 
   specialisation."vm-with-nvidia-gpu" = {
     inheritParentConfig = true;

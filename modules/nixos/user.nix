@@ -24,7 +24,8 @@ in {
         description = "Home Manager profile";
         type = lib.types.str;
       };
-      extraUserConfig = lib.mkOption
+      extraUserConfig =
+        lib.mkOption
         {
           default = {};
           description = "Extra options to apply to the configuration of the primary user";

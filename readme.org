@@ -3,12 +3,6 @@
 
 * Overview
 + =modules= contains modules, which provide options under common prefix =hlk=.
-  + =hardware-traits= contains modules that are applicable to machines with some traits, such as:
-    - Having a battery
-    - Having a NVIDIA chip
-    - Having NVIDIA + AMD chips
-    - etc.
-    It is currently unpopulated because I have two devices, making it easier to manage them directly.
   + =util= contains modules that are used (almost) exclusively as denpendencies of other modules.
   + =nixos= contains hardware-agnostic modules of NixOS, such as:
     - Basic CLI environment

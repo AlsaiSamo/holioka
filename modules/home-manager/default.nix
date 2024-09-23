@@ -8,12 +8,14 @@
 } @ inputs: {
   imports = [
     ./cli.nix
+    ./graphical/default.nix
     ./gpg.nix
-    ./x.nix
     ./firefox.nix
     ./nvim.nix
     ./emacs.nix
-    ./programming.nix
     ./gaming.nix
+    ./wine.nix
+    ./vm_extra.nix
+    ./krita.nix
   ];
 }

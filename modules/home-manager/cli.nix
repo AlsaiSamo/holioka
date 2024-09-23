@@ -12,7 +12,14 @@ in {
     default.enable = lib.mkEnableOption "default CLI environment";
   };
   config = lib.mkIf cfg.default.enable {
-    home.packages = with pkgs; [ripgrep git-crypt keychain python3Full];
+    home.packages = with pkgs; [
+      xxd
+      ripgrep
+      git-crypt
+      keychain
+      python3Full
+      imagemagick
+    ];
     home.persistence."/state/home/${userName}" = {
       allowOther = true;
       files = [".zcompdump" ".config/htop/htoprc"];

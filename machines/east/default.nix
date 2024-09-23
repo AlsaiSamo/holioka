@@ -8,8 +8,8 @@ inputs @ {
   ...
 }: {
   imports = [
-    ./hardware.nix
-    ../../modules/nixos/common.nix
+    #./hardware.nix
+    #../../modules/nixos/common.nix
   ];
 
   hlk = {
@@ -32,9 +32,17 @@ inputs @ {
       root_keys_from = secrets.east.authorizedKeyFiles;
     };
     nix.distributed.enable = true;
-    xserver.default.enable = true;
+    system.graphical.windowSystem = "xorg";
     mainUser = {
       default.enable = true;
+      extraUserConfig = {
+        hlk.games = {
+          osu.state.enable = false;
+          xonotic.enable = false;
+          xonotic.state.enable = false;
+        };
+        #TODO: disable a bunch of stuff after adding modules
+      };
     };
     jp.enable = false;
   };

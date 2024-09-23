@@ -53,7 +53,7 @@
       home-manager.nixosModules.home-manager
       nur.nixosModules.nur
       lix-mod.nixosModules.default
-      (import ./modules)
+      (import ./modules/nixos/default.nix)
     ];
     hmModules = [
       ndeu.hmModule
@@ -74,6 +74,8 @@
           commonNixosModules
           ++ [
             (import ./machines/east)
+            (import ./modules/nixos/common.nix)
+            (import ./hardware/thinkpad_a275)
             nixos-hardware.nixosModules.common-gpu-amd
             {
               nixpkgs.config.allowUnfree = true;
@@ -91,6 +93,8 @@
           commonNixosModules
           ++ [
             (import ./machines/west)
+            (import ./modules/nixos/common.nix)
+            (import ./hardware/ig3_15arh05)
             nixos-hardware.nixosModules.lenovo-ideapad-15arh05
             {
               nixpkgs.config.allowUnfree = true;
