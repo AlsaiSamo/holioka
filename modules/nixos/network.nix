@@ -7,13 +7,12 @@
 }: let
   cfg = config.hlk.network;
 in {
+  #TODO: select between different network managing options
   options.hlk.network = {
     default.enable = lib.mkEnableOption "default network configuration";
     desktop.enable = lib.mkEnableOption "network tray applet";
     # wireless.enable = lib.mkEnableOption "wireless";
-    #TODO: assert that it is not null
     hostName = lib.mkOption {
-      #TODO: get host name from the config
       description = "Host name";
       type = lib.types.str;
     };

@@ -1,23 +1,21 @@
 {
-  pkgsPrev,
-  pkgsFinal ? pkgsPrev,
   lib,
   flake_inputs,
-}: {
-  atuin = pkgsPrev.atuin.overrideAttrs (old: {
-    patches =
-      (old.patches or [])
-      ++ [
-        # ./0001-ZFS.patch
-        ./ZFS.patch
-      ];
+  ...
+}: let
+  #fileOverlay = path: final: prev: (import path {inherit final prev flake_inputs lib;});
+  fileOverlay = path: final: prev: (import path {
+    inherit flake_inputs lib;
+    pkgsPrev = prev;
+    pkgsFinal = final;
   });
-
-  #The limit originally is 1024, which makes emacs hit "too many open files".
-  emacsPGTK_FD = pkgsPrev.emacs29-pgtk.overrideAttrs (old: {
-    configureFlags = (old.configureFlags or []) ++ ["CFLAGS=-DFD_SETSIZE=10000"];
-  });
-  emacs_FD = pkgsPrev.emacs.overrideAttrs (old: {
-    configureFlags = (old.configureFlags or []) ++ ["CFLAGS=-DFD_SETSIZE=10000"];
-  });
-}
+in
+  map fileOverlay
+  [
+    #TODO for now old.nix contains all overlays, they can be moved out here
+    ./old.nix
+    ./ccache.nix
+    ./enchilada/default.nix
+    #TODO rename if this is successful
+    ./enchilada/installer_standalone.nix
+  ]

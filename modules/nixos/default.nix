@@ -18,5 +18,6 @@
     ./distributed.nix
     ./avahi.nix
     ./barrier.nix
+    ./ccache.nix
   ];
 }

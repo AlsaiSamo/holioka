@@ -17,7 +17,7 @@ in {
   };
   config = lib.mkIf (cfg.windowSystem != "none") {
     services.xserver = {
-      #TODO: check that this is applied for wayland
+      #TODO: doesn't apply to wayland
       xkb.options = "grp:caps_toggle";
       autoRepeatDelay = 200;
       autoRepeatInterval = 30;

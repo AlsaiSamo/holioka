@@ -11,10 +11,10 @@ in {
   options.hlk.emacs = {
     default.enable = lib.mkEnableOption "default Doom Emacs configuration";
     package = lib.mkOption {
-        description = "What Emacs to use as the base. Use emacs_FD for Xorg and emacsPGTK_fd for Wayland.";
-        type = lib.types.package;
-        default = pkgs.emacs_FD;
-        };
+      description = "What Emacs to use as the base. Use emacs_FD for Xorg and emacsPGTK_fd for Wayland.";
+      type = lib.types.package;
+      default = pkgs.emacs_FD;
+    };
   };
   config = lib.mkIf cfg.default.enable {
     home.packages = with pkgs; [
