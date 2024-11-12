@@ -1,4 +1,6 @@
 ;;TODO: use corfu instead of company
+;;TODO: review new features
+;;TODO: rebind keys
 ;;Cosmetic
 (setq doom-font (font-spec :family "Sarasa Mono J" :size 14 :weight 'regular)
       doom-variable-pitch-font (font-spec :family "Sarasa Mono J" :weight 'normal)

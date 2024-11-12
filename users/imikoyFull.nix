@@ -12,25 +12,26 @@
 }:
 {
   _module.args.userName = userName;
-  nixpkgs.overlays = [hmOverlay];
+  nixpkgs.overlays = hmOverlay;
   imports = hmModules;
   programs.home-manager.enable = true;
 
+  nixpkgs.config.permittedInsecurePackages = [
+      "olm-3.2.16"
+  ];
   #TODO: matrix is a broken mess (libolm is deprecated and is used by most clients)
-  #programs.nheko.enable = true;
-  #TODO: move things out into modules
+  programs.nheko.enable = true;
   home.packages = with pkgs; [
     blueberry
-    # fluffychat
     cmus
     krita
 
     ffmpeg-full
-    # tartube
     yt-dlp
 
     alejandra
 
+    #TODO work stuff
     thunderbird
     zoom-us
     telegram-desktop

@@ -39,17 +39,22 @@
       default.enable = true;
     };
     jp.enable = true;
+
+    ccache.enable = true;
   };
+
+  boot.binfmt.emulatedSystems = ["aarch64-linux"];
 
   services.openvpn.servers.work = {
     updateResolvConf = true;
     config = secrets.work.vpn_conf;
-    extraArgs = [];
+    #extraArgs = [];
   };
   environment.systemPackages = with pkgs; [
     openvpn
   ];
 
+  #TODO: switch to AMD
   specialisation."wayland-preserve_state" = {
     inheritParentConfig = true;
     configuration = {
