@@ -29,7 +29,6 @@ in {
       script = ''
         pkill polybar
         #All monitor names, the ones that don't exist will simply not launch
-        #TODO: monitor name on West with AMD
         for m in HDMI-0 eDP-1 eDP eDP-1-0 DP-1; do
           MONITOR=$m polybar default 2>/tmp/polybar.$m &
         done

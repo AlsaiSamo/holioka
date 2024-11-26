@@ -29,7 +29,7 @@ in {
     networking.firewall.interfaces."virbr*".allowedUDPPorts = [53 67];
     networking.firewall.interfaces."virbr*".allowedTCPPorts = [24800];
 
-    programs.virt-manager.enable = lib.mkIf (config.hlk.system.graphical.windowSystem != "none") true;
+    programs.virt-manager.enable = lib.mkIf (config.hlk.graphical.windowSystem != "none") true;
 
     environment.persistence."/state".files =
       lib.mkIf (cfg.VMConfigsToLink != [])

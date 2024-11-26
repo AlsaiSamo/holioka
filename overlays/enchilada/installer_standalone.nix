@@ -28,7 +28,7 @@
     };
   installer_filesystems = kernel: let
     installer = installer_enchilada kernel;
-      in
+  in
     pkgsPrev.stdenvNoCC.mkDerivation {
       name = "installer-filesystems";
       dontBuild = true;
@@ -36,11 +36,10 @@
       dontUnpack = true;
       installPhase = let
         fs = builtins.mapAttrs (k: v: v.output) installer.config.mobile.generatedFilesystems;
-      in
-        ''
-          mkdir -p "$out"
-          cp -r "${fs.rootfs}"/* "$out"
-          cp "${fs.boot}" "$out/boot.img"
-        '';
+      in ''
+        mkdir -p "$out"
+        cp -r "${fs.rootfs}"/* "$out"
+        cp "${fs.boot}" "$out/boot.img"
+      '';
     };
 }

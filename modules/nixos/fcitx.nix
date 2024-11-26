@@ -4,10 +4,10 @@
   pkgs,
   ...
 }: let
-  cfg = config.hlk.jp;
+  cfg = config.hlk.fcitx;
 in {
-  options.hlk.jp = {
-    enable = lib.mkEnableOption "tools for learning JP";
+  options.hlk.fcitx = {
+    enable = lib.mkEnableOption "fcitx";
   };
   config = lib.mkIf cfg.enable {
     i18n = {
@@ -26,7 +26,6 @@ in {
     };
     environment.systemPackages = with pkgs; [
       fcitx5-configtool
-      # anki-bin
     ];
   };
 }

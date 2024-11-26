@@ -7,11 +7,6 @@
   modulesPath,
   ...
 } @ inputs: {
-  imports = [
-    # ./hardware.nix
-    # ../../modules/nixos/common.nix
-  ];
-
   hlk = {
     defaultFilesystems = true;
     stateRemoval.enable = true;
@@ -30,17 +25,13 @@
     };
     sshd = {
       default.enable = true;
-      root_keys_from = secrets.west.authorizedKeyFiles;
+      rootKeysFrom = secrets.west.authorizedKeyFiles;
     };
-    #TODO: make the system prefix mandatory for every module
-    #After that, do the same to home config but with different prefix
-    system.graphical.windowSystem = "xorg";
+    graphical.windowSystem = "xorg";
     mainUser = {
       default.enable = true;
     };
-    jp.enable = true;
-
-    ccache.enable = true;
+    fcitx.enable = true;
   };
 
   boot.binfmt.emulatedSystems = ["aarch64-linux"];
@@ -48,18 +39,17 @@
   services.openvpn.servers.work = {
     updateResolvConf = true;
     config = secrets.work.vpn_conf;
-    #extraArgs = [];
   };
   environment.systemPackages = with pkgs; [
     openvpn
   ];
 
-  #TODO: switch to AMD
+  #TODO: switch to AMD here
   specialisation."wayland-preserve_state" = {
     inheritParentConfig = true;
     configuration = {
       hlk.stateRemoval.enable = lib.mkForce false;
-      hlk.system.graphical.windowSystem = lib.mkForce "wayland";
+      hlk.graphical.windowSystem = lib.mkForce "wayland";
       hlk.mainUser.extraUserConfig = {
         hlk.emacs.package = pkgs.emacsPGTK_FD;
       };

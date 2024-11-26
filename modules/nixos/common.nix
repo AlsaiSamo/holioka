@@ -5,10 +5,6 @@
   secrets,
   ...
 } @ inputs: {
-  #block the most hideous ADHD distraction
-  #This also breaks things like embedded youtube
-  # networking.hosts."127.0.0.1" = ["youtube.com" "https://www.youtube.com" "www.youtube.com"];
-
   time.timeZone = lib.mkDefault secrets.common.timeZone;
 
   hardware.enableRedistributableFirmware = true;

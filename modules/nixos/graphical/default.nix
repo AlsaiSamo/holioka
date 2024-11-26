@@ -4,10 +4,10 @@
   pkgs,
   ...
 }: let
-  cfg = config.hlk.system.graphical;
+  cfg = config.hlk.graphical;
 in {
   imports = [./x.nix ./wayland.nix];
-  options.hlk.system.graphical = {
+  options.hlk.graphical = {
     windowSystem = lib.mkOption {
       example = "xorg";
       description = "What windowing system and the respective environment to enable in the system";

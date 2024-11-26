@@ -14,10 +14,9 @@
     ./sshd.nix
     ./user.nix
     ./graphical
-    ./jp.nix
+    ./fcitx.nix
     ./distributed.nix
     ./avahi.nix
     ./barrier.nix
-    ./ccache.nix
   ];
 }

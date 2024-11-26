@@ -4,7 +4,7 @@
   pkgs,
   ...
 }: let
-  cfg = config.hlk.system.graphical;
+  cfg = config.hlk.graphical;
 in {
   #TODO: figure out if this config does shadow the user's config if enabled
   #as the wiki says

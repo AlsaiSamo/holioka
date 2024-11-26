@@ -40,10 +40,10 @@
 
   boot.kernelPackages = pkgs.linuxPackagesFor pkgs.linux-rt_latest;
 
-  #TODO: configure, by default it does not touch programs like Firefox
   services.ananicy = {
     enable = true;
     package = pkgs.ananicy-cpp;
+    rulesProvider = pkgs.ananicy-rules-cachyos;
   };
 
   boot.initrd.availableKernelModules = [
@@ -57,10 +57,6 @@
     "rtsx_pci_sdmmc"
   ];
   boot.initrd.kernelModules = [];
-  #TODO: amd drivers will be missing, I believe. So, I will need to see if this causes issues.
-  #boot.kernelModules = [ "kvm-amd" "amdgpu" "acpi_call" ];
-  #boot.extraModulePackages = with config.boot.kernelPackages; [ acpi_call ];
-  #boot.kernelParams = [ "iommu=soft" "i8042.nomux=1" "i8042.reset" ];
 
   services.libinput = lib.mkIf config.services.xserver.enable {
     enable = true;

@@ -7,7 +7,6 @@
   options = {
     hlk.flatpak.default.enable = lib.mkEnableOption "default Flatpak config";
   };
-  #TODO: configure remotes
   config = lib.mkIf config.hlk.flatpak.default.enable {
     services.flatpak.enable = true;
     xdg.portal.enable = true;

@@ -7,11 +7,6 @@ inputs @ {
   modulesPath,
   ...
 }: {
-  imports = [
-    #./hardware.nix
-    #../../modules/nixos/common.nix
-  ];
-
   hlk = {
     defaultFilesystems = true;
     stateRemoval.enable = true;
@@ -29,10 +24,10 @@ inputs @ {
     };
     sshd = {
       default.enable = true;
-      root_keys_from = secrets.east.authorizedKeyFiles;
+      rootKeysFrom = secrets.east.authorizedKeyFiles;
     };
     nix.distributed.enable = true;
-    system.graphical.windowSystem = "xorg";
+    graphical.windowSystem = "xorg";
     mainUser = {
       default.enable = true;
       extraUserConfig = {
@@ -44,7 +39,7 @@ inputs @ {
         #TODO: disable a bunch of stuff after adding modules
       };
     };
-    jp.enable = false;
+    fcitx.enable = false;
   };
 
   system.stateVersion = "23.11";

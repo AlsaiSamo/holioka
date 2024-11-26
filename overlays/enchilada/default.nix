@@ -590,7 +590,7 @@ in rec {
 
   #NOTE: also taken from Chayleaf
   uboot_enchilada =
-      #TODO uncomment stuff back after testing
+    #TODO uncomment stuff back after testing
     (pkgsPrev.buildUBoot {
       # version = "2024.10-rc6";
       version = "unstable-2023-12-11";
@@ -601,10 +601,10 @@ in rec {
       #   hash = "sha256-y/BA/dcQsPvvCMeoeX2L93wxtLXMGPf+9gP4ls8sH4M=";
       # };
       src = pkgsPrev.fetchFromGitLab {
-            owner = "sdm845-mainline";
-            repo = "u-boot";
-            rev = "977b9279c610b862f9ef84fb3addbebb7c42166a";
-            hash = "sha256-ksI7qxozIjJ5E8uAJkX8ZuaaOHdv76XOzITaA8Vp/QA=";
+        owner = "sdm845-mainline";
+        repo = "u-boot";
+        rev = "977b9279c610b862f9ef84fb3addbebb7c42166a";
+        hash = "sha256-ksI7qxozIjJ5E8uAJkX8ZuaaOHdv76XOzITaA8Vp/QA=";
       };
 
       defconfig = "qcom_defconfig";

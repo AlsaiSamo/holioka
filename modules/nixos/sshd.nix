@@ -9,7 +9,7 @@ in {
   options = {
     hlk.sshd = {
       default.enable = lib.mkEnableOption "default SSHD configuration";
-      root_keys_from = lib.mkOption {
+      rootKeysFrom = lib.mkOption {
         example = "secrets.west.authorizedKeyFiles";
         description = "Where to take the root's keyfiles from";
         type = lib.types.listOf lib.types.path;
@@ -45,6 +45,6 @@ in {
       enable = true;
       bantime = "30m";
     };
-    users.users.root.openssh.authorizedKeys.keyFiles = cfg.root_keys_from;
+    users.users.root.openssh.authorizedKeys.keyFiles = cfg.rootKeysFrom;
   };
 }

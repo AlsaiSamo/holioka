@@ -4,7 +4,7 @@
   pkgs,
   ...
 } @ inputs: let
-  cfg = config.hlk.system.graphical;
+  cfg = config.hlk.graphical;
 in {
   config = lib.mkIf (cfg.windowSystem == "xorg") {
     services.xserver = {

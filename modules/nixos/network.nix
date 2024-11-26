@@ -19,8 +19,6 @@ in {
   };
   config = lib.mkMerge [
     (lib.mkIf cfg.default.enable {
-      #TODO: save iwd state
-      # /var/lib/iwd
       networking = {
         hostName = secrets.${cfg.hostName}.hostName;
         hostId = secrets.${cfg.hostName}.hostId;

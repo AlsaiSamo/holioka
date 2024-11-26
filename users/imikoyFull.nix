@@ -17,9 +17,10 @@
   programs.home-manager.enable = true;
 
   nixpkgs.config.permittedInsecurePackages = [
-      "olm-3.2.16"
+    "olm-3.2.16"
   ];
-  #TODO: matrix is a broken mess (libolm is deprecated and is used by most clients)
+  #FIX: matrix is a broken mess (libolm is deprecated and is used by most clients)
+  #find a way to not have to use libolm
   programs.nheko.enable = true;
   home.packages = with pkgs; [
     blueberry
@@ -74,7 +75,7 @@
       ".thunderbird"
       ".local/share/TelegramDesktop"
 
-      #TODO: move out into modules
+      #TODO: an nheko module
       ".cache/nheko"
       ".config/nheko"
       ".local/share/nheko"

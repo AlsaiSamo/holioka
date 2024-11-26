@@ -7,7 +7,6 @@ inputs @ {
   modulesPath,
   ...
 }: {
-  imports = [];
   hlk = {
     defaultFilesystems = true;
     stateRemoval.enable = false;

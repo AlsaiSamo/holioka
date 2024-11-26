@@ -17,7 +17,6 @@ in {
       type = lib.types.enum ["none" "xorg" "wayland"];
     };
   };
-  #TODO verify this works
   config = lib.mkIf (cfg.windowSystem
     != "none") {
     #TODO: enable different things under xorg and wayland, and enable common things
@@ -25,7 +24,6 @@ in {
     home.packages = with pkgs; [
       dconf
 
-      #TODO: patch with nerd font and use everywhere
       sarasa-gothic
       noto-fonts-color-emoji
       font-awesome
@@ -110,14 +108,13 @@ in {
     };
 
     xdg.configFile."warpd/config".source = ../../../dotfiles/warpd/config;
-    #TODO: take fcitx (and ibus and mozc) and anki stuff out
+    #TODO: fcitx stuff (including mozc) should be its own module
     home.persistence."/state/home/imikoy" = {
       directories = [
         ".config/fcitx5"
         #Appears when adding something like quick phrase
         ".local/share/fcitx5"
         ".config/mozc"
-        # ".local/share/Anki2"
       ];
       files = [
         ".config/keepassxc/keepassxc.ini"

@@ -40,16 +40,14 @@ in {
         # DefaultDownloadDirectory = "\${home}/Downloads";
       };
       profiles."alsaisamo" = {
-        #TODO containers
         search.default = "DuckDuckGo";
         extensions = with config.nur.repos.rycee.firefox-addons; [
           ublock-origin
           tridactyl
           keepassxc-browser
-          #TODO: either this or userChrome
           #firefox-color
-          #TODO: yomitan or rikaitan
         ];
+        #TODO: userChrome
         #userChrome
         #userContent
       };

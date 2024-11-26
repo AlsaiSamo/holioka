@@ -33,7 +33,6 @@ in {
         };
     };
   };
-  #TODO: load the home manager stuff from here
   config = lib.mkIf cfg.default.enable {
     users.mutableUsers = false;
     users.groups.${cfg.userName}.gid = 1000;

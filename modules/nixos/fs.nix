@@ -8,7 +8,6 @@ in {
   #TODO: make script for generating the pool
 
   options.hlk = {
-    #TODO: rewrite as lib.mkEnableOption
     stateRemoval.enable = lib.mkOption {
       default = false;
       description = "Wipe the state at boot time (requires there to be root@blank, home@blank)";

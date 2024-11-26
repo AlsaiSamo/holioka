@@ -20,10 +20,10 @@
 
   zramSwap.enable = true;
 
-  #TODO: configure, by default it does not touch programs like Firefox
   services.ananicy = {
     enable = true;
     package = pkgs.ananicy-cpp;
+    rulesProvider = pkgs.ananicy-rules-cachyos;
   };
 
   boot.kernel.sysctl = {
