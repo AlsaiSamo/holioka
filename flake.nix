@@ -15,13 +15,14 @@
     nur.url = "github:nix-community/NUR";
     ndeu = {
       url = "github:marienz/nix-doom-emacs-unstraightened";
-      #NOTE: mentioned in the repo
+      #NOTE: mentioned in the source repo
       inputs.nixpkgs.follows = "";
     };
     mobile-nixos = {
       url = "github:mobile-nixos/mobile-nixos";
       flake = false;
     };
+    nix-colors.url = "github:Misterio77/nix-colors";
   };
 
   outputs = {
@@ -35,8 +36,15 @@
     nur,
     ndeu,
     mobile-nixos,
+    nix-colors,
     ...
   } @ flake_inputs: let
+
+    #TODO: LIST OF WANTS
+    #1. RSS
+    #2. Switch to nix-colors
+    #3. Try out cutiepro colorscheme
+
     #Secrets may be distributed together with state, but they are encrypted in the repo.
     secrets = import ./secrets.nix {};
     #Volatile configuration is different between physical machines and reinstalls
@@ -60,28 +68,35 @@
         // args);
     overlaysDefault = overlays {};
     allOverlays = overlaysDefault ++ [nur.overlay];
+    hmOverlay = overlaysDefault;
 
     #These modules add options for all systems.
-    commonNixosModules = [
+    nixosModules' = [
       impermanence.nixosModule
-      home-manager.nixosModules.home-manager
       nur.nixosModules.nur
-      #NOTE: builds too long
+      ./modules/nixos/default.nix
+      home-manager.nixosModules.home-manager
+      #NOTE: increases build times
       lix-mod.nixosModules.default
-      (import ./modules/nixos/default.nix)
     ];
-    hmModules = [
-      ndeu.hmModule
+    hmModules' = [
       impermanence.nixosModules.home-manager.impermanence
       nur.hmModules.nur
       ./modules/home-manager/default.nix
+      ndeu.hmModule
+      nix-colors.homeManagerModules.default
     ];
-    hmOverlay = overlaysDefault;
+    #pseudo-modules that affect both hm and nixos and so have identical option trees
+    userModulesSystem = import ./modules/user/default.nix false;
+    userModulesUser = import ./modules/user/default.nix true;
+
+    nixosModules = nixosModules' ++ userModulesSystem;
+    hmModules = hmModules' ++ userModulesUser;
 
     nixpkgsARM = import nixpkgs {
       overlays = allOverlays;
       crossSystem.system = "aarch64-linux";
-      #TODO make automatic
+      #TODO remove assumption of x86 system
       localSystem.system = "x86_64-linux";
     };
     nixpkgsNoCross = import nixpkgs {
@@ -97,15 +112,13 @@
       installer_filesystems = nixpkgsNoCross.installer_filesystems nixpkgsARM.linux_enchilada;
     };
     nixosConfigurations = {
-      #TODO: try having multiple home-manager profiles instead of only the main one
       east = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         specialArgs = {
-          inherit flake_inputs secrets volatile hmModules;
-          inherit hmOverlay;
+          inherit flake_inputs secrets volatile hmModules hmOverlay;
         };
         modules =
-          commonNixosModules
+          nixosModules
           ++ [
             (import ./machines/east)
             (import ./modules/nixos/common.nix)
@@ -120,11 +133,10 @@
       west = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
         specialArgs = {
-          inherit flake_inputs secrets volatile hmModules;
-          inherit hmOverlay;
+          inherit flake_inputs secrets volatile hmModules hmOverlay;
         };
         modules =
-          commonNixosModules
+          nixosModules
           ++ [
             (import ./machines/west)
             (import ./modules/nixos/common.nix)
@@ -139,13 +151,12 @@
       north = nixpkgs.lib.nixosSystem {
         system = "aarch64-linux";
         specialArgs = {
-          inherit flake_inputs secrets volatile hmModules;
-          inherit hmOverlay;
+          inherit flake_inputs secrets volatile hmModules hmOverlay;
           pkgsARM = nixpkgsARM.pkgs;
           mobile = mobile-nixos;
         };
         modules =
-          commonNixosModules
+          nixosModules
           ++ [
             (import ./machines/north)
             (import ./modules/nixos/common.nix)

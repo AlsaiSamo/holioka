@@ -20,8 +20,8 @@ accelerator: a
 decelerator: d
 drag: v
 copy_and_exit:
-scroll_down: e
-scroll_up: r
+scroll_down: j
+scroll_up: k
 
 #==================================================
 #MOTIONS

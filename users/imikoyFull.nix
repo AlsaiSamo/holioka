@@ -10,6 +10,7 @@
   extraUserConfig,
   ...
 }:
+#TODO: transfer all this stuff into the userMdodules
 {
   _module.args.userName = userName;
   nixpkgs.overlays = hmOverlay;

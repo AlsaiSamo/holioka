@@ -11,6 +11,13 @@
         ./ZFS.patch
       ];
   });
+  fish = pkgsPrev.fish.overrideAttrs (old: {
+    patches =
+      (old.patches or [])
+      ++ [
+        ./fish-complete-and-search-proper.patch
+      ];
+  });
 
   #The limit originally is 1024, which makes emacs hit "too many open files".
   emacsPGTK_FD = pkgsPrev.emacs29-pgtk.overrideAttrs (old: {
@@ -19,8 +26,4 @@
   emacs_FD = pkgsPrev.emacs.overrideAttrs (old: {
     configureFlags = (old.configureFlags or []) ++ ["CFLAGS=-DFD_SETSIZE=10000"];
   });
-
-  #ccachePkgs = import ./ccache.nix {inherit pkgsPrev pkgsFinal lib flake_inputs;};
 }
-#// (import ./enchilada/default.nix {inherit pkgsPrev pkgsFinal lib flake_inputs;})
-

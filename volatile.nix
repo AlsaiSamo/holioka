@@ -22,6 +22,7 @@
       {
         device = "/dev/disk/by-partuuid/4ef7c7f0-53e6-4051-a37b-8231ecec6207";
         randomEncryption.enable = true;
+        priority = 2048;
       }
     ];
 

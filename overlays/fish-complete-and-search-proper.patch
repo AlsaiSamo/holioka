@@ -1,0 +1,100 @@
+From afbe69f494b65ea5ace0595884dc445eff0124fc Mon Sep 17 00:00:00 2001
+From: Alsai Samo <alsai_imikoy@proton.me>
+Date: Sun, 15 Dec 2024 09:42:51 +0700
+Subject: [PATCH] add complete-and-search-fw
+
+Fish stinks so bad it *only* scrolls the completions forward if
+the command was 'complete'. This commit adds a function
+for completions with search input and forward scrolling.
+---
+ src/input.cpp      |  1 +
+ src/input_common.h |  1 +
+ src/reader.cpp     | 13 ++++++++++---
+ 3 files changed, 12 insertions(+), 3 deletions(-)
+
+diff --git a/src/input.cpp b/src/input.cpp
+index cd4a858..63cfd01 100644
+--- a/src/input.cpp
++++ b/src/input.cpp
+@@ -109,6 +109,7 @@ static constexpr const input_function_metadata_t input_function_metadata[] = {
+     {L"clear-screen", readline_cmd_t::clear_screen_and_repaint},
+     {L"complete", readline_cmd_t::complete},
+     {L"complete-and-search", readline_cmd_t::complete_and_search},
++    {L"complete-and-search-fw", readline_cmd_t::complete_and_search_fw},
+     {L"delete-char", readline_cmd_t::delete_char},
+     {L"delete-or-exit", readline_cmd_t::delete_or_exit},
+     {L"down-line", readline_cmd_t::down_line},
+diff --git a/src/input_common.h b/src/input_common.h
+index 2cf8490..2409f33 100644
+--- a/src/input_common.h
++++ b/src/input_common.h
+@@ -37,6 +37,7 @@ enum class readline_cmd_t {
+     yank_pop,
+     complete,
+     complete_and_search,
++    complete_and_search_fw,
+     pager_toggle_search,
+     beginning_of_history,
+     end_of_history,
+diff --git a/src/reader.cpp b/src/reader.cpp
+index 3880b69..b4cc91a 100644
+--- a/src/reader.cpp
++++ b/src/reader.cpp
+@@ -1711,6 +1711,7 @@ static bool command_ends_paging(readline_cmd_t c, bool focused_on_search_field)
+         }
+         case rl::complete:
+         case rl::complete_and_search:
++        case rl::complete_and_search_fw:
+         case rl::history_pager:
+         case rl::backward_char:
+         case rl::forward_char:
+@@ -3124,7 +3125,7 @@ expand_result_t::result_t reader_data_t::try_expand_wildcard(wcstring wc, size_t
+ }
+ 
+ void reader_data_t::compute_and_apply_completions(readline_cmd_t c, readline_loop_state_t &rls) {
+-    assert((c == readline_cmd_t::complete || c == readline_cmd_t::complete_and_search) &&
++    assert((c == readline_cmd_t::complete || c == readline_cmd_t::complete_and_search || c == readline_cmd_t::complete_and_search_fw) &&
+            "Invalid command");
+     editable_line_t *el = &command_line;
+ 
+@@ -3207,6 +3208,11 @@ void reader_data_t::compute_and_apply_completions(readline_cmd_t c, readline_loo
+         pager.set_search_field_shown(true);
+         select_completion_in_direction(selection_motion_t::next);
+     }
++
++    if (c == readline_cmd_t::complete_and_search_fw && !rls.complete_did_insert && !pager.empty()) {
++        pager.set_search_field_shown(true);
++        select_completion_in_direction(selection_motion_t::prev);
++    }
+ }
+ 
+ static relaxed_atomic_t<uint64_t> run_count{0};
+@@ -3504,7 +3510,7 @@ void reader_data_t::handle_readline_command(readline_cmd_t c, readline_loop_stat
+             //
+             // Also paging is already cancelled above.
+             if (rls.complete_did_insert &&
+-                (rls.last_cmd == rl::complete || rls.last_cmd == rl::complete_and_search)) {
++                (rls.last_cmd == rl::complete || rls.last_cmd == rl::complete_and_search || rls.last_cmd == rl::complete_and_search_fw)) {
+                 editable_line_t *el = active_edit_line();
+                 el->undo();
+                 update_buff_pos(el);
+@@ -3548,6 +3554,7 @@ void reader_data_t::handle_readline_command(readline_cmd_t c, readline_loop_stat
+             break;
+         }
+         case rl::complete:
++        case rl::complete_and_search_fw: 
+         case rl::complete_and_search: {
+             if (!conf.complete_ok) break;
+             if (is_navigating_pager_contents() ||
+@@ -3557,7 +3564,7 @@ void reader_data_t::handle_readline_command(readline_cmd_t c, readline_loop_stat
+                 if (current_page_rendering.remaining_to_disclose > 0) {
+                     pager.set_fully_disclosed();
+                 } else {
+-                    select_completion_in_direction(c == rl::complete ? selection_motion_t::next
++                    select_completion_in_direction(c == rl::complete || c == rl::complete_and_search_fw ? selection_motion_t::next
+                                                                      : selection_motion_t::prev);
+                 }
+             } else {
+-- 
+2.46.0
+

@@ -4,7 +4,10 @@
   pkgs,
   secrets,
   ...
-} @ inputs: {
+} @ inputs:
+#Non-negotiable items
+##TODO: review this when adapting the configs to North
+{
   time.timeZone = lib.mkDefault secrets.common.timeZone;
 
   hardware.enableRedistributableFirmware = true;
@@ -71,7 +74,7 @@
   };
   nix = {
     gc = {
-      dates = "weekly";
+      dates = "monthly";
       automatic = true;
       options = "--delete-older-than 30d";
     };

@@ -18,5 +18,6 @@
     ./distributed.nix
     ./avahi.nix
     ./barrier.nix
+    ./user_rewrite.nix
   ];
 }
