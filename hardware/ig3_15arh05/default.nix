@@ -24,7 +24,7 @@
   #   open = false;
   # };
 
-  # TODO: one-display only!
+  # NOTE: one-display only!
   boot.blacklistedKernelModules = ["nouveau" "nvidia" "nvidia_drm" "nvidia_modeset"];
   boot.kernelModules = ["kvm-amd" "amdgpu" "acpi_call"];
   services.xserver.videoDrivers = ["amdgpu"];

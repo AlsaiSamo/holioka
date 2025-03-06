@@ -18,6 +18,11 @@ in {
       description = "Use the predefined ZFS layout";
       type = lib.types.bool;
     };
+    zpool_name = lib.mkOption {
+        default = "nix_pool";
+      description = "Name of device's zpool";
+      type = lib.types.string;
+    };
     backup.enable = lib.mkOption {
       default = false;
       description = "Enable automatic snapshots with sanoid";
@@ -31,36 +36,36 @@ in {
     fileSystems = lib.mkIf cfg.defaultFilesystems {
       #Contains user owned home directory with those dirs that do not need to be persistent.
       "/home" = {
-        device = "nix_pool/local/home";
+        device = "${cfg.zpool_name}/local/home";
         fsType = "zfs";
       };
       "/" = {
-        device = "nix_pool/local/root";
+        device = "${cfg.zpool_name}/local/root";
         fsType = "zfs";
       };
       "/var/log" = {
-        device = "nix_pool/local/log";
+        device = "${cfg.zpool_name}/local/log";
         fsType = "zfs";
       };
       "/nix" = {
-        device = "nix_pool/local/nix";
+        device = "${cfg.zpool_name}/local/nix";
         fsType = "zfs";
       };
       #State that shouldn't be in backups. For example, browser cache.
       #Same layout as /state
       "/local_state" = {
-        device = "nix_pool/local/state";
+        device = "${cfg.zpool_name}/local/state";
         fsType = "zfs";
         neededForBoot = true;
       };
       #Has home/imikoy
       "/state" = {
-        device = "nix_pool/safe/state";
+        device = "${cfg.zpool_name}/safe/state";
         fsType = "zfs";
         neededForBoot = true;
       };
       "/state/secrets" = {
-        device = "nix_pool/safe/secrets";
+        device = "${cfg.zpool_name}/safe/secrets";
         fsType = "zfs";
         neededForBoot = true;
       };
@@ -68,8 +73,8 @@ in {
     boot.initrd.postMountCommands =
       lib.mkIf cfg.stateRemoval.enable
       (lib.mkAfter ''
-        zfs rollback -r nix_pool/local/home@blank
-        zfs rollback -r nix_pool/local/root@blank
+        zfs rollback -r ${cfg.zpool_name}/local/home@blank
+        zfs rollback -r ${cfg.zpool_name}/local/root@blank
       '');
     environment.persistence."/state" = lib.mkIf cfg.stateRemoval.enable {
       files = ["/etc/machine-id"];
@@ -78,7 +83,7 @@ in {
     services.sanoid = lib.mkIf cfg.backup.enable {
       enable = true;
       interval = "hourly";
-      datasets."nix_pool/safe" = {
+      datasets."${cfg.zpool_name}/safe" = {
         recursive = "zfs";
         yearly = 0;
         monthly = 1;

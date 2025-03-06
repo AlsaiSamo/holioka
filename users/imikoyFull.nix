@@ -33,9 +33,14 @@
     alejandra
 
     #TODO work stuff
+    #TODO: move out to its own module
+    #TODO: persist state
     thunderbird
     zoom-us
     telegram-desktop
+    libreoffice
+    dbeaver-bin
+    wineWowPackages.stable
   ];
 
   hlk = {
@@ -60,6 +65,10 @@
     files = [
       ".config/kritarc"
       ".config/kritashortcutrc"
+
+      #FIX: work stuff, move to its own module
+      ".config/zoom.conf"
+      ".config/zoomus.conf"
     ];
     directories = [
       #Never used it
@@ -68,12 +77,25 @@
       "Documents"
       #Was persisted before, not now
       #"Downloads"
+      #TODO: refresh music library
       "Music"
       "Pictures"
       "Projects"
+      #random downloaded things
+      "litter"
 
+      #TODO: work stuff, move to its own module
       ".thunderbird"
       ".local/share/TelegramDesktop"
+      #FIX: these are new, move them first
+      ".cache/zoom"
+      ".config/menus"
+      ".config/libreoffice"
+      ".local/share/applications/wine"
+      ".local/share/DBeaverData"
+      ".local/share/mime"
+      ".wine"
+      ".zoom"
 
       #TODO: an nheko module
       ".cache/nheko"

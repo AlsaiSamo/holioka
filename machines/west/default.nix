@@ -7,6 +7,7 @@
   modulesPath,
   ...
 } @ inputs: {
+  #TODO: West: config option to switch between AMD and Nvidia (a config option)
   hlk = {
     defaultFilesystems = true;
     stateRemoval.enable = true;
@@ -34,6 +35,10 @@
     fcitx.enable = true;
   };
 
+  #nix.settings.extra-sandbox-paths = ["/usr/bin/qemu-aarch64-static"];
+  nix.extraOptions = ''
+    extra-platforms = aarch64-linux
+  '';
   boot.binfmt.emulatedSystems = ["aarch64-linux"];
 
   services.openvpn.servers.work = {
@@ -43,6 +48,12 @@
   environment.systemPackages = with pkgs; [
     openvpn
   ];
+  #TODO: do this for all machines
+  hardware.graphics = {
+    enable = true;
+    enable32Bit = true;
+    extraPackages = with pkgs; [libGL];
+  };
 
   #TODO: switch to AMD here
   specialisation."wayland-preserve_state" = {
