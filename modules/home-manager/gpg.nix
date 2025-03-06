@@ -23,13 +23,9 @@ in {
       enableZshIntegration = true;
       defaultCacheTtlSsh = 300;
       pinentryPackage = pkgs.pinentry-qt;
+      #TODO: move to secrets for easier managing
       sshKeys = ["50AF8896441CF20361687883C53B1A8D9D0FB49E"];
       verbose = true;
-      #This does not work, GPG uses config from the state
-      # extraConfig = ''
-      #   allow-emacs-pinentry
-      #   allow-loopback-pinentry
-      # '';
       enableExtraSocket = true;
     };
   };

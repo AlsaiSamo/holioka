@@ -101,6 +101,7 @@ in {
       {
         inherit flake_inputs hmModules hmOverlay pkgs config lib;
         userName = cfg.userName;
+        home.homeDirectory = "/home/${cfg.userName}";
         extraUserConfig = cfg.extraUserConfig;
       };
   };
