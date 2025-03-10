@@ -11,14 +11,13 @@
   terminal = config.wayland.windowManager.sway.config.terminal;
 in {
   #hm
-#TODO: waydroid?
+  #TODO: waydroid?
   config = lib.mkIf (cfg.windowSystem == "wayland") {
     home.packages = with pkgs; [
       swaybg
       wayshot
       slurp
       wl-clipboard
-      viewnior
       warpd
     ];
     wayland.windowManager.sway = {
@@ -39,7 +38,6 @@ in {
         "bindsym ${modifier}+n exec pgrep warpd || warpd --normal"
         "bindsym ${modifier}+m exec pgrep warpd || warpd --hint"
 
-        #Mia's "spawn only one process"
         "bindsym ${modifier}+Ctrl+p exec pgrep wleave || wleave -b4 -c10 -p layer-shell"
 
         "bindsym --release Print exec wayshot --stdout | tee ${config.xdg.userDirs.pictures}/screenshot_$(date +'%y-%m-%d_%T').png | wl-copy"
@@ -59,7 +57,6 @@ in {
       ];
       config = {
         bars = [{id = "bar-0";}];
-        #Mia's "reuse an existing alacritty instance if one exists"
         terminal = "alacritty msg create-window $HOME || alacritty";
         menu = "fuzzel";
         modifier = "Mod4";

@@ -4,8 +4,7 @@ select_user: {
   pkgs,
   userName,
   ...
-}:
-let
+}: let
   cfg = config._hlk_auto.krita;
   options._hlk_auto.krita.enable = lib.mkEnableOption "krita";
 in {
@@ -18,10 +17,10 @@ in {
         home.packages = with pkgs; [
           krita
         ];
-#TODO: startup script for krita:
-#1. exclude krita from the list of prorgams accessible through gui runner
-#2. make a script that copies the files for krita to use
-#3. add script to the list of programs accessible through gui runner
+        #TODO: startup script for krita:
+        #1. exclude krita from the list of prorgams accessible through gui runner
+        #2. make a script that copies the files for krita to use
+        #3. add script to the list of programs accessible through gui runner
         home.persistence."/state/home/${userName}" = {
           files = [
             ".config/kritarc"

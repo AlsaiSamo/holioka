@@ -21,6 +21,6 @@ in {
     services.displayManager = {
       defaultSession = "none+i3";
     };
-    services.displayManager.autoLogin.user = cfg.userName;
+    services.displayManager.autoLogin.user = userName;
   };
 }

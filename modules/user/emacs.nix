@@ -13,7 +13,10 @@ let
     package = lib.mkOption {
       description = "What Emacs to use as the base. Use emacs_FD for Xorg and emacsPGTK_fd for Wayland.";
       type = lib.types.package;
-      default = if (config._hlk_auto.graphical.windowSystem == "xorg") then pkgs.emacs_FD else pkgs.emacsPGTK_FD;
+      default =
+        if (config._hlk_auto.graphical.windowSystem == "xorg")
+        then pkgs.emacs_FD
+        else pkgs.emacsPGTK_FD;
     };
   };
 in {
@@ -23,16 +26,22 @@ in {
     #hm
     then
       lib.mkIf cfg.default.enable {
-        home.packages = with pkgs; [
-          #TODO: check if any of these packages are needed on xorg or wayland and remove if possible
-          xorg.xwininfo
-          xclip
-          xorg.xprop
-          xdotool
-
-          #LSP
-          nil
-        ];
+        home.packages = with pkgs;
+          [
+            #LSP
+            nil
+          ]
+          ++ (
+            if (config._hlk_auto.graphical.windowSystem == "xorg")
+            then [
+              #TODO: check if any of these packages are needed on xorg or wayland and remove if possible
+              xorg.xwininfo
+              xclip
+              xorg.xprop
+              xdotool
+            ]
+            else []
+          );
         services.emacs.enable = true;
         programs.doom-emacs = {
           enable = true;

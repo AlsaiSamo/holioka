@@ -7,7 +7,6 @@
   modulesPath,
   ...
 } @ inputs: {
-  #TODO: West: config option to switch between AMD and Nvidia (a config option)
   hlk = {
     defaultFilesystems = true;
     stateRemoval.enable = true;
@@ -28,19 +27,51 @@
       default.enable = true;
       rootKeysFrom = secrets.west.authorizedKeyFiles;
     };
+    #TODO: this is to be removed after defining mainUserRewrite
     graphical.windowSystem = "xorg";
-    mainUser = {
-      default.enable = true;
-    };
     fcitx.enable = true;
+    # mainUser = {
+    #   default.enable = true;
+    # };
+
+    #TODO: update usermodules with west user's config and write this
+    mainUserRewrite = {
+      enable = true;
+      userName = "imikoy";
+      userConfig = {
+        common.enable = true;
+        work.enable = true;
+        graphical.windowSystem = "xorg";
+        emacs.default.enable = true;
+        games = {
+          osu.state.enable = true;
+          xonotic.enable = true;
+          xonotic.state.enable = true;
+        };
+        cli = {
+          core.enable = true;
+          extra.enable = true;
+          shell = "zsh";
+          starship.enable = true;
+        };
+        firefox.default.enable = true;
+        gpg.default.enable = true;
+        nvim.default.enable = true;
+        krita.enable = true;
+        fcitx.enable = true;
+        nheko.enable = true;
+        keepass.enable = true;
+      };
+      extraHmConfig = {};
+    };
   };
 
-  #nix.settings.extra-sandbox-paths = ["/usr/bin/qemu-aarch64-static"];
   nix.extraOptions = ''
     extra-platforms = aarch64-linux
   '';
   boot.binfmt.emulatedSystems = ["aarch64-linux"];
 
+  #TODO: move this into work usermodule
   services.openvpn.servers.work = {
     updateResolvConf = true;
     config = secrets.work.vpn_conf;
@@ -48,6 +79,7 @@
   environment.systemPackages = with pkgs; [
     openvpn
   ];
+
   #TODO: do this for all machines
   hardware.graphics = {
     enable = true;
@@ -55,18 +87,7 @@
     extraPackages = with pkgs; [libGL];
   };
 
-  #TODO: switch to AMD here
-  specialisation."wayland-preserve_state" = {
-    inheritParentConfig = true;
-    configuration = {
-      hlk.stateRemoval.enable = lib.mkForce false;
-      hlk.graphical.windowSystem = lib.mkForce "wayland";
-      hlk.mainUser.extraUserConfig = {
-        hlk.emacs.package = pkgs.emacsPGTK_FD;
-      };
-    };
-  };
-
+  #TODO: squash input-leap into virtualisation module
   specialisation."vm-with-nvidia-gpu" = {
     inheritParentConfig = true;
     configuration = {
@@ -78,9 +99,6 @@
         input-leap.enable = true;
       };
 
-      #TODO: do stuff here:
-      #1. configure input-leap on both machines
-      #2. yay we can develop mesa
       hardware.nvidia = {
         prime.sync.enable = lib.mkForce false;
         prime.offload.enable = lib.mkForce false;

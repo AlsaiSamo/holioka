@@ -41,13 +41,15 @@ in {
           alacritty
           warpd
           mpv
-          #feh
-          # nomacs
+          #TODO: find a better image viewer
+          feh
 
           kdePackages.dolphin
           kdePackages.qtwayland
           kdePackages.qtsvg
           #pcmanfm
+
+          #thumbnail stuff
           taglib
           xfce.tumbler
           gnome-epub-thumbnailer
@@ -67,9 +69,9 @@ in {
         };
 
         services.udiskie = {
-            enable = true;
-            automount = false;
-            notify = true;
+          enable = true;
+          automount = false;
+          notify = true;
         };
 
         fonts.fontconfig.enable = true;
@@ -153,7 +155,7 @@ in {
           };
         };
 
-        #TODO: take another look at its capabilities
+        #TODO: configure correctly, it is now using j for scrolling down
         xdg.configFile."warpd/config".source = ../../../dotfiles/warpd/config;
       })
     #nixos

@@ -50,6 +50,7 @@ in {
             ];
             home.persistence."/state/home/${userName}" = {
               allowOther = true;
+              files = [".config/htop/htoprc"];
               directories = [".local/share/zoxide" ".local/share/direnv"];
             };
 
@@ -59,7 +60,7 @@ in {
               delta.options = {
                 line-numbers = true;
                 side-by-side = true;
-                theme = "gruvbox-dark";
+                theme = "zenburn";
               };
               package = pkgs.gitFull;
 
@@ -125,6 +126,7 @@ in {
             powertop
             yt-dlp
             jq
+            #xan
             xsv
             scc
             imagemagick
