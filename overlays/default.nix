@@ -13,4 +13,5 @@ in
   [
     ./misc.nix
     ./enchilada/default.nix
+    ./buffyboard.nix
   ]

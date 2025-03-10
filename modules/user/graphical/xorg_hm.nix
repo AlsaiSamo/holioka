@@ -17,7 +17,7 @@ in {
       xclip
       xdotool
       shotgun
-      hacksaw
+      slop
     ];
 
     services.betterlockscreen = {
@@ -31,13 +31,13 @@ in {
       enable = true;
       package = pkgs.polybarFull;
       config = ../../../dotfiles/polybar/config.ini;
-      script = ''        ``
-                pkill polybar
-                #All monitor names, the ones that don't exist will simply not launch
-                for m in HDMI-0 eDP-1 eDP eDP-1-0 DP-1; do
-                  MONITOR=$m polybar default 2>/tmp/polybar.$m &
-                done
-                exit 0
+      script = ''
+        pkill polybar
+        #All monitor names, the ones that don't exist will simply not launch
+        for m in HDMI-0 eDP-1 eDP eDP-1-0 DP-1; do
+          MONITOR=$m polybar default 2>/tmp/polybar.$m &
+        done
+        exit 0
       '';
     };
 

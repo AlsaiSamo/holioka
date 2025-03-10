@@ -4,7 +4,7 @@
     nixpkgs.url = "github:nixOS/nixpkgs/nixos-unstable";
     nixos-hardware.url = "github:nixOS/nixos-hardware";
     lix-mod = {
-      url = "https://git.lix.systems/lix-project/nixos-module/archive/2.90.0.tar.gz";
+      url = "https://git.lix.systems/lix-project/nixos-module/archive/2.91.0.tar.gz";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     impermanence.url = "github:nix-community/impermanence";
@@ -15,7 +15,7 @@
     nur.url = "github:nix-community/NUR";
     ndeu = {
       url = "github:marienz/nix-doom-emacs-unstraightened";
-      #NOTE: mentioned in the source repo
+      #NOTE: settings nixpkgs to "" is mentioned in the flake's repo
       inputs.nixpkgs.follows = "";
     };
     mobile-nixos = {
@@ -44,22 +44,11 @@
     #1. RSS
     #2. Switch to nix-colors
     #3. Try out cutiepro colorscheme
-
     #Secrets may be distributed together with state, but they are encrypted in the repo.
     secrets = import ./secrets.nix {};
     #Volatile configuration is different between physical machines and reinstalls
     volatile = import ./volatile.nix {};
 
-    #all overlays together
-    #TODO: overlays {} should return a list of overlays
-    # overlays = args: final: prev:
-    #   import ./overlays/old.nix ({
-    #       pkgsPrev = prev;
-    #       pkgsFinal = final;
-    #       lib = nixpkgs.lib;
-    #       inherit flake_inputs;
-    #     }
-    #     // args);
     overlays = args:
       import ./overlays ({
           lib = nixpkgs.lib;
@@ -67,17 +56,21 @@
         }
         // args);
     overlaysDefault = overlays {};
-    allOverlays = overlaysDefault ++ [nur.overlay];
     hmOverlay = overlaysDefault;
+    allOverlays =
+      overlaysDefault
+      ++ [
+        nur.overlay
+        (import "${mobile-nixos}/overlay/overlay.nix")
+      ];
 
     #These modules add options for all systems.
     nixosModules' = [
       impermanence.nixosModule
       nur.nixosModules.nur
-      ./modules/nixos/default.nix
       home-manager.nixosModules.home-manager
-      #NOTE: increases build times
-      lix-mod.nixosModules.default
+      #NOTE: lix-mod.nixosModules.default is included on per-machine basis
+      (import ./modules/nixos/default.nix)
     ];
     hmModules' = [
       impermanence.nixosModules.home-manager.impermanence
@@ -108,9 +101,9 @@
     packages."aarch64-linux" = {
       ubootImage = nixpkgsNoCross.ubootImage_enchilada;
       uboot = nixpkgsNoCross.uboot_enchilada;
-      installer = nixpkgsNoCross.installer_enchilada nixpkgsARM.linux_enchilada;
-      installer_filesystems = nixpkgsNoCross.installer_filesystems nixpkgsARM.linux_enchilada;
+      kernel = nixpkgsARM.linux_enchilada;
     };
+
     nixosConfigurations = {
       east = nixpkgs.lib.nixosSystem {
         system = "x86_64-linux";
@@ -123,6 +116,7 @@
             (import ./machines/east)
             (import ./modules/nixos/common.nix)
             (import ./hardware/thinkpad_a275)
+            lix-mod.nixosModules.default
             nixos-hardware.nixosModules.common-gpu-amd
             {
               nixpkgs.config.allowUnfree = true;
@@ -141,6 +135,7 @@
             (import ./machines/west)
             (import ./modules/nixos/common.nix)
             (import ./hardware/ig3_15arh05)
+            lix-mod.nixosModules.default
             nixos-hardware.nixosModules.lenovo-ideapad-15arh05
             {
               nixpkgs.config.allowUnfree = true;
@@ -167,6 +162,7 @@
             }
           ];
       };
+      #TODO: vm for north
     };
   };
 }

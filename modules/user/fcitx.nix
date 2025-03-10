@@ -21,8 +21,8 @@ in {
     then
       lib.mkIf cfg.enable {
         i18n.inputMethod = {
-            enabled = "fcitx5";
-            fcitx5.addons = with pkgs; [fcitx5-mozc];
+          enabled = "fcitx5";
+          fcitx5.addons = with pkgs; [fcitx5-mozc];
         };
         home.sessionVariables = {
           XMODIFIERS = "@im=fcitx";

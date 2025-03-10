@@ -4,8 +4,7 @@ select_user: {
   pkgs,
   userName,
   ...
-}:
-let
+}: let
   cfg = config._hlk_auto.keepass;
   options._hlk_auto.keepass = {
     enable = lib.mkEnableOption "keepassxc";
@@ -15,10 +14,11 @@ in {
   config =
     if select_user
     #hm
-    then lib.mkIf cfg.enable {
-#NOTE: already includes cli
+    then
+      lib.mkIf cfg.enable {
+        #NOTE: already includes cli
         home.packages = with pkgs; [
-            keepassxc
+          keepassxc
         ];
         home.persistence."/state/home/${userName}" = {
           files = [
@@ -26,7 +26,7 @@ in {
             ".cache/keepassxc/keepassxc.ini"
           ];
         };
-    }
+      }
     #nixos
     else {};
 }

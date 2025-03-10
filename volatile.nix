@@ -38,6 +38,15 @@
     };
   };
   north = {
-    #TODO:
+    hlk.zpool_name = "phone_pool";
+    fileSystems."/boot" = {
+      device = "/dev/disk/by-uuid/DE2B-CC5E";
+      fsType = "vfat";
+    };
+    boot.initrd.luks.devices = {
+      cryptroot = {
+        device = "/dev/disk/by-uuid/9b292361-00f1-4b03-879b-3dd170c1ff1c";
+      };
+    };
   };
 }

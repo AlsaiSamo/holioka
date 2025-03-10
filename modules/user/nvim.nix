@@ -116,10 +116,10 @@ in {
             }
             harpoon
             {
-              plugin = feline-nvim;
+              plugin = lualine-nvim;
               type = "lua";
               config = ''
-                require('feline').setup()
+                require('lualine').setup()
               '';
             }
             {

@@ -16,21 +16,22 @@ in {
   config =
     if select_user
     #hm
-    then lib.mkIf cfg.enable {
-    #broken deprecated mess
+    then
+      lib.mkIf cfg.enable {
+        #broken deprecated mess
         nixpkgs.config.permittedInsecurePackages = [
           "olm-3.2.16"
         ];
         programs.nheko.enable = true;
         home.persistence."/state/home/${userName}" = {
-            allowOther = true;
-            directories = [
+          allowOther = true;
+          directories = [
             ".cache/nheko"
             ".config/nheko"
             ".local/share/nheko"
-            ];
+          ];
         };
-    }
+      }
     #nixos
     else {};
 }

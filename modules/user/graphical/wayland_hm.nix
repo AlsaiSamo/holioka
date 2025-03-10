@@ -11,14 +11,13 @@
   terminal = config.wayland.windowManager.sway.config.terminal;
 in {
   #hm
-#TODO: waydroid?
+  #TODO: waydroid?
   config = lib.mkIf (cfg.windowSystem == "wayland") {
     home.packages = with pkgs; [
       swaybg
       wayshot
       slurp
       wl-clipboard
-      viewnior
       warpd
     ];
     wayland.windowManager.sway = {

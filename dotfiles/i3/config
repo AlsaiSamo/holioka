@@ -40,7 +40,8 @@ bindsym XF86MonBrightnessUp exec --no-startup-id brightnessctl s +2%
 bindsym XF86MonBrightnessDown exec --no-startup-id brightnessctl s 2%-
 
 # start a terminal
-bindsym $mod+Return exec "WINIT_X11_SCALE_FACTOR=1.5 alacritty"
+#bindsym $mod+Return exec "WINIT_X11_SCALE_FACTOR=1.5 alacritty"
+bindsym $mod+Return exec "WINIT_X11_SCALE_FACTOR=1.05 alacritty"
 
 bindsym --release $mod+Shift+q kill
 
@@ -185,6 +186,6 @@ exec_always --no-startup-id "systemctl restart --user polybar.service"
 bindsym $mod+ctrl+p exec --no-startup-id "rofi -show power-menu -modi power-menu:rofi-power-menu"
 
 bindsym --release Print exec --no-startup-id shotgun "$(readlink -f ~)/Pictures/$(date).png"
-bindsym shift+Print exec --no-startup-id "shotgun $(hacksaw -f '-i %i -g %g') - | xclip -t 'image/png' -selection clipboard"
+bindsym shift+Print exec --no-startup-id "shotgun $(slop -f '-i %i -g %g') - | xclip -t 'image/png' -selection clipboard"
 
 bindsym $mod+shift+f move workspace to output next

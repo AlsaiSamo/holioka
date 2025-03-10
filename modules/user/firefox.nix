@@ -11,7 +11,7 @@ let
   options._hlk_auto.firefox = {
     default.enable = lib.mkEnableOption "default Firefox configuration";
   };
-  myFirefox = pkgs.wrapFirefox pkgs.firefox-esr-unwrapped {
+  myFirefox = pkgs.wrapFirefox pkgs.firefox-unwrapped {
     nativeMessagingHosts = with pkgs; [pkgs.tridactyl-native];
     extraPolicies = {
       OverrideFirstRunPage = "";
@@ -27,7 +27,7 @@ let
       DisableFeedbackCommands = true;
       DisableFirefoxAccounts = true;
       DisableFirefoxScreenshots = true;
-      #DisableFirefoxStudies = true;
+      DisableFirefoxStudies = true;
       DisablePocket = true;
       DisableSetDesktopBackground = true;
       DisableTelemetry = true;

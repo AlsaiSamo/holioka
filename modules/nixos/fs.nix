@@ -19,7 +19,7 @@ in {
       type = lib.types.bool;
     };
     zpool_name = lib.mkOption {
-        default = "nix_pool";
+      default = "nix_pool";
       description = "Name of device's zpool";
       type = lib.types.string;
     };

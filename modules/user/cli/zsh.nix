@@ -25,9 +25,12 @@ in {
         q = "exit";
         ":q" = "exit";
 
-        nsh = "nix-shell";
+        nsh = "nix-shell -p";
         gs = "git status";
         gc = "git commit";
+        #TODO: add to fish
+        ga = "git add";
+        gd = "git diff";
       };
       #TODO: is this needed?
       loginExtra = ''
@@ -51,6 +54,7 @@ in {
         set -o vi
          zstyle ':fzf-tab:complete:cd:*' fzf-preview 'exa -1 --color=always $realpath'
          unsetopt cdablevars '';
+      localVariables = {EDITOR = "nvim";};
     };
     programs = {
       atuin.enableZshIntegration = true;
