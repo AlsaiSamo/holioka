@@ -126,8 +126,6 @@ in {
             powertop
             yt-dlp
             jq
-            #xan
-            xsv
             scc
             imagemagick
             hexyl

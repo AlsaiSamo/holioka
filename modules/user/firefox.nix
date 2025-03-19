@@ -48,7 +48,7 @@ in {
           };
           profiles."alsaisamo" = {
             search.default = "DuckDuckGo";
-            extensions = with config.nur.repos.rycee.firefox-addons; [
+            extensions = with pkgs.nur.repos.rycee.firefox-addons; [
               ublock-origin
               tridactyl
               keepassxc-browser

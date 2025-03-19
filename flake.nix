@@ -1,7 +1,7 @@
 {
   inputs = {
     flake-utils.url = "github:numtide/flake-utils";
-    nixpkgs.url = "github:nixOS/nixpkgs/nixos-unstable";
+    nixpkgs.url = "github:nixOS/nixpkgs/nixos-24.11";
     nixos-hardware.url = "github:nixOS/nixos-hardware";
     lix-mod = {
       url = "https://git.lix.systems/lix-project/nixos-module/archive/2.91.0.tar.gz";
@@ -67,14 +67,14 @@
     #These modules add options for all systems.
     nixosModules' = [
       impermanence.nixosModule
-      nur.nixosModules.nur
+      nur.modules.nixos.default
       home-manager.nixosModules.home-manager
       #NOTE: lix-mod.nixosModules.default is included on per-machine basis
       (import ./modules/nixos/default.nix)
     ];
     hmModules' = [
       impermanence.nixosModules.home-manager.impermanence
-      nur.hmModules.nur
+      nur.modules.homeManager.default
       ./modules/home-manager/default.nix
       ndeu.hmModule
       nix-colors.homeManagerModules.default
