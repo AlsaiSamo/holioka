@@ -6,6 +6,7 @@
   ...
 } @ inputs: {
   imports = [
+    ./common.nix
     ./fs.nix
     ./audio.nix
     ./flatpak.nix

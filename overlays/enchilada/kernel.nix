@@ -4,22 +4,16 @@
   ...
 }:
 pkgs.buildLinux {
-  #NOTE: We are overriding inputs to this function:
-  #nixpkgs/pkgs/os-specific/linux/kernel/generic.nix
-  ignoreConfigErrors = true;
-
-  version = "6.9";
+  # ignoreConfigErrors = false;
+  version = "6.11.0-rc2";
   src = pkgs.fetchFromGitLab {
     owner = "sdm845-mainline";
     repo = "linux";
-    rev = "8c618d3c045d545d63dcece345d10fc9623e46c6";
-    hash = "sha256-82TObazXl4f0cvwNCPv9pP0SUEBEZ/dRAZLnLpNSWKo=";
+    rev = "sdm845-6.11.0_rc2-r2";
+    hash = "sha256-v48UfKESS7SQhLmgsRT6b1IoEcjuhnXBANGUVYz7WSs=";
   };
-  #NOTE: can't specify defconfig
-
   kernelPatches = [
     {
-      #TODO: revise this (rename the file, mby make it work without the file)
       name = "config_fixes";
       patch = ./config_fixes_611.patch;
     }
@@ -28,24 +22,19 @@ pkgs.buildLinux {
   stdenv = lib.recursiveUpdate pkgs.stdenv {
     hostPlatform.linux-kernel.extraConfig = "";
   };
-
-  #TODO: is this needed if using kernel from sdm845-mainline?
-  #NOTE: lib.kernel lives in nixpkgs/lib/kernel.nix
-  #NOTE: all below is stolen from Chayleaf
   structuredExtraConfig = with lib.kernel; {
+    TOUCHSCREEN_STM_FTS_DOWNSTREAM = no;
+    TOUCHSCREEN_FTM4 = no;
     # fix build
     LENOVO_YOGA_C630_EC = no;
     RPMSG_QCOM_GLINK_SMEM = yes;
-    TOUCHSCREEN_STM_FTS_DOWNSTREAM = no;
-    TOUCHSCREEN_FTM4 = no;
-    #adb, debugging
+    # for adb and stuff (doesn't have to be built-in, but it's easier that way)
     USB_FUNCTIONFS = yes;
     USB_LIBCOMPOSITE = yes;
     USB_F_ACM = yes;
     USB_U_SERIAL = yes;
     USB_U_ETHER = yes;
     USB_F_SERIAL = yes;
-    USB_G_SERIAL = yes;
     USB_F_OBEX = yes;
     USB_F_NCM = yes;
     USB_F_ECM = yes;
@@ -72,7 +61,7 @@ pkgs.buildLinux {
     RMI4_F55 = yes;
     # common sdm845
     HIBERNATION = lib.mkForce no;
-    QCOM_RPROC_COMMON = lib.mkForce yes;
+    QCOM_RPROC_COMMON = yes;
     FORCE_NR_CPUS = yes;
     NR_CPUS = lib.mkForce (freeform "8");
     SCSI_UFS_QCOM = yes;
@@ -97,9 +86,8 @@ pkgs.buildLinux {
     LEDS_QCOM_LPG = module;
     I2C_QCOM_GENI = yes;
     LEDS_QCOM_FLASH = module;
-    SLIMBUS = lib.mkForce yes;
+    SLIMBUS = yes;
     SLIM_QCOM_CTRL = yes;
-    #FIX: make this compile
     SLIM_QCOM_NGD_CTRL = yes;
     REMOTEPROC_CDEV = yes;
     BATTERY_QCOM_FG = module;

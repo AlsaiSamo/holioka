@@ -36,7 +36,7 @@ in rec {
     meta.license = lib.licenses.unfree;
   };
 
-  #TODO: try to update
+  #TODO: try to update?
   uboot_enchilada =
     (pkgsPrev.buildUBoot {
       version = "unstable-2023-12-11";

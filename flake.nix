@@ -114,7 +114,6 @@
           nixosModules
           ++ [
             (import ./machines/east)
-            (import ./modules/nixos/common.nix)
             (import ./hardware/thinkpad_a275)
             lix-mod.nixosModules.default
             nixos-hardware.nixosModules.common-gpu-amd
@@ -133,7 +132,6 @@
           nixosModules
           ++ [
             (import ./machines/west)
-            (import ./modules/nixos/common.nix)
             (import ./hardware/ig3_15arh05)
             lix-mod.nixosModules.default
             nixos-hardware.nixosModules.lenovo-ideapad-15arh05
@@ -154,7 +152,6 @@
           nixosModules
           ++ [
             (import ./machines/north)
-            (import ./modules/nixos/common.nix)
             (import ./hardware/enchilada)
             {
               nixpkgs.config.allowUnfree = true;

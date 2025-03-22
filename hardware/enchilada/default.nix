@@ -8,36 +8,89 @@
   mobile,
   ...
 }: {
-  #TODO: bringup here
-  #TODO: use mobile-nixos
-  imports = [(modulesPath + "/installer/scan/not-detected.nix") volatile.north];
+  imports = [
+    (modulesPath + "/installer/scan/not-detected.nix")
+    volatile.north
+    #TODO: look into these files and see what they include
+    "${mobile}/modules/quirks/qualcomm/sdm845-modem.nix"
+    "${mobile}/modules/quirks/audio.nix"
+  ];
 
   nix.settings.cores = 4;
 
+  #TODO: list of things to have (expand!)
+  #0. Audio
+  #1. Networking
+  #2. Calls
+  #   q6voiced (there's a package definition in chayleaf's config)
+  #3. Screen shutdown and lightup, with locking
+  #4. Calls receiving when screen is off
+  #5. Fingerprint sensor
+  #6. Screen rotation
+  #7. Pretti boot screen (plymouth, unl0kr, something written by myself using LVGL)
+
+  #TODO: understand what this is used for
+  mobile.quirks.audio.alsa-ucm-meld = true;
+  environment.systemPackages = [pkgs.alsa-ucm-conf];
+
+  services.udev.extraRules = ''
+    SUBSYSTEM=="input", KERNEL=="event*", ENV{ID_INPUT}=="1", SUBSYSTEMS=="input", ATTRS{name}=="spmi_haptics", TAG+="uaccess", ENV{FEEDBACKD_TYPE}="vibra"
+    SUBSYSTEM=="misc", KERNEL=="fastrpc-*", ENV{ACCEL_MOUNT_MATRIX}+="-1, 0, 0; 0, -1, 0; 0, 0, -1"
+  '';
+
+  mobile.quirks.qualcomm.sdm845-modem.enable = true;
+  specialisation.nomodem.configuration = {
+    mobile.quirks.qualcomm.sdm845-modem.enable = lib.mkForce false;
+    systemd.services.q6voiced.enable = false;
+  };
+
+  hardware.enableRedistributableFirmware = true;
+  nixpkgs.config.allowUnfreePredicate = pkg:
+    builtins.elem (lib.getName pkg) [
+      "firmware-oneplus-sdm845"
+      "firmware-oneplus-sdm845-xz"
+    ];
+  hardware.firmware = lib.mkAfter [pkgs.enchilada_firmware];
+
+  #TODO: uncomment when getting network stuff onto the phone
+  #systemd.services.ModemManager.serviceConfig.ExecStart = ["" "${pkgs.modemmanager}/bin/ModemManager --test-quick-suspend-resume"];
+
   boot.kernelPackages =
-    lib.mkForce (pkgsARM.linuxPackagesFor
-      (pkgsARM.ccachePkgs.buildLinuxWithCcache pkgsARM.linux_enchilada));
+    lib.mkForce (pkgsARM.linuxPackagesFor pkgsARM.linux_enchilada);
+  hardware.deviceTree.enable = true;
+  hardware.deviceTree.name = "qcom/sdm845-oneplus-enchilada.dtb";
+  boot.consoleLogLevel = 7;
+  boot.kernelParams = [
+    "console=ttyMSM0,115200"
+    "console=tty0"
+    "dtb=/${config.hardware.deviceTree.name}"
+  ];
+  system.build.uboot = pkgs.ubootImage;
   boot.loader = {
     grub.enable = false;
     systemd-boot.enable = true;
+    systemd-boot.extraFiles.${config.hardware.deviceTree.name} = "${config.hardware.deviceTree.package}/${config.hardware.deviceTree.name}";
     efi.canTouchEfiVariables = false;
   };
   boot.initrd = {
-    #TODO: what if some modules are needed but don't exist?
     includeDefaultModules = false;
-    #NOTE: taken from Chayleaf
     kernelModules = [
-      # for adb
-      "configfs"
-      "libcomposite"
-      "g_ffs"
-      # idk what this is for, but postmarketos adds these
-      "i2c_qcom_geni"
-
       "i2c_qcom_geni"
       "rmi_core"
       "rmi_i2c"
       "qcom_spmi_haptics"
+      "dm_mod"
+      "zfs"
+      "spl"
+    ];
+    availableKernelModules = [
+      "configfs"
+      "libcomposite"
+      "g_ffs"
+
+      "i2c_qcom_geni"
+      "rmi_core"
+      "rmi_i2c"
 
       "ext2"
       "ext4"
@@ -65,4 +118,6 @@
       "dm_mod"
     ];
   };
+
+  #TODO: adb (look into chayleaf's config for it)
 }

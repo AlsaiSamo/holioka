@@ -8,6 +8,7 @@ inputs @ {
   ...
 }: {
   hlk = {
+    common.enable = true;
     defaultFilesystems = true;
     stateRemoval.enable = true;
     backup.enable = true;

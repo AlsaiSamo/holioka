@@ -149,6 +149,9 @@ in {
         (lib.mkIf (cfg.shell == "fish") {
           programs.fish.enable = true;
         })
+        (lib.mkIf (cfg.shell == "zsh") {
+          programs.zsh.enable = true;
+        })
       ];
   inherit options;
 }
