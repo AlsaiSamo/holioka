@@ -3,7 +3,9 @@
   pkgsFinal ? pkgsPrev,
   lib,
   flake_inputs,
-}: {
+}:
+#TODO: create a misc directory and move this file + patches to it
+rec {
   atuin = pkgsPrev.atuin.overrideAttrs (old: {
     patches =
       (old.patches or [])

@@ -13,5 +13,6 @@ select_user: (map (x: import x select_user) [
   ./work.nix
   ./common.nix
   ./keepass.nix
+  ./network.nix
   #./graphical.nix
 ])

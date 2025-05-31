@@ -38,7 +38,7 @@ in {
       pcmanfm
       poppler
       ffmpegthumbnailer
-      haskellPackages.freetype2
+      # haskellPackages.freetype2
     ];
 
     services.gammastep = {

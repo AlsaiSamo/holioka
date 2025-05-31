@@ -84,6 +84,7 @@ in {
               fzf.enable = true;
               bat.enable = true;
               eza.enable = true;
+              fd.enable = true;
               direnv = {
                 enable = true;
                 nix-direnv.enable = true;

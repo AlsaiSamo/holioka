@@ -19,8 +19,7 @@ inputs @ {
     };
     virt.default.enable = true;
     network = {
-      default.enable = true;
-      desktop.enable = true;
+      manager = "iwd";
       hostName = "east";
     };
     sshd = {

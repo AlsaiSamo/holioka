@@ -7,28 +7,40 @@
 }: let
   cfg = config.hlk.network;
 in {
-  #TODO: select between different network managing options
+  #TODO: tcpcrypt?
+  #TODO: modemmanager
   options.hlk.network = {
-    default.enable = lib.mkEnableOption "default network configuration";
-    desktop.enable = lib.mkEnableOption "network tray applet";
-    # wireless.enable = lib.mkEnableOption "wireless";
+    manager = lib.mkOption {
+      example = "iwd";
+      description = "What should manage networking";
+      default = "none";
+      type = lib.types.enum ["none" "iwd" "networkmanager"];
+    };
     hostName = lib.mkOption {
       description = "Host name";
       type = lib.types.str;
     };
   };
   config = lib.mkMerge [
-    (lib.mkIf cfg.default.enable {
+    (lib.mkIf (cfg.manager == "iwd") {
       networking = {
         hostName = secrets.${cfg.hostName}.hostName;
         hostId = secrets.${cfg.hostName}.hostId;
         nftables.enable = true;
         wireless.iwd.enable = true;
       };
+      environment.systemPackages = [pkgs.impala];
       environment.persistence."/state".directories = ["/var/lib/iwd"];
     })
-    (lib.mkIf cfg.desktop.enable {
-      environment.systemPackages = with pkgs; [iwgtk];
+    (lib.mkIf (cfg.manager == "networkmanager") {
+      networking = {
+        hostName = secrets.${cfg.hostName}.hostName;
+        hostId = secrets.${cfg.hostName}.hostId;
+        nftables.enable = true;
+        networkmanager.enable = true;
+        #TODO: persist networkmanager stuff
+      };
+      environment.persistence."/state".directories = ["/var/lib/NetworkManager"];
     })
   ];
 }

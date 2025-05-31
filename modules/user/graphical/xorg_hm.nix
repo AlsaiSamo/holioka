@@ -69,7 +69,7 @@ in {
       vSync = true;
     };
 
-    home.persistence."/state/home/imikoy" = {
+    home.persistence."/state/home/${userName}" = {
       directories = [
         ".cache/betterlockscreen"
       ];

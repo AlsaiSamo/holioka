@@ -6,6 +6,7 @@
   volatile,
   pkgsARM,
   mobile,
+  secrets,
   ...
 }: {
   imports = [
@@ -18,20 +19,18 @@
 
   nix.settings.cores = 4;
 
-  #TODO: list of things to have (expand!)
-  #0. Audio
-  #1. Networking
-  #2. Calls
-  #   q6voiced (there's a package definition in chayleaf's config)
-  #3. Screen shutdown and lightup, with locking
-  #4. Calls receiving when screen is off
-  #5. Fingerprint sensor
-  #6. Screen rotation
-  #7. Pretti boot screen (plymouth, unl0kr, something written by myself using LVGL)
+  #makes the screen in tty go black
+  services.kmscon.enable = lib.mkForce false;
 
-  #TODO: understand what this is used for
+  systemd.network.links."40-wlan0" = {
+    matchConfig.OriginalName = "wlan0";
+    linkConfig.MACAddressPolicy = "none";
+    #TODO: check that the MAC stays the same
+    linkConfig.MACAddress = secrets.north.modemMAC;
+  };
+
   mobile.quirks.audio.alsa-ucm-meld = true;
-  environment.systemPackages = [pkgs.alsa-ucm-conf];
+  environment.systemPackages = [pkgs.alsa-ucm-conf-op];
 
   services.udev.extraRules = ''
     SUBSYSTEM=="input", KERNEL=="event*", ENV{ID_INPUT}=="1", SUBSYSTEMS=="input", ATTRS{name}=="spmi_haptics", TAG+="uaccess", ENV{FEEDBACKD_TYPE}="vibra"
@@ -52,8 +51,7 @@
     ];
   hardware.firmware = lib.mkAfter [pkgs.enchilada_firmware];
 
-  #TODO: uncomment when getting network stuff onto the phone
-  #systemd.services.ModemManager.serviceConfig.ExecStart = ["" "${pkgs.modemmanager}/bin/ModemManager --test-quick-suspend-resume"];
+  systemd.services.ModemManager.serviceConfig.ExecStart = ["" "${pkgs.modemmanager}/bin/ModemManager --test-quick-suspend-resume"];
 
   boot.kernelPackages =
     lib.mkForce (pkgsARM.linuxPackagesFor pkgsARM.linux_enchilada);
@@ -118,6 +116,4 @@
       "dm_mod"
     ];
   };
-
-  #TODO: adb (look into chayleaf's config for it)
 }

@@ -74,4 +74,40 @@ in rec {
         -o "$out"
     '';
   };
+
+  alsa-ucm-conf-op = pkgsPrev.stdenvNoCC.mkDerivation {
+    pname = "alsa-ucm-conf-enchilada";
+    version = "unstable-2022-12-08";
+    src = pkgsPrev.fetchFromGitLab {
+      owner = "sdm845-mainline";
+      repo = "alsa-ucm-conf";
+      rev = "aaa7889f7a6de640b4d78300e118457335ad16c0";
+      hash = "sha256-2P5ZTrI1vCJ99BcZVPlkH4sv1M6IfAlaXR6ZjAdy4HQ=";
+    };
+    installPhase = ''
+      substituteInPlace ucm2/lib/card-init.conf --replace '"/bin' '"/run/current-system/sw/bin'
+      mkdir -p "$out"/share/alsa/ucm2/{OnePlus,conf.d/sdm845,lib}
+      mv ucm2/lib/card-init.conf "$out/share/alsa/ucm2/lib/"
+      mv ucm2/OnePlus/enchilada "$out/share/alsa/ucm2/OnePlus/"
+      ln -s ../../OnePlus/enchilada/enchilada.conf "$out/share/alsa/ucm2/conf.d/sdm845/oneplus-OnePlus6-Unknown.conf"
+    '';
+    # to overwrite card-init.conf
+    meta.priority = -10;
+  };
+
+  q6voiced = pkgsPrev.stdenv.mkDerivation {
+    pname = "q6voiced";
+    version = "unstable-2022-07-08";
+    src = pkgsPrev.fetchFromGitLab {
+      owner = "postmarketOS";
+      repo = "q6voiced";
+      rev = "736138bfc9f7b455a96679e2d67fd922a8f16464";
+      hash = "sha256-7k5saedIALHlsFHalStqzKrqAyFKx0ZN9FhLTdxAmf4=";
+    };
+    buildInputs = with pkgsPrev; [dbus tinyalsa];
+    nativeBuildInputs = with pkgsPrev; [pkg-config];
+    buildPhase = ''cc $(pkg-config --cflags --libs dbus-1) -ltinyalsa -o q6voiced q6voiced.c'';
+    installPhase = ''install -m555 -Dt "$out/bin" q6voiced'';
+    meta.license = lib.licenses.mit;
+  };
 }

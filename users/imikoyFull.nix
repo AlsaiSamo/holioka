@@ -10,7 +10,7 @@
   extraUserConfig,
   ...
 }:
-#TODO: transfer all this stuff into the userMdodules
+#TODO: remove
 {
   _module.args.userName = userName;
   nixpkgs.overlays = hmOverlay;

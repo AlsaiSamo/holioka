@@ -20,7 +20,7 @@ in {
     #hm
     then
       lib.mkIf cfg.default.enable {
-        home.persistence."/local_state/home/imikoy" = {
+        home.persistence."/local_state/home/${userName}" = {
           directories = [".local/share/nvim"];
         };
         programs.neovim = {

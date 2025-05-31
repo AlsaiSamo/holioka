@@ -5,7 +5,7 @@ select_user: {
   userName,
   ...
 }:
-#TODO: have osu (when ported to West)
+#TODO: include osu here
 let
   cfg = config._hlk_auto.games;
   options._hlk_auto.games = {

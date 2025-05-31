@@ -6,6 +6,7 @@ select_user: {
   ...
 }:
 #Emacs config
+#TODO: review the modules and later the entire config
 let
   cfg = config._hlk_auto.emacs;
   options._hlk_auto.emacs = {

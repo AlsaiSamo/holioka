@@ -66,7 +66,7 @@ in {
     };
     home.persistence."/state/home/${userName}" = {
       allowOther = true;
-      files = [".zcompdump"];
+      # files = [".zcompdump"];
     };
   };
 }

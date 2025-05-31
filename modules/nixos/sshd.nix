@@ -46,5 +46,6 @@ in {
       bantime = "30m";
     };
     users.users.root.openssh.authorizedKeys.keyFiles = cfg.rootKeysFrom;
+    environment.persistence."/state".directories = ["/var/lib/fail2ban"];
   };
 }

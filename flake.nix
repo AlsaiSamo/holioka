@@ -4,7 +4,8 @@
     nixpkgs.url = "github:nixOS/nixpkgs/nixos-24.11";
     nixos-hardware.url = "github:nixOS/nixos-hardware";
     lix-mod = {
-      url = "https://git.lix.systems/lix-project/nixos-module/archive/2.91.0.tar.gz";
+      #url = "https://git.lix.systems/lix-project/nixos-module/archive/2.91.0.tar.gz";
+      url = "https://git.lix.systems/lix-project/nixos-module/archive/2.92.0.tar.gz";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     impermanence.url = "github:nix-community/impermanence";
@@ -17,6 +18,10 @@
       url = "github:marienz/nix-doom-emacs-unstraightened";
       #NOTE: settings nixpkgs to "" is mentioned in the flake's repo
       inputs.nixpkgs.follows = "";
+    };
+    # TODO: use
+    niri = {
+      url = "github:sodiboo/niri-flake/262837d8190629c4af723e35a7f2a3f49d1afb26";
     };
     mobile-nixos = {
       url = "github:mobile-nixos/mobile-nixos";
@@ -35,12 +40,14 @@
     home-manager,
     nur,
     ndeu,
+    niri,
     mobile-nixos,
     nix-colors,
     ...
   } @ flake_inputs: let
-
+    #TODO: Usermodules: compare them against nixos modules, some settings  might have been duplicated
     #TODO: LIST OF WANTS
+    #1. playerctl
     #1. RSS
     #2. Switch to nix-colors
     #3. Try out cutiepro colorscheme
@@ -61,6 +68,7 @@
       overlaysDefault
       ++ [
         nur.overlay
+        niri.overlays.niri
         (import "${mobile-nixos}/overlay/overlay.nix")
       ];
 
@@ -68,6 +76,7 @@
     nixosModules' = [
       impermanence.nixosModule
       nur.modules.nixos.default
+      niri.nixosModules.niri
       home-manager.nixosModules.home-manager
       #NOTE: lix-mod.nixosModules.default is included on per-machine basis
       (import ./modules/nixos/default.nix)
@@ -77,6 +86,7 @@
       nur.modules.homeManager.default
       ./modules/home-manager/default.nix
       ndeu.hmModule
+      # niri.homeModules.niri
       nix-colors.homeManagerModules.default
     ];
     #pseudo-modules that affect both hm and nixos and so have identical option trees
@@ -153,6 +163,28 @@
           ++ [
             (import ./machines/north)
             (import ./hardware/enchilada)
+            #TODO: try to build on the phone
+            lix-mod.nixosModules.default
+            {
+              nixpkgs.config.allowUnfree = true;
+              nixpkgs.overlays = allOverlays;
+            }
+          ];
+      };
+      north_minimal = nixpkgs.lib.nixosSystem {
+        system = "aarch64-linux";
+        specialArgs = {
+          inherit flake_inputs secrets volatile hmModules hmOverlay;
+          pkgsARM = nixpkgsARM.pkgs;
+          mobile = mobile-nixos;
+        };
+        modules =
+          nixosModules
+          ++ [
+            (import ./machines/north/minimal.nix)
+            (import ./hardware/enchilada)
+            #TODO: try to build on the phone
+            lix-mod.nixosModules.default
             {
               nixpkgs.config.allowUnfree = true;
               nixpkgs.overlays = allOverlays;

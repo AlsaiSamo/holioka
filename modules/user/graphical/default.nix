@@ -8,11 +8,13 @@ select_user: {
 }: let
   cfg = config._hlk_auto.graphical;
   options._hlk_auto.graphical = {
+    #TODO: rename? since I am adding wayland_mobile it would be more appropriate to rename the option
+    #TODO: replace phosh with something else (niri-based?)
     windowSystem = lib.mkOption {
       example = "xorg";
       description = "What windowing system and the respective environment to enable for the user";
       default = "none";
-      type = lib.types.enum ["none" "xorg" "wayland"];
+      type = lib.types.enum ["none" "xorg" "wayland" "wayland_mobile"];
     };
   };
 in {
@@ -21,9 +23,9 @@ in {
   imports =
     if select_user
     #hm
-    then [./wayland_hm.nix ./xorg_hm.nix]
+    then [./wayland_hm.nix ./xorg_hm.nix ./wayland_mobile_hm.nix]
     #nixos
-    else [./wayland_nixos.nix ./xorg_nixos.nix];
+    else [./wayland_nixos.nix ./xorg_nixos.nix ./wayland_mobile_nixos.nix];
   #Handling of selecting either option
   config =
     if select_user
@@ -44,9 +46,7 @@ in {
           #TODO: find a better image viewer
           feh
 
-          kdePackages.dolphin
-          kdePackages.qtwayland
-          kdePackages.qtsvg
+          nemo-with-extensions
           #pcmanfm
 
           #thumbnail stuff
@@ -56,7 +56,7 @@ in {
           webp-pixbuf-loader
           poppler
           ffmpegthumbnailer
-          haskellPackages.freetype2
+          #haskellPackages.freetype2
         ];
 
         services.gammastep = {
@@ -88,6 +88,7 @@ in {
           ../../../dotfiles/alacritty.toml;
 
         dconf.enable = true;
+        #TODO: theming
         gtk = {
           enable = true;
           font = {

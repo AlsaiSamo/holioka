@@ -74,10 +74,11 @@
 
 ;TODO: formatter is not applied on save?
 (set-formatter! 'alejandra "alejandra -q - " :modes '(nix-mode))
+;; (add-hook 'nix-mode-hook 'font-lock-mode)
 ;; (setq-hook! 'nix-mode-hook +format-with 'alejandra)
 ; Requires format without +onsave (replaces it)
-(add-hook 'nix-mode-hook #'format-all-mode)
-(add-hook 'rustic-mode-hook #'format-all-mode)
+;; (add-hook 'nix-mode-hook #'format-all-mode)
+;; (add-hook 'rustic-mode-hook #'format-all-mode)
 
 (use-package! exec-path-from-shell
   :config (dolist (var '("SSH_AUTH_SOCK" "SSH_AGENT_PID"))

@@ -19,23 +19,14 @@
       lowLatency.enable = true;
     };
     virt.default.enable = true;
-    network = {
-      default.enable = true;
-      desktop.enable = true;
-      hostName = "west";
-    };
     sshd = {
       default.enable = true;
       rootKeysFrom = secrets.west.authorizedKeyFiles;
     };
-    #TODO: this is to be removed after defining mainUserRewrite
+    #TODO: remove
     graphical.windowSystem = "xorg";
     fcitx.enable = true;
-    # mainUser = {
-    #   default.enable = true;
-    # };
 
-    #TODO: update usermodules with west user's config and write this
     mainUserRewrite = {
       enable = true;
       userName = "imikoy";
@@ -55,6 +46,10 @@
           shell = "zsh";
           starship.enable = true;
         };
+        network = {
+          manager = "iwd";
+          hostName = "west";
+        };
         firefox.default.enable = true;
         gpg.default.enable = true;
         nvim.default.enable = true;
@@ -65,6 +60,11 @@
       };
       extraHmConfig = {};
     };
+  };
+
+  # protracted imikoy's war against adhd
+  networking.hosts = {
+    "127.0.0.1" = ["youtube.com" "hexbear.net" "lemmy.ml" "reddit.com"];
   };
 
   nix.extraOptions = ''
