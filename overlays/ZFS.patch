@@ -1,8 +1,8 @@
 diff --git a/crates/atuin-client/src/database.rs b/crates/atuin-client/src/database.rs
-index d01dadb4..f0b22131 100644
+index 06f0bbb..3e81afe 100644
 --- a/crates/atuin-client/src/database.rs
 +++ b/crates/atuin-client/src/database.rs
-@@ -138,9 +138,9 @@ impl Sqlite {
+@@ -149,9 +149,9 @@ impl Sqlite {
          }
  
          let opts = SqliteConnectOptions::from_str(path.as_os_str().to_str().unwrap())?
@@ -15,19 +15,19 @@ index d01dadb4..f0b22131 100644
              .create_if_missing(true);
  
 diff --git a/crates/atuin-client/src/record/sqlite_store.rs b/crates/atuin-client/src/record/sqlite_store.rs
-index 31de311b..5d3c501e 100644
+index a3e7228..4e661ef 100644
 --- a/crates/atuin-client/src/record/sqlite_store.rs
 +++ b/crates/atuin-client/src/record/sqlite_store.rs
-@@ -10,7 +10,7 @@ use eyre::{eyre, Result};
- use fs_err as fs;
+@@ -11,7 +11,7 @@ use fs_err as fs;
  
  use sqlx::{
+     Row,
 -    sqlite::{SqliteConnectOptions, SqliteJournalMode, SqlitePool, SqlitePoolOptions, SqliteRow},
 +    sqlite::{SqliteConnectOptions, SqliteJournalMode, SqlitePool, SqlitePoolOptions, SqliteRow, SqliteSynchronous},
-     Row,
  };
  
-@@ -41,7 +41,8 @@ impl SqliteStore {
+ use atuin_common::record::{
+@@ -48,7 +48,8 @@ impl SqliteStore {
          }
  
          let opts = SqliteConnectOptions::from_str(path.as_os_str().to_str().unwrap())?

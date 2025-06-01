@@ -1,0 +1,87 @@
+diff --git a/src/input.rs b/src/input.rs
+index 5b22b8e..b62a0dc 100644
+--- a/src/input.rs
++++ b/src/input.rs
+@@ -153,6 +153,7 @@ const fn make_md(name: &'static wstr, code: ReadlineCmd) -> InputFunctionMetadat
+     make_md(L!("clear-screen"), ReadlineCmd::ClearScreenAndRepaint),
+     make_md(L!("complete"), ReadlineCmd::Complete),
+     make_md(L!("complete-and-search"), ReadlineCmd::CompleteAndSearch),
++    make_md(L!("complete-and-search-fw"), ReadlineCmd::CompleteAndSearchFw),
+     make_md(L!("delete-char"), ReadlineCmd::DeleteChar),
+     make_md(L!("delete-or-exit"), ReadlineCmd::DeleteOrExit),
+     make_md(L!("down-line"), ReadlineCmd::DownLine),
+diff --git a/src/input_common.rs b/src/input_common.rs
+index e11b557..a80f54a 100644
+--- a/src/input_common.rs
++++ b/src/input_common.rs
+@@ -75,6 +75,7 @@ pub enum ReadlineCmd {
+     YankPop,
+     Complete,
+     CompleteAndSearch,
++    CompleteAndSearchFw,
+     PagerToggleSearch,
+     BeginningOfHistory,
+     EndOfHistory,
+diff --git a/src/reader.rs b/src/reader.rs
+index cdeee88..899a9f0 100644
+--- a/src/reader.rs
++++ b/src/reader.rs
+@@ -2730,7 +2730,7 @@ fn handle_readline_command(&mut self, c: ReadlineCmd) {
+                 if self.rls().complete_did_insert
+                     && matches!(
+                         self.rls().last_cmd,
+-                        Some(rl::Complete | rl::CompleteAndSearch)
++                        Some(rl::Complete | rl::CompleteAndSearch | rl::CompleteAndSearchFw)
+                     )
+                 {
+                     let (elt, _el) = self.active_edit_line();
+@@ -2771,7 +2771,7 @@ fn handle_readline_command(&mut self, c: ReadlineCmd) {
+                 self.force_exec_prompt_and_repaint = false;
+                 self.parser.libdata_mut().is_repaint = false;
+             }
+-            rl::Complete | rl::CompleteAndSearch => {
++            rl::Complete | rl::CompleteAndSearch | rl::CompleteAndSearchFw => {
+                 if !self.conf.complete_ok {
+                     return;
+                 }
+@@ -2786,7 +2786,7 @@ fn handle_readline_command(&mut self, c: ReadlineCmd) {
+                         self.pager.set_fully_disclosed();
+                     } else {
+                         self.select_completion_in_direction(
+-                            if c == rl::Complete {
++                            if c == rl::Complete || c == rl::CompleteAndSearchFw {
+                                 SelectionMotion::Next
+                             } else {
+                                 SelectionMotion::Prev
+@@ -5543,6 +5543,7 @@ fn command_ends_paging(c: ReadlineCmd, focused_on_search_field: bool) -> bool {
+         }
+         rl::Complete
+         | rl::CompleteAndSearch
++        | rl::CompleteAndSearchFw
+         | rl::HistoryPager
+         | rl::BackwardChar
+         | rl::BackwardCharPassive
+@@ -6239,7 +6240,7 @@ impl<'a> Reader<'a> {
+     fn compute_and_apply_completions(&mut self, c: ReadlineCmd) {
+         assert!(matches!(
+             c,
+-            ReadlineCmd::Complete | ReadlineCmd::CompleteAndSearch
++            ReadlineCmd::Complete | ReadlineCmd::CompleteAndSearch | ReadlineCmd::CompleteAndSearchFw
+         ));
+ 
+         // Remove a trailing backslash. This may trigger an extra repaint, but this is
+@@ -6343,6 +6344,14 @@ fn compute_and_apply_completions(&mut self, c: ReadlineCmd) {
+             self.pager.set_search_field_shown(true);
+             self.select_completion_in_direction(SelectionMotion::Next, false);
+         }
++
++        else if c == ReadlineCmd::CompleteAndSearchFw
++            && !self.rls().complete_did_insert
++            && !self.pager.is_empty()
++        {
++            self.pager.set_search_field_shown(true);
++            self.select_completion_in_direction(SelectionMotion::Prev, false);
++        }
+     }
+ 
+     fn try_insert(&mut self, c: Completion, tok: &wstr, token_range: Range<usize>) {

@@ -1,11 +1,10 @@
 {
   inputs = {
     flake-utils.url = "github:numtide/flake-utils";
-    nixpkgs.url = "github:nixOS/nixpkgs/nixos-24.11";
+    nixpkgs.url = "github:nixOS/nixpkgs/nixos-unstable";
     nixos-hardware.url = "github:nixOS/nixos-hardware";
     lix-mod = {
-      #url = "https://git.lix.systems/lix-project/nixos-module/archive/2.91.0.tar.gz";
-      url = "https://git.lix.systems/lix-project/nixos-module/archive/2.92.0.tar.gz";
+      url = "https://git.lix.systems/lix-project/nixos-module/archive/2.93.0.tar.gz";
       inputs.nixpkgs.follows = "nixpkgs";
     };
     impermanence.url = "github:nix-community/impermanence";
@@ -19,14 +18,15 @@
       #NOTE: settings nixpkgs to "" is mentioned in the flake's repo
       inputs.nixpkgs.follows = "";
     };
-    # TODO: use
+    # TODO: actually use this
     niri = {
-      url = "github:sodiboo/niri-flake/262837d8190629c4af723e35a7f2a3f49d1afb26";
+      url = "github:sodiboo/niri-flake";
     };
     mobile-nixos = {
       url = "github:mobile-nixos/mobile-nixos";
       flake = false;
     };
+    # TODO: actually use this
     nix-colors.url = "github:Misterio77/nix-colors";
   };
 
@@ -51,6 +51,8 @@
     #1. RSS
     #2. Switch to nix-colors
     #3. Try out cutiepro colorscheme
+    #4. nixos on the phone
+    #5. full switch to wayland
     #Secrets may be distributed together with state, but they are encrypted in the repo.
     secrets = import ./secrets.nix {};
     #Volatile configuration is different between physical machines and reinstalls

@@ -17,7 +17,7 @@ rec {
     patches =
       (old.patches or [])
       ++ [
-        ./fish-complete-and-search-proper.patch
+        ./fish-complete-and-search-proper.patch.rust
       ];
   });
 

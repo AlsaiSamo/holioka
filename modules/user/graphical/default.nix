@@ -38,7 +38,10 @@ in {
           sarasa-gothic
           noto-fonts-color-emoji
           font-awesome
-          (nerdfonts.override {fonts = ["FiraCode" "Iosevka" "Hack"];})
+          #(nerdfonts.override {fonts = ["FiraCode" "Iosevka" "Hack"];})
+          nerd-fonts.fira-code
+          nerd-fonts.iosevka
+          nerd-fonts.hack
 
           alacritty
           warpd
