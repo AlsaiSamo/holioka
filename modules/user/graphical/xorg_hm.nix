@@ -13,12 +13,16 @@ in {
     home.packages = with pkgs; [
       i3
       rofi-power-menu
+      warpd
 
       xclip
       xdotool
       shotgun
       slop
     ];
+
+    #TODO: configure correctly, it is now using j for scrolling down
+    xdg.configFile."warpd/config".source = ../../../dotfiles/warpd/config;
 
     services.betterlockscreen = {
       enable = true;

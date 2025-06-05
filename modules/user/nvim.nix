@@ -191,7 +191,6 @@ in {
           ];
 
           extraConfig = ''
-            set pastetoggle=<F2>
             nnoremap <SPACE> <Nop>
             let mapleader=" "
             set mouse="a"

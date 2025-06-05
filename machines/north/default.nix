@@ -49,7 +49,7 @@ inputs @ {
       defaultFilesystems = true;
       stateRemoval.enable = true;
       backup.enable = true;
-      mainUserRewrite = {
+      mainUser = {
         enable = true;
         userName = "imikoy";
         userConfig = {

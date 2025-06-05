@@ -88,8 +88,8 @@
 (use-package! pinentry
   :init (setq
          ;; Emacs works ok with loopback pinentry
-              epg-pinentry-mode 'loopback
-              epa-pinentry-mode 'loopback
+              ;; epg-pinentry-mode 'loopback
+              ;; epa-pinentry-mode 'loopback
               epg-gpg-home-directory "/state/secrets/.gnupg")
         (setenv "GNUPGHOME" "/state/secrets/.gnupg")
   :config (pinentry-start))

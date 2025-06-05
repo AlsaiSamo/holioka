@@ -10,6 +10,7 @@
   modifier = config.wayland.windowManager.sway.config.modifier;
   terminal = config.wayland.windowManager.sway.config.terminal;
 in {
+  #TODO: try niri in the future
   #hm
   #TODO: waydroid?
   config = lib.mkIf (cfg.windowSystem == "wayland") {
@@ -18,12 +19,19 @@ in {
       wayshot
       slurp
       wl-clipboard
-      warpd
+      wl-kbptr
+      wlrctl
+      #for ifne
+      moreutils
     ];
+
+    xdg.configFile."wl-kbptr/config".source = ../../../dotfiles/wl-kbptr.conf;
+
     wayland.windowManager.sway = {
       checkConfig = false;
       enable = true;
       extraConfig = lib.concatStringsSep "\n" [
+        "mouse_warping none"
         "output * bg ${config.xdg.userDirs.pictures}/wallpaper.png fit"
 
         "bindsym ${modifier}+Ctrl+l exec"
@@ -34,17 +42,42 @@ in {
         "bindsym ${modifier}+Shift+q exec"
         "bindsym --release ${modifier}+Shift+q kill"
 
-        #TODO: spawns warpd process that does nothing due to some bug (try to fix it after flake update)
-        "bindsym ${modifier}+n exec pgrep warpd || warpd --normal"
-        "bindsym ${modifier}+m exec pgrep warpd || warpd --hint"
+        #Taken from wl-kbptr's readme
+        #TODO: want to have warpd's smoothness...
+        #TODO: make the mouse look different? how can this be done?
+        "mode Mouse {"
+        "# Mouse move"
+        "bindsym Left exec wlrctl pointer move -5 0"
+        "bindsym Down exec wlrctl pointer move 0 5"
+        "bindsym Up exec wlrctl pointer move 0 -5"
+        "bindsym Right exec wlrctl pointer move 5 0"
+
+        "# Left button"
+        "bindsym m exec wlrctl pointer click left"
+
+        "# Middle button"
+        "bindcode 59 exec wlrctl pointer click middle"
+
+        "# Right button"
+        "bindcode 60 exec wlrctl pointer click right"
+        "bindsym Escape mode default"
+        "}"
+        #End of wl-kbptr's readme segment
+
+        #TODO: would be cool to have $mod+m switch from floating to tile if pressed after launch
+        "unbindsym ${modifier}+j"
+        "bindsym ${modifier}+j exec pgrep wl-kbptr || wl-kbptr -c $HOME/${config.xdg.configFile."wl-kbptr/config".target} -o modes=floating',' -o mode_floating.source=detect && swaymsg mode Mouse"
+        "bindsym ${modifier}+m exec pgrep wl-kbptr || wl-kbptr -c $HOME/${config.xdg.configFile."wl-kbptr/config".target} -o modes=tile',' && swaymsg mode Mouse"
+        "bindsym ${modifier}+n mode Mouse"
 
         "bindsym ${modifier}+Ctrl+p exec pgrep wleave || wleave -b4 -c10 -p layer-shell"
 
-        "bindsym --release Print exec wayshot --stdout | tee ${config.xdg.userDirs.pictures}/screenshot_$(date +'%y-%m-%d_%T').png | wl-copy"
         #FIX: doen't work on East due to Shift-Print not being registered
-        "bindsym Print+Shift exec wayshot -s (slurp) --stdout | tee ${config.xdg.userDirs.pictures}/screenshot_$(date +'%y-%m-%d_%T').png | wl-copy"
+        "bindsym Print+Shift exec wayshot -s \"$(slurp)\" --stdout | ifne tee ${config.xdg.userDirs.pictures}/screenshot_$(date +'%y-%m-%d_%T').png | wl-copy"
+        "bindsym --release Print exec wayshot --stdout | ifne tee ${config.xdg.userDirs.pictures}/screenshot_$(date +'%y-%m-%d_%T').png | wl-copy"
 
         "bindcode Ctrl+47 exec cliphist list | fuzzel -d -w80 | cliphist decode | wl-copy"
+        "bindcode Ctrl+Shift+47 exec cliphist wipe"
 
         "bindsym --locked XF86MonBrightnessUp    exec --no-startup-id brightnessctl s +2%"
         "bindsym --locked XF86MonBrightnessDown  exec --no-startup-id brightnessctl s 2%-"
@@ -56,7 +89,6 @@ in {
         "bindsym ${modifier}+shift+f move workspace to output next"
       ];
       config = {
-        bars = [{id = "bar-0";}];
         terminal = "alacritty msg create-window $HOME || alacritty";
         menu = "fuzzel";
         modifier = "Mod4";
@@ -132,30 +164,32 @@ in {
         };
       };
     };
-    #TODO: configure modules and add css (now)
+
     programs.waybar = {
       enable = true;
       systemd.enable = true;
+      style = builtins.readFile ../../../dotfiles/waybar/waybar.css;
       settings.main = {
+        include = [
+          # Modules are configured here
+          ../../../dotfiles/waybar/waybar.jsonc
+        ];
         layer = "top";
         position = "left";
-        #These don't affect the bar but rather its contents
-        #width = 16;
-        #height = 16;
+        width = 40;
         ipc = true;
         id = "bar-0";
-        reload_on_style_change = true;
-        #NOTE: simpleclock also exists
-        #NOTE: group module can hide things (useful for things like cpu, mem and connection)
-        modules-left = ["clock" "battery" "sway/mode" "sway/language" "keyboard-state" "memory" "cpu" "network" "pulseaudio"];
+        modules-left = ["clock#time" "clock#date" "pulseaudio" "battery" "memory" "cpu" "network" "sway/language" "keyboard-state" "sway/mode"];
         modules-center = ["sway/workspaces"];
-        modules-right = ["tray"];
-        #margin (and top/left/right/bottom)
-        #spacing
-        #name
-        mode = "dock";
+        modules-right = ["idle_inhibitor" "tray"];
+        margin = "0";
+        spacing = "6";
+        exclusive = true;
+        fixed-center = true;
+        reload_style_on_change = true;
       };
     };
+
     programs.fuzzel = {
       enable = true;
       settings = {
@@ -216,6 +250,7 @@ in {
           text = "Reboot";
         }
       ];
+      #TODO: fix style
       style = ''
         window {
         	background-color: rgba(20, 14, 28, 0.85);

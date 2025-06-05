@@ -2,10 +2,12 @@
   west = {
     swapDevices = [
       {
-        device = "/dev/disk/by-uuid/553de4ea-dc22-4a77-84f5-a36c6b5dab82";
-        priority = 2048;
+        device = "/dev/disk/by-partuuid/ad50d1df-3db1-49e2-8bfd-ec704e5bbfb0";
+        randomEncryption.enable = true;
       }
     ];
+    #TODO: test this
+    #zramSwap.writebackDevice = "/dev/disk/by-partuuid/ad50d1df-3db1-49e2-8bfd-ec704e5bbfb0";
     fileSystems."/boot" = {
       device = "/dev/disk/by-uuid/CEEB-4273";
       fsType = "vfat";
@@ -22,7 +24,6 @@
       {
         device = "/dev/disk/by-partuuid/4ef7c7f0-53e6-4051-a37b-8231ecec6207";
         randomEncryption.enable = true;
-        priority = 2048;
       }
     ];
 

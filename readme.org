@@ -1,38 +1,69 @@
 #+title: Readme
-#+author: Alsai Samo (imikoy)
+#+author: Imikoy
 
-* TODO update
-* Overview
-+ =modules= contains modules, which provide options under common prefix =hlk=.
-  + =util= contains modules that are used (almost) exclusively as denpendencies of other modules.
-  + =nixos= contains hardware-agnostic modules of NixOS, such as:
-    - Basic CLI environment
-    - Basic GUI environment
-    - Default audio configuration
-    - etc.
-  + =home-manager= contains modules for home-manager.
-+ =machines= contains NixOS configurations.
-+ =users= contains home-manager configurations.
-+ =dotfiles= contains configuration files for user's environment.
+* Description
+A nix flake for my NixOS machines.
+It is focused on single-user setups (meaning that any multi-user config would need to be done from the ground up).
+* Machines
+** West
+This is the main machine - a (somewhat) beefy gaming laptop from 2020.
+** East
+This is the secondary machine - a weak AMD A10 Thinkpad.
+** North
+This is a OnePlus 6 that runs NixOS using UEFI. WIP.
+* Repo structure
++ =modules= contains modules that are used for NixOS and home-manager.
+  + =nixos= contains NixOS modules.
+    This directory is currently not maintained as these modules were largely superseded by usermodules.
+    These modules do not make an assumption that a "main" user exists, however I currently do not have machines without a "main" user.
+    The only exception is the ~user.nix~ module, which defines a main user of the machine.
+    All options are added under ~hlk~ tree.
+  + =user= contains "usermodules" - pseudomodules that expand into both NixOS and home-manager modules with identical option trees.
+    This was made to support setting options on both sides (NixOS and home-manager) with one configuration option.
+    These modules create their options in ~_hlk_auto~ config tree and define the module configs for NixOS and home-manager.
+    These modules are used via ~user.nix~ module from =nixos=.
++ =machines= contains NixOS configurations per logical machine.
++ =hardware= contains NixOS configuration portions per physical machine.
++ =dotfiles= contains config files for things. There is no strict rule what configs go into =dotfiles= and what are specified in nix code though.
 + =secret.nix= and =secrets= are encrypted in the repository and contain secret information, such as:
-  - SSH keys
+  - SSH pubkeys
   - Timezone
   - Machine configuration parts
   - User environment configuration parts
   - etc.
-+ =volatile.nix= contains information that is expected to change, such as partition UUIDs.
++ =volatile.nix= contains information that is expected to change on reinstalls, such as partition information.
 * Filesystem
 The filesystem is ZFS. It needs to be set up before installation.
 ** Structure
 1. nix_pool
    1. local
       1. home
-         home@blank contains user directories, owned by the respective users, ~Downloads~ and ~large_items~ symlinks to ~../../local_state/home/<username>/<source_dir>~
+         Mounted on ~/home~.
+         ~home@blank~ contains user directories, owned by the respective users, ~Downloads~ and ~large_items~ symlinks to ~../../local_state/home/<username>/<source_dir>~.
       2. log
+         Mounted on ~/var/log~.
       3. nix
+         Mounted on ~/nix~.
       4. root
-         root@blank contains nothing
+         Mounted on ~/~.
+         ~root@blank~ contains nothing - it is created right after creating the dataset.
       5. local_state
+         Mounted on ~/local_state~.
+         Contains state that is either local to the machine or does not fit into machine's state (for example, music).
    2. safe
+      This dataset is snapshotted regularly.
       1. secrets
+         Mounted on ~/state/secrets~. Contains keys, keepass databases, etc.
       2. state
+         Mounted on ~/state~.
+         Persisted state is stored here, mirroring the structure of root (so home state is in ~/state/home~, etc state is in ~/state/etc~). Also contains this repo (I use ~/state/holioka~), secrets mountpoint ~/state/secrets~.
+** Impermanence
+Modules are designed with an assumption of opt-in state preservation. Currently, all my machines remove their state (roll root and home snapshots to ~@blank~) on boot, with an option to not do that (provided via specialisation).
+* Extras
+** TODO North bringup instruction
+** TODO North installer
+This is a QEMU virtual machine that is used as an ARM environment to generate contents of the boot partition.
+** TODO North minimal config
+Since West and East are X86 machines, and North is an ARM smartphone, multiple things need to be crosscompiled (such as the kernel) or compiled in emulator.
+This is a minimal system that can be used to get a NixOS with compatible filesystem structure onto the phone. After this, one can upload the flake to the phone and install the full system, natively compiling everything (except for the kernel).
+Currently untested.

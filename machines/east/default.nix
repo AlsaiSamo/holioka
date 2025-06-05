@@ -28,7 +28,7 @@ inputs @ {
     };
     #TODO: currently cannot connect the two machines
     #nix.distributed.enable = true;
-    mainUserRewrite = {
+    mainUser = {
       enable = true;
       userName = "imikoy";
       userConfig = {

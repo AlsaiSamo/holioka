@@ -5,104 +5,83 @@
   secrets,
   hmModules,
   hmOverlay,
-  flake_inputs,
+  #flake_inputs,
   ...
-} @ inputs: let
+} @ inputs:
+#Main user of the machine.
+#Each machine typically has only one user and so has only one instance of hm usage.
+#The user has a home-manager config that cannot change nixos config
+#but is reliant on it.
+#Workaround: add config options with identical options tree to both nixos
+#and hm and set the same config values on both sides.
+let
   cfg = config.hlk.mainUser;
 in {
-  #Primary user is the one to autoLogin everywhere
   options = {
     hlk.mainUser = {
-      default.enable = lib.mkEnableOption "default configuration for machine's primary user";
+      enable = lib.mkEnableOption "enable machine's primary user";
       userName = lib.mkOption {
         default = "imikoy";
         description = "Name of machine's primary user";
         type = lib.types.str;
       };
-      hmProfile = lib.mkOption {
-        default = "${cfg.userName}Full";
-        description = "Home Manager profile";
-        type = lib.types.str;
+      #Config applied to both nixos and hm, through userModules
+      userConfig = lib.mkOption {
+        default = {};
+        description = "Main user's config";
+        type = lib.types.attrs;
       };
-      extraUserConfig =
-        lib.mkOption
-        {
-          default = {};
-          description = "Extra options to apply to the configuration of the primary user";
-          type = lib.types.attrs;
+      #TODO: make into a module
+      extraHmConfig = lib.mkOption {
+        default = {};
+        description = "Extra home-manager config";
+        type = lib.types.attrs;
+      };
+    };
+  };
+  config = lib.mkIf cfg.enable (
+    lib.mkMerge [
+      {
+        users.mutableUsers = false;
+        users.groups.${cfg.userName}.gid = 1000;
+        users.users.${cfg.userName} = {
+          uid = 1000;
+          hashedPassword = secrets.common.userHashedPassword;
+          #user's key always allows accessing the user
+          openssh.authorizedKeys.keyFiles = [../../secrets/${cfg.userName}.pub];
+          isNormalUser = true;
+          group = cfg.userName;
+          extraGroups = [
+            "wheel"
+          ];
         };
-    };
-  };
-  config = lib.mkIf cfg.default.enable {
-    users.mutableUsers = false;
-    users.groups.${cfg.userName}.gid = 1000;
-    users.users.${cfg.userName} = {
-      uid = 1000;
-      hashedPassword = secrets.common.userHashedPassword;
-      #user's key always allows accessing the user
-      openssh.authorizedKeys.keyFiles = [../../secrets/${cfg.userName}.pub];
-      isNormalUser = true;
-      group = cfg.userName;
-      shell = pkgs.zsh;
-      extraGroups = [
-        "wheel"
-        "realtime"
-        "pipewire"
-        "jackaudio"
-        "libvirt"
-        "libvirtd"
-        # "audio"
-        # "video"
-        #access to serial interfaces
-        "dialout"
-      ];
-    };
-    security.pam.loginLimits = [
-      {
-        domain = cfg.userName;
-        type = "hard";
-        item = "nofile";
-        value = "65535";
+        services.kmscon.autologinUser = cfg.userName;
+        home-manager = {
+          useUserPackages = false;
+          useGlobalPkgs = false;
+          verbose = true;
+          extraSpecialArgs = {
+            #TODO: remove this?
+            #inherit flake_inputs;
+            inherit secrets;
+            userName = cfg.userName;
+          };
+          users.${cfg.userName} = lib.mkMerge [
+            {
+              imports = hmModules;
+              _hlk_auto = cfg.userConfig;
+              home.stateVersion = "23.11";
+              programs.home-manager.enable = true;
+              nixpkgs.overlays = hmOverlay;
+            }
+            cfg.extraHmConfig
+          ];
+        };
       }
       {
-        domain = cfg.userName;
-        type = "soft";
-        item = "nofile";
-        value = "8191";
+        _module.args.userName = cfg.userName;
+        _hlk_auto = cfg.userConfig;
       }
-      {
-        domain = "@audio";
-        type = "-";
-        item = "memlock";
-        value = "unlimited";
-      }
-      {
-        domain = "@audio";
-        type = "-";
-        item = "rtprio";
-        value = "95";
-      }
-    ];
-
-    services.displayManager.autoLogin.user = cfg.userName;
-    services.kmscon.autologinUser = cfg.userName;
-
-    home-manager = {
-      useUserPackages = false;
-      useGlobalPkgs = false;
-      verbose = true;
-      extraSpecialArgs = {
-        inherit flake_inputs;
-        inherit secrets;
-      };
-    };
-    home-manager.users.${cfg.userName} =
-      import ../../users/${cfg.hmProfile}.nix
-      {
-        inherit flake_inputs hmModules hmOverlay pkgs config lib;
-        userName = cfg.userName;
-        home.homeDirectory = "/home/${cfg.userName}";
-        extraUserConfig = cfg.extraUserConfig;
-      };
-  };
+    ]
+  );
 }

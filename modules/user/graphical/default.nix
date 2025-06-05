@@ -9,7 +9,7 @@ select_user: {
   cfg = config._hlk_auto.graphical;
   options._hlk_auto.graphical = {
     #TODO: rename? since I am adding wayland_mobile it would be more appropriate to rename the option
-    #TODO: replace phosh with something else (niri-based?)
+    #TODO: replace phosh with something else (catacomb? niri?)
     windowSystem = lib.mkOption {
       example = "xorg";
       description = "What windowing system and the respective environment to enable for the user";
@@ -44,7 +44,7 @@ in {
           nerd-fonts.hack
 
           alacritty
-          warpd
+          #warpd
           mpv
           #TODO: find a better image viewer
           feh
@@ -116,7 +116,6 @@ in {
         };
         qt = {
           enable = true;
-          #style.package = pkgs.adwaita-qt;
           style.name = "breeze";
         };
 
@@ -158,13 +157,15 @@ in {
             };
           };
         };
-
-        #TODO: configure correctly, it is now using j for scrolling down
-        xdg.configFile."warpd/config".source = ../../../dotfiles/warpd/config;
       })
     #nixos
     else
       (lib.mkIf (cfg.windowSystem != "none") {
+        hardware.graphics = {
+          enable = true;
+          enable32Bit = true;
+          extraPackages = with pkgs; [libGL];
+        };
         environment.systemPackages = with pkgs; [
           alacritty
           brightnessctl

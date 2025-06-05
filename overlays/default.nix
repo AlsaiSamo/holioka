@@ -11,8 +11,8 @@
 in
   map fileOverlay
   [
-    ./misc.nix
+    ./misc
     ./enchilada/default.nix
     ./buffyboard.nix
-    ./sway.nix
+    ./sway
   ]

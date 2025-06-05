@@ -8,12 +8,14 @@
 }: {
   imports = [(modulesPath + "/installer/scan/not-detected.nix") volatile.west];
 
-  nix.settings.cores = 11;
+  #TODO: optimise for high memory pressure (zramSwap, related options)
+
+  nix.settings.cores = 6;
 
   #default, needs to be overridable
   # hardware.nvidia = {
   #   #Offload is enabled in nixos-hardware module
-  #   #FIX: causes issues. See notes.
+  #   #FIX: causes issues.
   #   #prime.reverseSync.enable = true;
   #   prime.sync.enable = true;
   #   prime.offload.enable = false;
@@ -38,8 +40,10 @@
   };
   zramSwap.enable = true;
 
-  boot.kernelPackages = pkgs.linuxPackagesFor pkgs.linux-rt_latest;
+  boot.kernelPackages = pkgs.linuxPackagesFor pkgs.linuxKernel.kernels.linux_zen;
+  #TODO: services.scx.scheduler = "scx_lavd"; services.scx.enable = true;
 
+  #TODO: replace with system76-scheduler?
   services.ananicy = {
     enable = true;
     package = pkgs.ananicy-cpp;

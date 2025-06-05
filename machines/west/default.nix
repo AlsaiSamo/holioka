@@ -23,17 +23,14 @@
       default.enable = true;
       rootKeysFrom = secrets.west.authorizedKeyFiles;
     };
-    #TODO: remove
-    graphical.windowSystem = "xorg";
-    fcitx.enable = true;
 
-    mainUserRewrite = {
+    mainUser = {
       enable = true;
       userName = "imikoy";
       userConfig = {
         common.enable = true;
         work.enable = true;
-        graphical.windowSystem = "xorg";
+        graphical.windowSystem = "wayland";
         emacs.default.enable = true;
         games = {
           osu.state.enable = true;
@@ -64,7 +61,7 @@
 
   # protracted imikoy's war against adhd
   networking.hosts = {
-    "127.0.0.1" = ["youtube.com" "hexbear.net" "lemmy.ml" "reddit.com"];
+    "127.0.0.1" = ["youtube.com" "www.youtube.com" "hexbear.net" "lemmy.ml" "reddit.com"];
   };
 
   nix.extraOptions = ''
@@ -72,23 +69,6 @@
   '';
   boot.binfmt.emulatedSystems = ["aarch64-linux"];
 
-  #TODO: move this into work usermodule
-  services.openvpn.servers.work = {
-    updateResolvConf = true;
-    config = secrets.work.vpn_conf;
-  };
-  environment.systemPackages = with pkgs; [
-    openvpn
-  ];
-
-  #TODO: do this for all machines
-  hardware.graphics = {
-    enable = true;
-    enable32Bit = true;
-    extraPackages = with pkgs; [libGL];
-  };
-
-  #TODO: squash input-leap into virtualisation module
   # specialisation."vm-with-nvidia-gpu" = {
   #   inheritParentConfig = true;
   #   configuration = {

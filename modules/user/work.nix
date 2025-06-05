@@ -3,6 +3,7 @@ select_user: {
   lib,
   pkgs,
   userName,
+  secrets,
   ...
 }:
 #TODO: add all of the things when migrating to West
@@ -20,14 +21,28 @@ in {
       lib.mkIf cfg.enable {
         #TODO: turn into a list of package names, then define the predicate function when processing the options that works with the merged list
         nixpkgs.config.allowUnfree = true;
-        home.packages = with pkgs; [
-          thunderbird
-          zoom-us
-          telegram-desktop
-          libreoffice
-          dbeaver-bin
-          wineWowPackages.stable
-        ];
+        home.packages = with pkgs;
+          [
+            thunderbird
+            zoom-us
+            telegram-desktop
+            libreoffice
+            dbeaver-bin
+          ]
+          ++ (
+            if (config._hlk_auto.graphical.windowSystem == "xorg")
+            then [
+              wineWowPackages.stable
+            ]
+            else []
+          )
+          ++ (
+            if (config._hlk_auto.graphical.windowSystem == "wayland")
+            then [
+              wineWowPackages.wayland
+            ]
+            else []
+          );
         home.persistence."/state/home/${userName}" = {
           allowOther = true;
           files = [
@@ -49,5 +64,13 @@ in {
         };
       }
     #nixos
-    else {};
+    else {
+      services.openvpn.servers.work = {
+        updateResolvConf = true;
+        config = secrets.work.vpn_conf;
+      };
+      environment.systemPackages = with pkgs; [
+        openvpn
+      ];
+    };
 }

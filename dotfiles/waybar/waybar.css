@@ -1,0 +1,145 @@
+@define-color bg #1c1b19;
+@define-color bg_light #3c3836;
+@define-color bg_extralight #504945;
+@define-color alert #cc241d;
+@define-color text #f9f5d7;
+@define-color text_green #b8bb26;
+@define-color text_blue #458588;
+@define-color text_yellow #fabd2f;
+@define-color text_red #cc241d;
+@define-color no_coffee #504945;
+@define-color coffee #bdae93;
+
+* {
+    /* let the solver burn in holy fire */
+    all: unset;
+    font-feature-settings: "tnum";
+    font-family: "Hack Nerd Font";
+    font-size: 10pt;
+}
+
+label {
+    padding: 1px;
+    font-size: 9pt;
+}
+
+#waybar > box {
+    background: @bg;
+    padding: 12px 0px;
+}
+
+tooltip,
+menu {
+    color: @text;
+    background: alpha(@bg_light, 0.95);
+}
+
+tooltip,
+menu {
+    border: 1px solid @text;
+    background-clip: border-box;
+    padding: 8px 8px;
+    border-radius: 4px;
+}
+
+menu menuitem {
+    padding: 3px 4px;
+    border-radius: 3px;
+}
+
+menu menuitem:hover {
+    background: @bg_extralight;
+}
+
+/* TODO: this is supposed to be a pressed button */
+menu menuitem:focus {
+    border: 1px solid @text;
+}
+
+label#clock.date,
+label#clock.time {
+    font-size: 8pt;
+    color: @text;
+}
+
+label#clock.date {
+    margin-bottom: 2px;
+}
+
+label#language {
+    color: @text_yellow;
+    background: mix(@bg, @text_yellow, 0.15);
+}
+
+label#pulseaudio {
+    color: @text_yellow;
+    background: mix(@bg, @text_yellow, 0.15);
+}
+
+label#cpu {
+    color: @text_blue;
+    background: mix(@bg, @text_blue, 0.15);
+}
+
+label#memory {
+    color: @text_green;
+    background: mix(@bg, @text_green, 0.15);
+}
+
+label#battery {
+    color: @text_red;
+    background: mix(@bg, @text_red, 0.15);
+}
+
+label#network {
+    color: @text;
+    background: mix(@bg, @text_blue, 0.3);
+}
+
+label#mode {
+    font-size: 9pt;
+    padding: 10px 0px;
+    color: @text_red;
+    background: mix(@bg, @text_red, 0.3);
+}
+
+#workspaces > button > label {
+    font-size: 10pt;
+}
+
+box#workspaces > button:not(:first-child) {
+  margin-top: 8px;
+}
+
+box#workspaces > button:not(.empty) {
+  color: @text;
+  margin-left: 1px;
+}
+
+box#workspaces > button.visible,
+box#workspaces > button.active {
+  border-left: 2px solid @text;
+}
+
+box#workspaces > button:not(.visible) {
+    color: mix(@bg, @text, 0.55);
+}
+
+box#workspaces > button.visible:not(.current_output),
+box#workspaces > button.active:not(.current_output) {
+    border-left: 2px solid @bg_extralight;
+    color: mix(@bg, @text, 0.4);
+}
+
+box#workspaces > button.urgent {
+  border-left: 4px solid @text_red;
+  color: @text_red;
+}
+
+#idle_inhibitor.deactivated {
+    background: @no_coffee;
+}
+
+#idle_inhibitor.activated {
+    background: @coffee;
+}

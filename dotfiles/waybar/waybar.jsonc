@@ -1,0 +1,63 @@
+{
+    "clock#time": {
+        "interval": 60,
+        "format": "{:%H:%M}",
+        "tooltip-format": "{:%Y-%m-%d %H:%M}",
+        "justify": "center"
+    },
+
+    "clock#date": {
+        "interval": 60,
+        "tooltip-format": "<tt><small>{calendar}</small></tt>",
+        "format": "<span>{:%a\n%d\n%b}</span>",
+        "justify": "center"
+    },
+
+    "sway/workspaces": {
+	    "format": "{icon}",
+	    "format-icons": { "10": "0" },
+        "disable-scroll-wraparound": true,
+	    "disable-auto-back-and-forth": true,
+        "warp-on-scroll": false
+	},
+
+    "cpu": {
+        "format": " {usage}%"
+    },
+
+    "memory": {
+        "interval": 10,
+        "format": "󰘚 {percentage}%"
+    },
+
+    "network": {
+        "interval": 30,
+        "tooltip-format": "{ifname}\n{ipaddr}\n {bandwidthUpBits} /  {bandwidthDownBits}",
+        "tooltip-format-wifi": "󰖩 {essid} / {signalStrength}%\n{ipaddr}\n {bandwidthUpBits} /  {bandwidthDownBits}"
+    },
+
+    "pulseaudio": {
+        "format-muted": "",
+        "format": " {volume}%",
+        "on-click": "pactl set-sink-mute @DEFAULT_SINK@ toggle"
+    },
+
+    "tray": {
+	    "spacing": 6
+	},
+
+    "idle_inhibitor": {
+        "format": "{icon}",
+        "format-icons": {
+            "activated": "󰅶",
+            "deactivated": "󰾪"
+        },
+        "start-activated": "false"
+    },
+
+    "sway/language": {
+	    "format": "<span text_transform='lowercase'>{shortDescription}</span>",
+	    "tooltip-format": "{long}"
+	}
+
+}
