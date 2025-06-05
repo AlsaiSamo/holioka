@@ -86,7 +86,6 @@
     hmModules' = [
       impermanence.nixosModules.home-manager.impermanence
       nur.modules.homeManager.default
-      ./modules/home-manager/default.nix
       ndeu.hmModule
       # niri.homeModules.niri
       nix-colors.homeManagerModules.default
