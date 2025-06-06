@@ -64,7 +64,7 @@ in {
         };
       }
     #nixos
-    else {
+    else lib.mkIf cfg.enable {
       services.openvpn.servers.work = {
         updateResolvConf = true;
         config = secrets.work.vpn_conf;

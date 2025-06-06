@@ -17,5 +17,25 @@ in {
     home.packages = with pkgs; [
       squeekboard
     ];
+
+    xdg.autostart = {
+      enable = true;
+      entries = let
+      stop_buffyboard =  
+        pkgs.makeDesktopItem {
+          name = "stop-buffyboard";
+          type = "Application";
+          noDisplay = true;
+          desktopName = "Stop buffyboard";
+          # exec = "systemctl stop buffyboard && pkill buffyboard";
+          exec = "${pkgs.writeScript "stop-buffyboard" ''
+                systemctl stop buffyboard && pkill buffyboard
+          ''}";
+        };
+      in
+      [
+      "${stop_buffyboard}/share/applications/stop-buffyboard.desktop"
+      ];
+    };
   };
 }

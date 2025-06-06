@@ -29,18 +29,31 @@ in {
 
     #NOTE: includes a systemd unit that starts phosh, bypassing display manager.
     #NOTE: also will launch .desktop files in ~/.config/autostart/
-    # services.xserver.desktopManager.phosh = {
-    #   enable = true;
-    #   group = "${userName}";
-    #   user = "${userName}";
-    # };
+    services.xserver.desktopManager.phosh = {
+      enable = true;
+      group = "${userName}";
+      user = "${userName}";
+    };
+
+    # Stopped at autologin by phosh
+    # TODO: is it possible to restart this when phosh exits?
+    systemd.services.buffyboard = {
+        description = "buffyboard";
+        wantedBy = ["multi-user.target"];
+        serviceConfig = {
+            ExecStart = "${pkgs.buffyboard}/bin/buffyboard";
+            # Restart = "always";
+            Restart = "on-abnormal";
+            RestartSec = "1";
+        };
+    };
 
     #TODO: look at sodiboo/niri-flake, sodiboo's config, and configure niri here and/or in hm config
     environment.variables.NIXOS_OZONE_WL = "1";
     # putting my trust in sodiboo on this one
     # niri-flake.cache.enable = false;
     programs.niri = {
-      enable = true;
+      # enable = true;
       # settings = {};
     };
 

@@ -75,7 +75,7 @@ inputs @ {
     services.logind.powerKeyLongPress = "poweroff";
     hardware.sensor.iio.enable = true;
 
-    hardware.pulseaudio.enable = lib.mkForce false;
+    services.pulseaudio.enable = lib.mkForce false;
     services.pipewire.enable = lib.mkForce false;
 
     security.polkit.extraConfig = ''

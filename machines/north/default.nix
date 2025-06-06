@@ -116,7 +116,7 @@ inputs @ {
     services.logind.powerKeyLongPress = "poweroff";
     hardware.sensor.iio.enable = true;
 
-    hardware.pulseaudio.enable = lib.mkForce true;
+    services.pulseaudio.enable = lib.mkForce true;
     #TODO: attempt to do pipewire?
     services.pipewire.enable = lib.mkForce false;
 

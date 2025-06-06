@@ -19,8 +19,11 @@
 
   nix.settings.cores = 4;
 
+  zramSwap.enable = true;
+
   #makes the screen in tty go black
   services.kmscon.enable = lib.mkForce false;
+  hardware.graphics.enable32Bit = lib.mkForce false;
 
   systemd.network.links."40-wlan0" = {
     matchConfig.OriginalName = "wlan0";

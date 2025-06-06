@@ -4,13 +4,13 @@
   ...
 }:
 pkgs.buildLinux {
-  # ignoreConfigErrors = false;
-  version = "6.11.0-rc2";
+  ignoreConfigErrors = true;
+  version = "6.14-rc5";
   src = pkgs.fetchFromGitLab {
     owner = "sdm845-mainline";
     repo = "linux";
-    rev = "sdm845-6.11.0_rc2-r2";
-    hash = "sha256-v48UfKESS7SQhLmgsRT6b1IoEcjuhnXBANGUVYz7WSs=";
+    rev = "sdm845-6.14-rc5-r2";
+    hash = "sha256-iNC5//u/MbAgJEYy3RcX1bhrPqoxSlxs4+3DzoXolQ4=";
   };
   kernelPatches = [
     {
@@ -27,6 +27,7 @@ pkgs.buildLinux {
     TOUCHSCREEN_FTM4 = no;
     # fix build
     LENOVO_YOGA_C630_EC = no;
+    SND_SOC_MAX98512 = no;
     RPMSG_QCOM_GLINK_SMEM = yes;
     # for adb and stuff (doesn't have to be built-in, but it's easier that way)
     USB_FUNCTIONFS = yes;

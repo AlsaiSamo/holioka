@@ -14,7 +14,6 @@ in rec {
     inherit lib;
   };
 
-  #TODO: try to update
   enchilada_firmware = pkgsPrev.stdenvNoCC.mkDerivation {
     name = "firmware-oneplus-sdm845";
     src = pkgsPrev.fetchFromGitLab {
