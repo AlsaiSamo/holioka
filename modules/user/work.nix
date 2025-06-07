@@ -5,9 +5,7 @@ select_user: {
   userName,
   secrets,
   ...
-}:
-#TODO: add all of the things when migrating to West
-let
+}: let
   cfg = config._hlk_auto.work;
   options._hlk_auto.work = {
     enable = lib.mkEnableOption "config options";
@@ -64,13 +62,14 @@ in {
         };
       }
     #nixos
-    else lib.mkIf cfg.enable {
-      services.openvpn.servers.work = {
-        updateResolvConf = true;
-        config = secrets.work.vpn_conf;
+    else
+      lib.mkIf cfg.enable {
+        services.openvpn.servers.work = {
+          updateResolvConf = true;
+          config = secrets.work.vpn_conf;
+        };
+        environment.systemPackages = with pkgs; [
+          openvpn
+        ];
       };
-      environment.systemPackages = with pkgs; [
-        openvpn
-      ];
-    };
 }

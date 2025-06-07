@@ -38,14 +38,14 @@ in {
     # Stopped at autologin by phosh
     # TODO: is it possible to restart this when phosh exits?
     systemd.services.buffyboard = {
-        description = "buffyboard";
-        wantedBy = ["multi-user.target"];
-        serviceConfig = {
-            ExecStart = "${pkgs.buffyboard}/bin/buffyboard";
-            # Restart = "always";
-            Restart = "on-abnormal";
-            RestartSec = "1";
-        };
+      description = "buffyboard";
+      wantedBy = ["multi-user.target"];
+      serviceConfig = {
+        ExecStart = "${pkgs.buffyboard}/bin/buffyboard";
+        # Restart = "always";
+        Restart = "on-abnormal";
+        RestartSec = "1";
+      };
     };
 
     #TODO: look at sodiboo/niri-flake, sodiboo's config, and configure niri here and/or in hm config

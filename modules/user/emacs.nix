@@ -35,7 +35,6 @@ in {
           ++ (
             if (config._hlk_auto.graphical.windowSystem == "xorg")
             then [
-              #TODO: check if any of these packages are needed on xorg or wayland and remove if possible
               xorg.xwininfo
               xclip
               xorg.xprop

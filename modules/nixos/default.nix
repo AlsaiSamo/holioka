@@ -5,6 +5,8 @@
   secrets,
   ...
 } @ inputs: {
+  #WARN: these modules are not going to be maintained because I do not have
+  #      a use case where I do not create my user.
   imports = [
     ./common.nix
     ./fs.nix

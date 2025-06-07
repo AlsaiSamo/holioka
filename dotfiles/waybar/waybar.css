@@ -51,7 +51,6 @@ menu menuitem:hover {
     background: @bg_extralight;
 }
 
-/* TODO: this is supposed to be a pressed button */
 menu menuitem:focus {
     border: 1px solid @text;
 }

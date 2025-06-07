@@ -8,7 +8,6 @@
   inherit (flake_inputs) mobile-nixos;
   mobilePkgs = import "${mobile-nixos}/overlay/overlay.nix" pkgsFinal pkgsPrev;
 in rec {
-  #TODO: try to update
   linux_enchilada = import ./kernel.nix {
     pkgs = pkgsPrev;
     inherit lib;

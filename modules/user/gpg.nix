@@ -4,9 +4,7 @@ select_user: {
   pkgs,
   secrets,
   ...
-}:
-# Example of a userModule, copy it and fill in
-let
+}: let
   cfg = config._hlk_auto.gpg;
   options._hlk_auto.gpg = {
     default.enable = lib.mkEnableOption "default GPG configuration";

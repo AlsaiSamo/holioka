@@ -34,6 +34,14 @@ inputs @ {
   #4. NFC
   #5. Programmable alert slider
 
+  #TODO: (incomplete) list of random things that can happen:
+  #1. Crash on boot (can be spotted by logs stopping somewhere around booting firmware)
+  #2. Phosh stops turning on the screen after it turns off
+  #3. FPS drops hard + spam in dmesg about DRM
+  #4. Networking stops working
+  #5. (old?) Audio stops working (noise in headphones, no audio out of the speaker or earpiece,
+  #   or audio outputs stop being detected completely)
+
   config = {
     hlk = {
       common.enable = true;
@@ -167,13 +175,13 @@ inputs @ {
       };
     };
 
-    # systemd.services.q6voiced = {
-    #   description = "QDSP6 driver daemon";
-    #   after = ["ModemManager.service" "dbus.socket"];
-    #   wantedBy = ["ModemManager.service"];
-    #   requires = ["dbus.socket"];
-    #   serviceConfig.ExecStart = "${pkgs.q6voiced}/bin/q6voiced hw:0,6";
-    # };
+    systemd.services.q6voiced = {
+      description = "QDSP6 driver daemon";
+      after = ["ModemManager.service" "dbus.socket"];
+      wantedBy = ["ModemManager.service"];
+      requires = ["dbus.socket"];
+      serviceConfig.ExecStart = "${pkgs.q6voiced}/bin/q6voiced hw:0,6";
+    };
 
     services.upower = {
       enable = true;

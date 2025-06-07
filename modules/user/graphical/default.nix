@@ -163,6 +163,7 @@ in {
       (lib.mkIf (cfg.windowSystem != "none") {
         hardware.graphics = {
           enable = true;
+          #TODO: only on x86_64
           enable32Bit = true;
           extraPackages = with pkgs; [libGL];
         };

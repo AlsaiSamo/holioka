@@ -28,7 +28,6 @@
   systemd.network.links."40-wlan0" = {
     matchConfig.OriginalName = "wlan0";
     linkConfig.MACAddressPolicy = "none";
-    #TODO: check that the MAC stays the same
     linkConfig.MACAddress = secrets.north.modemMAC;
   };
 

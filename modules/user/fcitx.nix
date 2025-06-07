@@ -12,9 +12,7 @@ select_user: {
 in {
   inherit options;
   #TODO: default fcitx config (take from West)
-  #TODO: fcitx5.settings fro nixos
-  #TODO: figure ut fcitx on wayland
-  #TODO: fcitx, wayland, alacritty - fix showing the fcitx popup
+  #TODO: fcitx5.settings
   config =
     if select_user
     #hm

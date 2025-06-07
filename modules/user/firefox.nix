@@ -4,15 +4,13 @@ select_user: {
   pkgs,
   userName,
   ...
-}:
-# Example of a userModule, copy it and fill in
-let
+}: let
   cfg = config._hlk_auto.firefox;
   options._hlk_auto.firefox = {
     default.enable = lib.mkEnableOption "default Firefox configuration";
   };
   myFirefox = pkgs.wrapFirefox pkgs.firefox-unwrapped {
-    nativeMessagingHosts = with pkgs; [pkgs.tridactyl-native];
+    nativeMessagingHosts = [pkgs.tridactyl-native];
     extraPolicies = {
       OverrideFirstRunPage = "";
       OverridePostUpdatePage = "";
@@ -47,16 +45,18 @@ in {
             # DefaultDownloadDirectory = "\${home}/Downloads";
           };
           profiles."alsaisamo" = {
-            search.default = "DuckDuckGo";
+            search.default = "ddg";
             extensions = with pkgs.nur.repos.rycee.firefox-addons; [
               ublock-origin
               tridactyl
               keepassxc-browser
               #firefox-color
             ];
-            #TODO: userChrome
-            #userChrome
-            #userContent
+            userChrome = ''
+              .private-browsing-indicator-label {
+                display: none;
+              }
+            '';
           };
         };
         home.persistence."/state/home/${userName}" = {

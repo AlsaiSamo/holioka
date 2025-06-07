@@ -8,8 +8,6 @@
 }: {
   imports = [(modulesPath + "/installer/scan/not-detected.nix") volatile.west];
 
-  #TODO: optimise for high memory pressure (zramSwap, related options)
-
   nix.settings.cores = 6;
 
   #default, needs to be overridable
