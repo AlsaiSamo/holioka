@@ -2,11 +2,13 @@
   config,
   lib,
   ...
-} @ inputs: let
+}@inputs:
+let
   cfg = config.hlk;
-in {
+in
+{
   #TODO: make script for generating the pool
-
+  #TODO: make state configurable
   options.hlk = {
     stateRemoval.enable = lib.mkOption {
       default = false;
@@ -70,15 +72,19 @@ in {
         neededForBoot = true;
       };
     };
-    boot.initrd.postMountCommands =
-      lib.mkIf cfg.stateRemoval.enable
-      (lib.mkAfter ''
+    boot.initrd.postMountCommands = lib.mkIf cfg.stateRemoval.enable (
+      lib.mkAfter ''
         zfs rollback -r ${cfg.zpool_name}/local/home@blank
         zfs rollback -r ${cfg.zpool_name}/local/root@blank
-      '');
+      ''
+    );
     environment.persistence."/state" = lib.mkIf cfg.stateRemoval.enable {
-      files = ["/etc/machine-id"];
-      directories = ["/etc/NetworkManager/"];
+      files = [ "/etc/machine-id" ];
+      directories = [
+        "/etc/NetworkManager/"
+        #persist uids and gids
+        "/var/lib/nixos"
+      ];
     };
     services.sanoid = lib.mkIf cfg.backup.enable {
       enable = true;

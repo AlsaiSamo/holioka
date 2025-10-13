@@ -5,9 +5,11 @@
   secrets,
   userName,
   ...
-}: let
+}:
+let
   cfg = config._hlk_auto.cli;
-in {
+in
+{
   config = lib.mkIf (cfg.starship.enable) {
     programs.starship = {
       enable = true;

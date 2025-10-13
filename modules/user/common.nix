@@ -1,18 +1,22 @@
-select_user: {
+select_user:
+{
   config,
   lib,
   pkgs,
   userName,
   ...
-}: let
+}:
+let
   cfg = config._hlk_auto.common;
   options._hlk_auto.common = {
     enable = lib.mkEnableOption "commonly used things";
   };
-in {
+in
+{
   inherit options;
   config =
-    if select_user
+    if
+      select_user
     #hm
     then
       lib.mkIf cfg.enable {
@@ -45,6 +49,7 @@ in {
         };
       }
     #nixos
-    else {
-    };
+    else
+      {
+      };
 }

@@ -1,4 +1,5 @@
-select_user: (map (x: import x select_user) [
+select_user:
+(map (x: import x select_user) [
   ./dummy.nix
   ./cli/default.nix
   ./emacs.nix
@@ -14,4 +15,5 @@ select_user: (map (x: import x select_user) [
   ./common.nix
   ./keepass.nix
   ./network.nix
+  ./steam.nix
 ])

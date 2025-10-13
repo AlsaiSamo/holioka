@@ -5,8 +5,12 @@
   modulesPath,
   volatile,
   ...
-}: {
-  imports = [(modulesPath + "/installer/scan/not-detected.nix") volatile.east];
+}:
+{
+  imports = [
+    (modulesPath + "/installer/scan/not-detected.nix")
+    volatile.east
+  ];
 
   nix.settings.cores = 3;
 
@@ -40,10 +44,18 @@
     "sd_mod"
     "rtsx_pci_sdmmc"
   ];
-  boot.initrd.kernelModules = [];
-  boot.kernelModules = ["kvm-amd" "amdgpu" "acpi_call"];
-  boot.extraModulePackages = with config.boot.kernelPackages; [acpi_call];
-  boot.kernelParams = ["iommu=soft" "i8042.nomux=1" "i8042.reset"];
+  boot.initrd.kernelModules = [ ];
+  boot.kernelModules = [
+    "kvm-amd"
+    "amdgpu"
+    "acpi_call"
+  ];
+  boot.extraModulePackages = with config.boot.kernelPackages; [ acpi_call ];
+  boot.kernelParams = [
+    "iommu=soft"
+    "i8042.nomux=1"
+    "i8042.reset"
+  ];
 
   hardware.trackpoint = {
     enable = true;
@@ -57,7 +69,7 @@
     };
   };
 
-  environment.systemPackages = with pkgs; [tpacpi-bat];
+  environment.systemPackages = with pkgs; [ tpacpi-bat ];
   services.thinkfan.enable = true;
   services.tlp = {
     enable = true;
@@ -84,6 +96,5 @@
   # networking.interfaces.wlp3s0.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-  hardware.cpu.amd.updateMicrocode =
-    lib.mkDefault config.hardware.enableRedistributableFirmware;
+  hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 }

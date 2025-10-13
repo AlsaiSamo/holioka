@@ -1,4 +1,4 @@
-inputs @ {
+inputs@{
   lib,
   config,
   pkgs,
@@ -9,7 +9,10 @@ inputs @ {
 }:
 #This would have not been made without Chayleaf, sdm845-mainline contributors, Renegade Project, mobile-nixos contributors, and more...
 {
-  imports = [./usb.nix ./buffyboard.nix];
+  imports = [
+    ./usb.nix
+    ./buffyboard.nix
+  ];
   #TODO: finishing steps
   #1. Installer - add qemu flake with configurable script
   #2. Test that North provides DHCP for USB connection, maybe configure masquerading and forwarding
@@ -62,7 +65,7 @@ inputs @ {
         userName = "imikoy";
         userConfig = {
           keepass.enable = true;
-          firefox.default.enable = true; #TODO: mobile-friendly config
+          firefox.default.enable = true; # TODO: mobile-friendly config
           nheko.enable = true;
           #krita.enable = true;
           #fcitx.enable = true;
@@ -72,7 +75,7 @@ inputs @ {
           cli = {
             core.enable = true;
             extra.enable = true;
-            shell = "zsh"; #TODO: fish?
+            shell = "zsh"; # TODO: fish?
             starship.enable = true;
           };
           graphical.windowSystem = "wayland_mobile";
@@ -86,7 +89,7 @@ inputs @ {
           home.persistence."/state/home/imikoy" = {
             allowOther = true;
             directories = [
-              ".config/pulse" #TODO: when creating audio module with pulseaudio option, move this to the new module
+              ".config/pulse" # TODO: when creating audio module with pulseaudio option, move this to the new module
               ".purple" # chatty
               ".local/share/evolution" # calendar, email, address book
               ".local/share/calls" # calls things
@@ -120,8 +123,8 @@ inputs @ {
       "olm-3.2.16"
     ];
 
-    services.logind.powerKey = "ignore";
-    services.logind.powerKeyLongPress = "poweroff";
+    services.logind.settings.Login.HandlePowerKey = "ignore";
+    services.logind.settings.Login.HandlePowerKeyLongPress = "poweroff";
     hardware.sensor.iio.enable = true;
 
     services.pulseaudio.enable = lib.mkForce true;
@@ -156,7 +159,7 @@ inputs @ {
         valid-lifetime = 4000;
         renew-timer = 1000;
         rebind-timer = 2000;
-        interfaces-config.interfaces = ["usb0"];
+        interfaces-config.interfaces = [ "usb0" ];
         lease-database = {
           name = "/var/lib/kea/dhcp4.leases";
           #it is stateless anyway
@@ -168,7 +171,7 @@ inputs @ {
           {
             id = 1;
             subnet = "172.16.42.0/24";
-            pools = [{pool = "172.16.42.2 - 172.16.42.2";}];
+            pools = [ { pool = "172.16.42.2 - 172.16.42.2"; } ];
             interface = "usb0";
           }
         ];
@@ -177,9 +180,12 @@ inputs @ {
 
     systemd.services.q6voiced = {
       description = "QDSP6 driver daemon";
-      after = ["ModemManager.service" "dbus.socket"];
-      wantedBy = ["ModemManager.service"];
-      requires = ["dbus.socket"];
+      after = [
+        "ModemManager.service"
+        "dbus.socket"
+      ];
+      wantedBy = [ "ModemManager.service" ];
+      requires = [ "dbus.socket" ];
       serviceConfig.ExecStart = "${pkgs.q6voiced}/bin/q6voiced hw:0,6";
     };
 

@@ -1,45 +1,53 @@
-select_user: {
+select_user:
+{
   config,
   lib,
   pkgs,
   userName,
   secrets,
   ...
-}: let
+}:
+let
   cfg = config._hlk_auto.work;
   options._hlk_auto.work = {
     enable = lib.mkEnableOption "config options";
   };
-in {
+in
+{
   inherit options;
   config =
-    if select_user
+    if
+      select_user
     #hm
     then
       lib.mkIf cfg.enable {
         #TODO: turn into a list of package names, then define the predicate function when processing the options that works with the merged list
         nixpkgs.config.allowUnfree = true;
-        home.packages = with pkgs;
+        home.packages =
+          with pkgs;
           [
             thunderbird
             zoom-us
             telegram-desktop
             libreoffice
             dbeaver-bin
+            unixtools.route
           ]
           ++ (
-            if (config._hlk_auto.graphical.windowSystem == "xorg")
-            then [
-              wineWowPackages.stable
-            ]
-            else []
+            if (config._hlk_auto.graphical.windowSystem == "xorg") then
+              [
+                wineWowPackages.stable
+              ]
+            else
+              [ ]
           )
           ++ (
-            if (config._hlk_auto.graphical.windowSystem == "wayland")
-            then [
-              wineWowPackages.wayland
-            ]
-            else []
+            if (config._hlk_auto.graphical.windowSystem == "wayland") then
+              [
+                wineWowPackages.wayland
+              ]
+            else
+              [ ]
           );
         home.persistence."/state/home/${userName}" = {
           allowOther = true;

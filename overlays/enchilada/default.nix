@@ -4,10 +4,12 @@
   lib,
   flake_inputs,
   ...
-}: let
+}:
+let
   inherit (flake_inputs) mobile-nixos;
   mobilePkgs = import "${mobile-nixos}/overlay/overlay.nix" pkgsFinal pkgsPrev;
-in rec {
+in
+rec {
   linux_enchilada = import ./kernel.nix {
     pkgs = pkgsPrev;
     inherit lib;
@@ -34,7 +36,8 @@ in rec {
     meta.license = lib.licenses.unfree;
   };
 
-  #TODO: try to update?
+  #TODO: try to update to this?
+  # https://git.codelinaro.org/linaro/qcomlt/u-boot/-/tree/v2025.07-rc2
   uboot_enchilada =
     (pkgsPrev.buildUBoot {
       version = "unstable-2023-12-11";
@@ -45,17 +48,30 @@ in rec {
         hash = "sha256-ksI7qxozIjJ5E8uAJkX8ZuaaOHdv76XOzITaA8Vp/QA=";
       };
       defconfig = "qcom_defconfig";
-      makeFlags = ["DEVICE_TREE=sdm845-oneplus-enchilada" "CONFIG_CMD_BOOTEFI=y" "CONFIG_EFI_LOADER=y"];
-      extraMeta.platforms = ["aarch64-linux"];
-      filesToInstall = ["u-boot-nodtb.bin" "u-boot-dtb.bin" "u-boot.dtb"];
-    })
-    .overrideAttrs (final: prev: {
-      nativeBuildInputs = prev.nativeBuildInputs ++ [pkgsPrev.xxd];
-    });
+      makeFlags = [
+        "DEVICE_TREE=sdm845-oneplus-enchilada"
+        "CONFIG_CMD_BOOTEFI=y"
+        "CONFIG_EFI_LOADER=y"
+      ];
+      extraMeta.platforms = [ "aarch64-linux" ];
+      filesToInstall = [
+        "u-boot-nodtb.bin"
+        "u-boot-dtb.bin"
+        "u-boot.dtb"
+      ];
+    }).overrideAttrs
+      (
+        final: prev: {
+          nativeBuildInputs = prev.nativeBuildInputs ++ [ pkgsPrev.xxd ];
+        }
+      );
 
   ubootImage_enchilada = pkgsPrev.stdenvNoCC.mkDerivation {
     name = "u-boot-enchilada.bin";
-    nativeBuildInputs = [mobilePkgs.mkbootimg pkgsFinal.gzip];
+    nativeBuildInputs = [
+      mobilePkgs.mkbootimg
+      pkgsFinal.gzip
+    ];
     src = uboot_enchilada;
     dontBuild = true;
     dontFixup = true;
@@ -102,8 +118,11 @@ in rec {
       rev = "736138bfc9f7b455a96679e2d67fd922a8f16464";
       hash = "sha256-7k5saedIALHlsFHalStqzKrqAyFKx0ZN9FhLTdxAmf4=";
     };
-    buildInputs = with pkgsPrev; [dbus tinyalsa];
-    nativeBuildInputs = with pkgsPrev; [pkg-config];
+    buildInputs = with pkgsPrev; [
+      dbus
+      tinyalsa
+    ];
+    nativeBuildInputs = with pkgsPrev; [ pkg-config ];
     buildPhase = ''cc $(pkg-config --cflags --libs dbus-1) -ltinyalsa -o q6voiced q6voiced.c'';
     installPhase = ''install -m555 -Dt "$out/bin" q6voiced'';
     meta.license = lib.licenses.mit;

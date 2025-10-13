@@ -1,4 +1,4 @@
-inputs @ {
+inputs@{
   lib,
   config,
   pkgs,
@@ -11,7 +11,10 @@ inputs @ {
 #being built in emulator
 #TODO: test that it builds and that it works as intended
 {
-  imports = [./usb.nix ./buffyboard.nix];
+  imports = [
+    ./usb.nix
+    ./buffyboard.nix
+  ];
 
   config = {
     hlk = {
@@ -71,8 +74,8 @@ inputs @ {
       "olm-3.2.16"
     ];
 
-    services.logind.powerKey = "ignore";
-    services.logind.powerKeyLongPress = "poweroff";
+    services.logind.settings.Login.HandlePowerKey = "ignore";
+    services.logind.settings.Login.HandlePowerKeyLongPress = "poweroff";
     hardware.sensor.iio.enable = true;
 
     services.pulseaudio.enable = lib.mkForce false;

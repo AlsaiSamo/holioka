@@ -1,10 +1,12 @@
-select_user: {
+select_user:
+{
   config,
   lib,
   pkgs,
   userName,
   ...
-}: let
+}:
+let
   cfg = config._hlk_auto.network;
   cfgGraphical = config._hlk_auto.graphical.windowSystem;
   options._hlk_auto.network = {
@@ -12,7 +14,12 @@ select_user: {
       example = "iwd";
       description = "What should manage networking";
       default = "none";
-      type = lib.types.enum ["none" "iwd" "networkmanager" "nm+mm"];
+      type = lib.types.enum [
+        "none"
+        "iwd"
+        "networkmanager"
+        "nm+mm"
+      ];
     };
     hostName = lib.mkOption {
       default = "";
@@ -20,19 +27,23 @@ select_user: {
       type = lib.types.str;
     };
   };
-in {
+in
+{
   inherit options;
   config =
-    if select_user
+    if
+      select_user
     #hm
     then
       lib.mkMerge [
-        (lib.mkIf (cfgGraphical != "none") (lib.mkMerge [
-          (lib.mkIf (cfg.manager == "iwd") {home.packages = [pkgs.iwgtk];})
-          # (lib.mkIf (cfg.manager == "networkmanager") {})
-          # (lib.mkIf (cfg.manager == "nm+mm") {})
-          #TODO: networkmanager and modemmanager
-        ]))
+        (lib.mkIf (cfgGraphical != "none") (
+          lib.mkMerge [
+            (lib.mkIf (cfg.manager == "iwd") { home.packages = [ pkgs.iwgtk ]; })
+            # (lib.mkIf (cfg.manager == "networkmanager") {})
+            # (lib.mkIf (cfg.manager == "nm+mm") {})
+            #TODO: networkmanager and modemmanager
+          ]
+        ))
       ]
     #nixos
     else

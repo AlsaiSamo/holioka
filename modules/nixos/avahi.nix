@@ -3,9 +3,11 @@
   config,
   pkgs,
   ...
-} @ inputs: let
+}@inputs:
+let
   cfg = config.hlk.avahi;
-in {
+in
+{
   options.hlk.avahi.default.enable = lib.mkEnableOption "default Avahi config";
   config = {
     services.avahi = lib.mkIf cfg.default.enable {

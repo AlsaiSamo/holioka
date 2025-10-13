@@ -4,7 +4,8 @@
   pkgs,
   secrets,
   ...
-} @ inputs: {
+}@inputs:
+{
   options.hlk.common.enable = lib.mkEnableOption "common stuff that is usually enabled";
   config = lib.mkIf config.hlk.common.enable {
     time.timeZone = lib.mkDefault secrets.common.timeZone;
@@ -23,7 +24,8 @@
     };
 
     services.kmscon = {
-      enable = true;
+      #on some devices (such as oneplus) I have to disable this
+      enable = lib.mkDefault true;
       extraConfig = "font-size=10";
       fonts = [
         {
@@ -34,14 +36,21 @@
     };
     i18n = {
       defaultLocale = "en_US.UTF-8";
-      supportedLocales = ["en_US.UTF-8/UTF-8" "ru_RU.UTF-8/UTF-8" "ja_JP.UTF-8/UTF-8"];
-      extraLocaleSettings = {LC_TIME = "ru_RU.UTF-8";};
+      supportedLocales = [
+        "en_US.UTF-8/UTF-8"
+        "ru_RU.UTF-8/UTF-8"
+        "ja_JP.UTF-8/UTF-8"
+      ];
+      extraLocaleSettings = {
+        LC_TIME = "ru_RU.UTF-8";
+      };
     };
 
     hardware.bluetooth.enable = true;
 
     users.users.root.hashedPassword = secrets.common.rootHashedPassword;
     environment.systemPackages = with pkgs; [
+      nix-tree
       jq
       gvfs
       sqlite
@@ -81,12 +90,15 @@
         options = "--delete-older-than 30d";
       };
       optimise = {
-        dates = ["weekly"];
+        dates = [ "weekly" ];
         automatic = true;
       };
       settings = {
-        experimental-features = ["nix-command" "flakes"];
-        trusted-users = ["@wheel"];
+        experimental-features = [
+          "nix-command"
+          "flakes"
+        ];
+        trusted-users = [ "@wheel" ];
       };
     };
   };

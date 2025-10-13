@@ -7,7 +7,7 @@
   hmOverlay,
   #flake_inputs,
   ...
-} @ inputs:
+}@inputs:
 #Main user of the machine.
 #Each machine typically has only one user and so has only one instance of hm usage.
 #The user has a home-manager config that cannot change nixos config
@@ -16,7 +16,8 @@
 #and hm and set the same config values on both sides.
 let
   cfg = config.hlk.mainUser;
-in {
+in
+{
   options = {
     hlk.mainUser = {
       enable = lib.mkEnableOption "enable machine's primary user";
@@ -27,13 +28,13 @@ in {
       };
       #Config applied to both nixos and hm, through userModules
       userConfig = lib.mkOption {
-        default = {};
+        default = { };
         description = "Main user's config";
         type = lib.types.attrs;
       };
       #TODO: make into a module
       extraHmConfig = lib.mkOption {
-        default = {};
+        default = { };
         description = "Extra home-manager config";
         type = lib.types.attrs;
       };
@@ -48,21 +49,33 @@ in {
           uid = 1000;
           hashedPassword = secrets.common.userHashedPassword;
           #user's key always allows accessing the user
-          openssh.authorizedKeys.keyFiles = [../../secrets/${cfg.userName}.pub];
+          openssh.authorizedKeys.keyFiles = [ ../../secrets/${cfg.userName}.pub ];
           isNormalUser = true;
           group = cfg.userName;
           extraGroups = [
             "wheel"
           ];
         };
+        security.pam.loginLimits = [
+          {
+            domain = "*";
+            item = "nofile";
+            type = "hard";
+            value = "1048576";
+          }
+          {
+            domain = "*";
+            item = "nofile";
+            type = "soft";
+            value = "65536";
+          }
+        ];
         services.kmscon.autologinUser = cfg.userName;
         home-manager = {
           useUserPackages = false;
           useGlobalPkgs = false;
           verbose = true;
           extraSpecialArgs = {
-            #TODO: remove this?
-            #inherit flake_inputs;
             inherit secrets;
             userName = cfg.userName;
           };

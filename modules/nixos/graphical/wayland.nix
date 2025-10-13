@@ -3,9 +3,11 @@
   lib,
   pkgs,
   ...
-}: let
+}:
+let
   cfg = config.hlk.graphical;
-in {
+in
+{
   #TODO: figure out if this config does shadow the user's config if enabled
   #as the wiki says
   config = lib.mkIf (cfg.windowSystem == "wayland") {

@@ -4,17 +4,22 @@
   pkgs,
   secrets,
   ...
-}: let
+}:
+let
   cfg = config.hlk.network;
-in {
-  #TODO: tcpcrypt?
-  #TODO: modemmanager
+in
+{
+  #TODO: modemmanager config for oneplus
   options.hlk.network = {
     manager = lib.mkOption {
       example = "iwd";
       description = "What should manage networking";
       default = "none";
-      type = lib.types.enum ["none" "iwd" "networkmanager"];
+      type = lib.types.enum [
+        "none"
+        "iwd"
+        "networkmanager"
+      ];
     };
     hostName = lib.mkOption {
       description = "Host name";
@@ -29,8 +34,8 @@ in {
         nftables.enable = true;
         wireless.iwd.enable = true;
       };
-      environment.systemPackages = [pkgs.impala];
-      environment.persistence."/state".directories = ["/var/lib/iwd"];
+      environment.systemPackages = [ pkgs.impala ];
+      environment.persistence."/state".directories = [ "/var/lib/iwd" ];
     })
     (lib.mkIf (cfg.manager == "networkmanager") {
       networking = {
@@ -40,7 +45,7 @@ in {
         networkmanager.enable = true;
         #TODO: persist networkmanager stuff
       };
-      environment.persistence."/state".directories = ["/var/lib/NetworkManager"];
+      environment.persistence."/state".directories = [ "/var/lib/NetworkManager" ];
     })
   ];
 }

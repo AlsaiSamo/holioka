@@ -1,4 +1,4 @@
-inputs @ {
+inputs@{
   lib,
   config,
   pkgs,
@@ -9,7 +9,10 @@ inputs @ {
 }:
 #NOTE: taken from Chayleaf
 {
-  boot.initrd.kernelModules = ["uinput" "evdev"];
+  boot.initrd.kernelModules = [
+    "uinput"
+    "evdev"
+  ];
   boot.initrd.extraUtilsCommands = ''
     copy_bin_and_libs ${pkgs.buffyboard}/bin/buffyboard
     cp -a ${pkgs.libinput.out}/share $out/
@@ -39,15 +42,21 @@ inputs @ {
   # };
   security.sudo.extraRules = [
     {
-      groups = ["users"];
+      groups = [ "users" ];
       commands = [
         {
           command = "/run/current-system/sw/bin/systemctl stop buffyboard";
-          options = ["SETENV" "NOPASSWD"];
+          options = [
+            "SETENV"
+            "NOPASSWD"
+          ];
         }
         {
           command = "/run/current-system/sw/bin/systemctl start buffyboard";
-          options = ["SETENV" "NOPASSWD"];
+          options = [
+            "SETENV"
+            "NOPASSWD"
+          ];
         }
       ];
     }

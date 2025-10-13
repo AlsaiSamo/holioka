@@ -1,11 +1,12 @@
-select_user: {
+select_user:
+{
   config,
   lib,
   pkgs,
   userName,
   ...
 }:
-#TODO: include osu here
+#TODO: include osu (the game) here
 let
   cfg = config._hlk_auto.games;
   options._hlk_auto.games = {
@@ -13,10 +14,12 @@ let
     xonotic.state.enable = lib.mkEnableOption "Xonotic state preservation";
     xonotic.enable = lib.mkEnableOption "Xonotic";
   };
-in {
+in
+{
   inherit options;
   config =
-    if select_user
+    if
+      select_user
     #hm
     then
       lib.mkMerge [
@@ -26,7 +29,7 @@ in {
           ];
         })
         (lib.mkIf cfg.xonotic.enable {
-          home.packages = [pkgs.xonotic];
+          home.packages = [ pkgs.xonotic ];
         })
         (lib.mkIf cfg.xonotic.state.enable {
           home.persistence."/local_state/home/${userName}".directories = [
@@ -35,5 +38,6 @@ in {
         })
       ]
     #nixos
-    else {};
+    else
+      { };
 }

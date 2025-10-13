@@ -4,8 +4,9 @@
   pkgs,
   secrets,
   ...
-} @ inputs: {
-  #WARN: these modules are not going to be maintained because I do not have
+}@inputs:
+{
+  #WARN: these modules are not going to be maintained well because I do not have
   #      a use case where I do not create my user.
   imports = [
     ./common.nix
@@ -19,7 +20,6 @@
     ./fcitx.nix
     ./distributed.nix
     ./avahi.nix
-    ./barrier.nix
     ./user.nix
   ];
 }

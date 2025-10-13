@@ -1,16 +1,18 @@
-select_user: {
+select_user:
+{
   config,
   lib,
   pkgs,
   userName,
   ...
-}: let
+}:
+let
   cfg = config._hlk_auto.firefox;
   options._hlk_auto.firefox = {
     default.enable = lib.mkEnableOption "default Firefox configuration";
   };
   myFirefox = pkgs.wrapFirefox pkgs.firefox-unwrapped {
-    nativeMessagingHosts = [pkgs.tridactyl-native];
+    nativeMessagingHosts = [ pkgs.tridactyl-native ];
     extraPolicies = {
       OverrideFirstRunPage = "";
       OverridePostUpdatePage = "";
@@ -31,10 +33,12 @@ select_user: {
       DisableTelemetry = true;
     };
   };
-in {
+in
+{
   inherit options;
   config =
-    if select_user
+    if
+      select_user
     #hm
     then
       lib.mkIf cfg.default.enable {
@@ -46,7 +50,7 @@ in {
           };
           profiles."alsaisamo" = {
             search.default = "ddg";
-            extensions = with pkgs.nur.repos.rycee.firefox-addons; [
+            extensions.packages = with pkgs.nur.repos.rycee.firefox-addons; [
               ublock-origin
               tridactyl
               keepassxc-browser
@@ -60,7 +64,7 @@ in {
           };
         };
         home.persistence."/state/home/${userName}" = {
-          files = [".config/tridactyl/tridactylrc"];
+          files = [ ".config/tridactyl/tridactylrc" ];
           directories = [
             #Has the profile
             ".mozilla/firefox"
@@ -70,9 +74,10 @@ in {
           ];
         };
         home.persistence."/local_state/home/${userName}" = {
-          directories = [".cache/mozilla"];
+          directories = [ ".cache/mozilla" ];
         };
       }
     #nixos
-    else {};
+    else
+      { };
 }

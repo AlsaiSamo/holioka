@@ -5,9 +5,11 @@
   userName,
   secrets,
   ...
-}: let
+}:
+let
   cfg = config._hlk_auto.graphical;
-in {
+in
+{
   #hm
   config = lib.mkIf (cfg.windowSystem == "xorg") {
     home.packages = with pkgs; [
@@ -27,7 +29,10 @@ in {
     services.betterlockscreen = {
       enable = true;
       inactiveInterval = 5;
-      arguments = ["blur" "0.5"];
+      arguments = [
+        "blur"
+        "0.5"
+      ];
     };
 
     xdg.configFile."i3/config".source = ../../../dotfiles/i3/config;
@@ -50,7 +55,7 @@ in {
       cycle = true;
       location = "center";
       theme = "gruvbox-dark-soft";
-      plugins = with pkgs; [rofi-power-menu];
+      plugins = with pkgs; [ rofi-power-menu ];
       extraConfig = {
         width = 50;
         lines = 20;
@@ -64,12 +69,12 @@ in {
       shadow = false;
       fade = true;
       fadeDelta = 2;
-      fadeExclude = ["x = 0 && y = 0 && override_redirect = true"];
+      fadeExclude = [ "x = 0 && y = 0 && override_redirect = true" ];
 
       inactiveOpacity = 1.0;
       menuOpacity = 1.0;
       activeOpacity = 1.0;
-      opacityRules = ["95:class_g = 'Alacritty' && !focused"];
+      opacityRules = [ "95:class_g = 'Alacritty' && !focused" ];
       vSync = true;
     };
 

@@ -1,4 +1,5 @@
-select_user: {
+select_user:
+{
   config,
   lib,
   pkgs,
@@ -11,10 +12,12 @@ let
   options._hlk_auto.nheko = {
     enable = lib.mkEnableOption "nheko matrix client";
   };
-in {
+in
+{
   inherit options;
   config =
-    if select_user
+    if
+      select_user
     #hm
     then
       lib.mkIf cfg.enable {
@@ -33,5 +36,6 @@ in {
         };
       }
     #nixos
-    else {};
+    else
+      { };
 }

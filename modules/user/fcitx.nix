@@ -1,26 +1,31 @@
-select_user: {
+select_user:
+{
   config,
   lib,
   pkgs,
   userName,
   ...
-}: let
+}:
+let
   cfg = config._hlk_auto.fcitx;
   options._hlk_auto.fcitx = {
     enable = lib.mkEnableOption "fcitx";
   };
-in {
+in
+{
   inherit options;
   #TODO: default fcitx config (take from West)
   #TODO: fcitx5.settings
   config =
-    if select_user
+    if
+      select_user
     #hm
     then
       lib.mkIf cfg.enable {
         i18n.inputMethod = {
-          enabled = "fcitx5";
-          fcitx5.addons = with pkgs; [fcitx5-mozc];
+          type = "fcitx5";
+          enable = true;
+          fcitx5.addons = with pkgs; [ fcitx5-mozc ];
         };
         home.sessionVariables = {
           XMODIFIERS = "@im=fcitx";

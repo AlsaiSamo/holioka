@@ -1,11 +1,13 @@
-select_user: {
+select_user:
+{
   config,
   lib,
   pkgs,
   userName,
   secrets,
   ...
-}: let
+}:
+let
   cfg = config._hlk_auto.graphical;
   options._hlk_auto.graphical = {
     #TODO: rename? since I am adding wayland_mobile it would be more appropriate to rename the option
@@ -14,21 +16,39 @@ select_user: {
       example = "xorg";
       description = "What windowing system and the respective environment to enable for the user";
       default = "none";
-      type = lib.types.enum ["none" "xorg" "wayland" "wayland_mobile"];
+      type = lib.types.enum [
+        "none"
+        "xorg"
+        "wayland"
+        "wayland_mobile"
+      ];
     };
   };
-in {
+in
+{
   inherit options;
   #Both files do their own checks
   imports =
-    if select_user
+    if
+      select_user
     #hm
-    then [./wayland_hm.nix ./xorg_hm.nix ./wayland_mobile_hm.nix]
+    then
+      [
+        ./wayland_hm.nix
+        ./xorg_hm.nix
+        ./wayland_mobile_hm.nix
+      ]
     #nixos
-    else [./wayland_nixos.nix ./xorg_nixos.nix ./wayland_mobile_nixos.nix];
+    else
+      [
+        ./wayland_nixos.nix
+        ./xorg_nixos.nix
+        ./wayland_mobile_nixos.nix
+      ];
   #Handling of selecting either option
   config =
-    if select_user
+    if
+      select_user
     #hm
     then
       (lib.mkIf (cfg.windowSystem != "none") {
@@ -38,15 +58,13 @@ in {
           sarasa-gothic
           noto-fonts-color-emoji
           font-awesome
-          #(nerdfonts.override {fonts = ["FiraCode" "Iosevka" "Hack"];})
           nerd-fonts.fira-code
           nerd-fonts.iosevka
           nerd-fonts.hack
 
           alacritty
-          #warpd
+          #warpd - is replaced with wl-kbptr on wayland
           mpv
-          #TODO: find a better image viewer
           feh
 
           nemo-with-extensions
@@ -87,11 +105,10 @@ in {
           size = 32;
         };
 
-        xdg.configFile."alacritty/alacritty.toml".source =
-          ../../../dotfiles/alacritty.toml;
+        xdg.configFile."alacritty/alacritty.toml".source = ../../../dotfiles/alacritty.toml;
 
         dconf.enable = true;
-        #TODO: theming
+        #TODO: consistent theming
         gtk = {
           enable = true;
           font = {
@@ -111,12 +128,16 @@ in {
             name = "catppuccin-macchiato-dark-cursors";
             size = 32;
           };
-          gtk3.extraConfig = {gtk-application-prefer-dark-theme = 1;};
-          gtk4.extraConfig = {gtk-application-prefer-dark-theme = 1;};
+          gtk3.extraConfig = {
+            gtk-application-prefer-dark-theme = 1;
+          };
+          gtk4.extraConfig = {
+            gtk-application-prefer-dark-theme = 1;
+          };
         };
         qt = {
           enable = true;
-          style.name = "breeze";
+          style.name = "adwaita-dark";
         };
 
         services.dunst = {
@@ -165,13 +186,17 @@ in {
           enable = true;
           #TODO: only on x86_64
           enable32Bit = true;
-          extraPackages = with pkgs; [libGL];
+          extraPackages = with pkgs; [ libGL ];
         };
         environment.systemPackages = with pkgs; [
           alacritty
           brightnessctl
         ];
-        fonts = {fontconfig = {subpixel.rgba = "none";};};
+        fonts = {
+          fontconfig = {
+            subpixel.rgba = "none";
+          };
+        };
         xdg.portal.enable = true;
         xdg.portal.xdgOpenUsePortal = true;
       });

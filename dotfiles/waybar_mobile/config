@@ -1,0 +1,24 @@
+[
+  {
+    "exclusive": true,
+    "fixed-center": true,
+    "id": "bar-0",
+    "ipc": true,
+    "layer": "top",
+    "margin": "0",
+    "modules-left": [
+      "clock#time",
+      "pulseaudio",
+      "group/status",
+      "custom/keeb",
+      "idle_inhibitor"
+    ],
+    "modules-right": [
+      "tray"
+    ],
+    "position": "top",
+    "reload_style_on_change": true,
+    "spacing": "6",
+    "height": 30
+  }
+]

@@ -5,9 +5,11 @@
   userName,
   secrets,
   ...
-}: let
+}:
+let
   cfg = config._hlk_auto.graphical;
-in {
+in
+{
   #nixos
   config = lib.mkIf (cfg.windowSystem == "wayland_mobile") {
     services.displayManager = {
@@ -17,48 +19,56 @@ in {
       ly.settings = {
         auth_fails = 65535;
         clear_password = true;
-        #TODO: disable phosh's autologin or put a .desktop file to ~/.config/autostart that disables buffyboard
-        #or leave phosh autologin and disable buffyboard
-        #login_cmd = "systemctl stop buffyboard; pkill buffyboard; exec \"$@\"";
+        logout_cmd = "systemctl restart buffyboard";
       };
     };
 
     xdg.portal.enable = true;
-    xdg.portal.config.common.default = ["gtk"];
-    xdg.portal.extraPortals = with pkgs; [xdg-desktop-portal-gtk];
+    #TODO: what are the other options?
+    xdg.portal.config.common.default = [ "gtk" ];
+    xdg.portal.extraPortals = with pkgs; [ xdg-desktop-portal-gtk ];
 
-    #NOTE: includes a systemd unit that starts phosh, bypassing display manager.
-    #NOTE: also will launch .desktop files in ~/.config/autostart/
-    services.xserver.desktopManager.phosh = {
-      enable = true;
-      group = "${userName}";
-      user = "${userName}";
-    };
-
-    # Stopped at autologin by phosh
-    # TODO: is it possible to restart this when phosh exits?
-    systemd.services.buffyboard = {
-      description = "buffyboard";
-      wantedBy = ["multi-user.target"];
+    #TODO: Should be stopped when wayland compositor boots up
+    systemd.services.buffyboard_manual = {
+      description = "buffyboard_manual";
+      wantedBy = [ "multi-user.target" ];
       serviceConfig = {
         ExecStart = "${pkgs.buffyboard}/bin/buffyboard";
-        # Restart = "always";
-        Restart = "on-abnormal";
+        Restart = "on-failure";
         RestartSec = "1";
       };
     };
 
-    #TODO: look at sodiboo/niri-flake, sodiboo's config, and configure niri here and/or in hm config
-    environment.variables.NIXOS_OZONE_WL = "1";
-    # putting my trust in sodiboo on this one
-    # niri-flake.cache.enable = false;
-    programs.niri = {
-      # enable = true;
-      # settings = {};
+    # programs.niri = {
+    #   enable = true;
+    #   package = pkgs.niri-unstable;
+    #   #putting my trust in sodiboo
+    #   #niri-flake.cache.enable = false;
+    # };
+
+    services.xserver.desktopManager.phosh = {
+      enable = true;
+      group = userName;
+      user = userName;
     };
 
+    programs.sway = {
+      enable = true;
+      package = pkgs.sway_mobile;
+    };
+
+    systemd.packages = [
+      pkgs.buffyboard
+    ];
+
     environment.systemPackages = with pkgs; [
+      buffyboard
       squeekboard
+      # wvkbd
+
+      #from plasma mobile
+      kdePackages.plasmatube
+      kdePackages.alligator
     ];
 
     environment.persistence."/state".files = [

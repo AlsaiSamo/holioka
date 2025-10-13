@@ -6,7 +6,8 @@
   extra,
   modulesPath,
   ...
-} @ inputs: {
+}@inputs:
+{
   hlk = {
     common.enable = true;
     defaultFilesystems = true;
@@ -54,52 +55,33 @@
         fcitx.enable = true;
         nheko.enable = true;
         keepass.enable = true;
+        steam.enable = true;
       };
-      extraHmConfig = {};
+      extraHmConfig = {
+        #TODO: make this work
+        # home.persistence."/state/home/imikoy" = {
+        #     directories = secrets.west.persistHomeDirs;
+        # };
+      };
     };
   };
+  #TODO: causes ~/.local to be owned by root?
+  # environment.persistence."/state".users.imikoy = {
+  #     directories = secrets.west.persistHomeDirs;
+  # };
 
   # protracted imikoy's war against adhd
   networking.hosts = {
-    "127.0.0.1" = ["youtube.com" "www.youtube.com" "hexbear.net" "lemmy.ml" "reddit.com"];
+    "127.0.0.1" = [
+      "youtube.com"
+      "www.youtube.com"
+    ];
   };
 
   nix.extraOptions = ''
     extra-platforms = aarch64-linux
   '';
-  boot.binfmt.emulatedSystems = ["aarch64-linux"];
-
-  # specialisation."vm-with-nvidia-gpu" = {
-  #   inheritParentConfig = true;
-  #   configuration = {
-  #     system.nixos.tags = ["nvidia-vfio"];
-  #     hlk = {
-  #       virt = {
-  #         VMConfigsToLink = ["fedora40"];
-  #       };
-  #       input-leap.enable = true;
-  #     };
-
-  #     hardware.nvidia = {
-  #       prime.sync.enable = lib.mkForce false;
-  #       prime.offload.enable = lib.mkForce false;
-  #     };
-  #     boot.initrd.kernelModules = [
-  #       "vfio_pci"
-  #       "vfio"
-  #       "vfio_iommu_type1"
-  #     ];
-  #     boot.kernelParams = [
-  #       "vfio-pci.ids=10de:1f99,10de:10fa"
-  #     ];
-  #     boot.blacklistedKernelModules = ["nouveau" "nvidia" "nvidia_drm" "nvidia_modeset"];
-  #     boot.kernelModules = ["kvm-amd" "amdgpu" "acpi_call"];
-  #     services.xserver.videoDrivers = ["amdgpu"];
-
-  #     hardware.graphics.enable = true;
-  #     virtualisation.spiceUSBRedirection.enable = true;
-  #   };
-  # };
+  boot.binfmt.emulatedSystems = [ "aarch64-linux" ];
 
   system.stateVersion = "23.11";
 }

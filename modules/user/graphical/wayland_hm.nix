@@ -5,12 +5,13 @@
   userName,
   secrets,
   ...
-}: let
+}:
+let
   cfg = config._hlk_auto.graphical;
   modifier = config.wayland.windowManager.sway.config.modifier;
   terminal = config.wayland.windowManager.sway.config.terminal;
-in {
-  #TODO: try niri in the future
+in
+{
   #hm
   #TODO: waydroid?
   config = lib.mkIf (cfg.windowSystem == "wayland") {
@@ -66,8 +67,12 @@ in {
 
         #TODO: would be cool to have $mod+m switch from floating to tile if pressed after launch
         "unbindsym ${modifier}+j"
-        "bindsym ${modifier}+j exec pgrep wl-kbptr || wl-kbptr -c $HOME/${config.xdg.configFile."wl-kbptr/config".target} -o modes=floating',' -o mode_floating.source=detect && swaymsg mode Mouse"
-        "bindsym ${modifier}+m exec pgrep wl-kbptr || wl-kbptr -c $HOME/${config.xdg.configFile."wl-kbptr/config".target} -o modes=tile',' && swaymsg mode Mouse"
+        "bindsym ${modifier}+j exec pgrep wl-kbptr || wl-kbptr -c $HOME/${
+          config.xdg.configFile."wl-kbptr/config".target
+        } -o modes=floating',' -o mode_floating.source=detect && swaymsg mode Mouse"
+        "bindsym ${modifier}+m exec pgrep wl-kbptr || wl-kbptr -c $HOME/${
+          config.xdg.configFile."wl-kbptr/config".target
+        } -o modes=tile',' && swaymsg mode Mouse"
         "bindsym ${modifier}+n mode Mouse"
 
         "bindsym ${modifier}+Ctrl+p exec pgrep wleave || wleave -b4 -c10 -p layer-shell"
@@ -93,7 +98,11 @@ in {
         menu = "fuzzel";
         modifier = "Mod4";
         defaultWorkspace = "workspace \"1\"";
-        fonts = ["Hack Nerd Font 8"];
+        fonts = {
+          names = [ "Hack Nerd Font" ];
+          style = "Regular";
+          size = 8.0;
+        };
         #NOTE: output config should be done per machine or per hardware
         focus = {
           newWindow = "urgent";
@@ -113,7 +122,7 @@ in {
         window = {
           border = 1;
           titlebar = false;
-          commands = [];
+          commands = [ ];
         };
         startup = [
           {
@@ -121,11 +130,11 @@ in {
           }
         ];
         floating.criteria = [
-          {window_role = "pop-up";}
-          {window_role = "task_dialog";}
-          {instance = "Steam";}
-          {title = "Origin";}
-          {title = "Zoom Meeting";}
+          { window_role = "pop-up"; }
+          { window_role = "task_dialog"; }
+          { instance = "Steam"; }
+          { title = "Origin"; }
+          { title = "Zoom Meeting"; }
           {
             instance = "qemu";
             class = "Qemu-system-x86_64";
@@ -179,9 +188,23 @@ in {
         width = 40;
         ipc = true;
         id = "bar-0";
-        modules-left = ["clock#time" "clock#date" "pulseaudio" "battery" "memory" "cpu" "network" "sway/language" "keyboard-state" "sway/mode"];
-        modules-center = ["sway/workspaces"];
-        modules-right = ["idle_inhibitor" "tray"];
+        modules-left = [
+          "clock#time"
+          "clock#date"
+          "pulseaudio"
+          "battery"
+          "memory"
+          "cpu"
+          "network"
+          "sway/language"
+          "keyboard-state"
+          "sway/mode"
+        ];
+        modules-center = [ "sway/workspaces" ];
+        modules-right = [
+          "idle_inhibitor"
+          "tray"
+        ];
         margin = "0";
         spacing = "6";
         exclusive = true;
@@ -253,8 +276,8 @@ in {
       #TODO: fix style
       style = ''
         window {
-        	background-color: rgba(20, 14, 28, 0.85);
-        	background-image: none;
+          background-color: rgba(20, 14, 28, 0.85);
+          background-image: none;
         }
 
         button {
@@ -262,9 +285,9 @@ in {
             border-radius: 4px;
             border-color: #8F3F71;
             color: #FFFFFF;
-        	background-color: rgba(30, 30, 30, 0.5);
-        	border-style: solid;
-        	border-width: 2px;
+            background-color: rgba(30, 30, 30, 0.5);
+            border-style: solid;
+            border-width: 2px;
             text-decoration-color: #FFFFFF;
             background-repeat: no-repeat;
             background-position: center;
@@ -272,8 +295,8 @@ in {
         }
 
         button:active, button:focus, button:hover {
-        	background-color: #3700B3;
-        	outline-style: none;
+            background-color: #3700B3;
+            outline-style: none;
         }
 
         #reboot {
@@ -300,7 +323,10 @@ in {
 
     services.cliphist = {
       enable = true;
-      extraOptions = ["-max-items" "30"];
+      extraOptions = [
+        "-max-items"
+        "30"
+      ];
     };
 
     programs.swaylock = {

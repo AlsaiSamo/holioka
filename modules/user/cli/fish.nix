@@ -5,18 +5,20 @@
   secrets,
   userName,
   ...
-}: let
+}:
+let
   #NOTE: run 'sudo nix-channel --update' once to get rid of "DBI connect..."
   #TODO: have autocompletion for nix-shell -p (list of attributes of pkgs from nixpkgs)
   #TODO: have insert-and-complete (re-cal lcompletion after insert)
   #TODO: fzf for sorting autocompletions and search (but don't change anything else)
   #TODO: find a list of variables used to configure fish (impossible)
   cfg = config._hlk_auto.cli;
-in {
+in
+{
   config = lib.mkIf (cfg.shell == "fish") {
     home.persistence."/state/home/${userName}" = {
       allowOther = true;
-      directories = [".local/share/fish"];
+      directories = [ ".local/share/fish" ];
     };
     home.packages = with pkgs; [
       which

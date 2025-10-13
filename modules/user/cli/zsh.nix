@@ -5,9 +5,11 @@
   secrets,
   userName,
   ...
-}: let
+}:
+let
   cfg = config._hlk_auto.cli;
-in {
+in
+{
   config = lib.mkIf (cfg.shell == "zsh") {
     #Usual ZSH config
     programs.zsh = {
@@ -16,7 +18,7 @@ in {
       autocd = true;
       enableCompletion = true;
       syntaxHighlighting.enable = true;
-      dotDir = "./.config/zsh";
+      dotDir = "${config.xdg.configHome}/zsh";
       shellAliases = {
         l = "exa -halT -L 1";
         v = "$EDITOR";
@@ -31,6 +33,7 @@ in {
         #TODO: add to fish
         ga = "git add";
         gd = "git diff";
+        py = "python";
       };
       #TODO: is this needed?
       loginExtra = ''
@@ -50,11 +53,13 @@ in {
         }
       ];
       completionInit = "autoload -U compinit && compinit ";
-      initExtra = ''
+      initContent = ''
         set -o vi
          zstyle ':fzf-tab:complete:cd:*' fzf-preview 'exa -1 --color=always $realpath'
          unsetopt cdablevars '';
-      localVariables = {EDITOR = "nvim";};
+      localVariables = {
+        EDITOR = "nvim";
+      };
     };
     programs = {
       atuin.enableZshIntegration = true;

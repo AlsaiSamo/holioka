@@ -1,18 +1,22 @@
-select_user: {
+select_user:
+{
   config,
   lib,
   pkgs,
   userName,
   ...
-}: let
+}:
+let
   cfg = config._hlk_auto.keepass;
   options._hlk_auto.keepass = {
     enable = lib.mkEnableOption "keepassxc";
   };
-in {
+in
+{
   inherit options;
   config =
-    if select_user
+    if
+      select_user
     #hm
     then
       lib.mkIf cfg.enable {
@@ -28,5 +32,6 @@ in {
         };
       }
     #nixos
-    else {};
+    else
+      { };
 }

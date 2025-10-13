@@ -5,9 +5,11 @@
   userName,
   secrets,
   ...
-}: let
+}:
+let
   cfg = config._hlk_auto.graphical;
-in {
+in
+{
   #nixos
   config = lib.mkIf (cfg.windowSystem == "xorg") {
     services.xserver = {

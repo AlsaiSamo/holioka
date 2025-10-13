@@ -1,4 +1,5 @@
-select_user: {
+select_user:
+{
   config,
   lib,
   pkgs,
@@ -15,37 +16,68 @@ let
       description = "What Emacs to use as the base. Use emacs_FD for Xorg and emacsPGTK_fd for Wayland.";
       type = lib.types.package;
       default =
-        if (config._hlk_auto.graphical.windowSystem == "xorg")
-        then pkgs.emacs_FD
-        else pkgs.emacsPGTK_FD;
+        if (config._hlk_auto.graphical.windowSystem == "xorg") then pkgs.emacs_FD else pkgs.emacsPGTK_FD;
     };
   };
-in {
+in
+{
   inherit options;
   config =
-    if select_user
+    if
+      select_user
     #hm
     then
       lib.mkIf cfg.default.enable {
-        home.packages = with pkgs;
+        home.packages =
+          with pkgs;
           [
-            #LSP
+            #for dired
+            vips
+            imagemagick
+            poppler
+            gnutar
+            unzip
+            mediainfo
+            ffmpegthumbnailer
+            #for SPC-s-f
+            findutils
+            ripgrep
+            #for irc
+            gnutls
+            #for langs
+            cmake
             nil
+            clang-tools
+            lua-language-server
+            mdl
+            pandoc
+            nixfmt
+            rustfmt
+            guile
+            bash-language-server
+            shellcheck
+            pyright
+            black
+            lldb
           ]
           ++ (
-            if (config._hlk_auto.graphical.windowSystem == "xorg")
-            then [
-              xorg.xwininfo
-              xclip
-              xorg.xprop
-              xdotool
-            ]
-            else []
+            if (config._hlk_auto.graphical.windowSystem == "xorg") then
+              [
+                # for emacs-everywhere
+                xorg.xwininfo
+                xclip
+                xorg.xprop
+                xdotool
+              ]
+            else
+              [ ]
           );
         services.emacs.enable = true;
         programs.doom-emacs = {
           enable = true;
           emacs = cfg.package;
+          # Doesn't work due to github url redirecting, which nix fears
+          # experimentalFetchTree = true;
           doomDir = ../../dotfiles/doom.d;
           #NOTE: I can use extraPackages to add packages to Emacs
         };
@@ -61,9 +93,10 @@ in {
         };
         home.persistence."/local_state/home/${userName}" = {
           allowOther = true;
-          directories = [".cache/doom"];
+          directories = [ ".cache/doom" ];
         };
       }
     #nixos
-    else {};
+    else
+      { };
 }

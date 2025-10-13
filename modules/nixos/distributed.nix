@@ -4,9 +4,11 @@
   pkgs,
   secrets,
   ...
-} @ inputs: let
+}@inputs:
+let
   cfg = config.hlk.nix.distributed;
-in {
+in
+{
   options = {
     hlk.nix.distributed.enable = lib.mkEnableOption "remote building and store serving";
   };

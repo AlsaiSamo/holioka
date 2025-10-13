@@ -3,9 +3,11 @@
   lib,
   pkgs,
   ...
-} @ inputs: let
+}@inputs:
+let
   cfg = config.hlk.graphical;
-in {
+in
+{
   config = lib.mkIf (cfg.windowSystem == "xorg") {
     services.xserver = {
       enable = true;

@@ -5,8 +5,12 @@
   modulesPath,
   volatile,
   ...
-}: {
-  imports = [(modulesPath + "/installer/scan/not-detected.nix") volatile.west];
+}:
+{
+  imports = [
+    (modulesPath + "/installer/scan/not-detected.nix")
+    volatile.west
+  ];
 
   nix.settings.cores = 6;
 
@@ -25,9 +29,18 @@
   # };
 
   # NOTE: one-display only!
-  boot.blacklistedKernelModules = ["nouveau" "nvidia" "nvidia_drm" "nvidia_modeset"];
-  boot.kernelModules = ["kvm-amd" "amdgpu" "acpi_call"];
-  services.xserver.videoDrivers = ["amdgpu"];
+  boot.blacklistedKernelModules = [
+    "nouveau"
+    "nvidia"
+    "nvidia_drm"
+    "nvidia_modeset"
+  ];
+  boot.kernelModules = [
+    "kvm-amd"
+    "amdgpu"
+    "acpi_call"
+  ];
+  services.xserver.videoDrivers = [ "amdgpu" ];
 
   boot.loader.efi.canTouchEfiVariables = true;
   boot.loader.grub = {
@@ -36,12 +49,19 @@
     enableCryptodisk = true;
     device = "nodev";
   };
+  #TODO: set priority to 2048
   zramSwap.enable = true;
 
   boot.kernelPackages = pkgs.linuxPackagesFor pkgs.linuxKernel.kernels.linux_zen;
-  #TODO: services.scx.scheduler = "scx_lavd"; services.scx.enable = true;
 
-  #TODO: replace with system76-scheduler?
+  #TODO: test with this
+  # services.scx = {
+  #   enable = true;
+  #   package = pkgs.scx.rustscheds;
+  #   scheduler = "scx_lavd";
+  # };
+
+  #TODO: look into system76-scheduler
   services.ananicy = {
     enable = true;
     package = pkgs.ananicy-cpp;
@@ -58,7 +78,7 @@
     "sd_mod"
     "rtsx_pci_sdmmc"
   ];
-  boot.initrd.kernelModules = [];
+  boot.initrd.kernelModules = [ ];
 
   services.libinput = lib.mkIf config.services.xserver.enable {
     enable = true;
@@ -85,6 +105,5 @@
   # networking.interfaces.wlp3s0.useDHCP = lib.mkDefault true;
 
   nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-  hardware.cpu.amd.updateMicrocode =
-    lib.mkDefault config.hardware.enableRedistributableFirmware;
+  hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
 }

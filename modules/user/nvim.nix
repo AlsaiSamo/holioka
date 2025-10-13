@@ -1,4 +1,5 @@
-select_user: {
+select_user:
+{
   config,
   lib,
   pkgs,
@@ -8,20 +9,21 @@ select_user: {
 #TODO: try replacing with:
 #1. https://github.com/usagi-flow/evil-helix
 #2. https://github.com/nix-community/nixvim
+#3. A robust config (no coq, no chadtree)
 let
   cfg = config._hlk_auto.nvim;
-  options._hlk_auto.nvim.default.enable =
-    lib.mkEnableOption
-    "default Neovim configuration";
-in {
+  options._hlk_auto.nvim.default.enable = lib.mkEnableOption "default Neovim configuration";
+in
+{
   inherit options;
   config =
-    if select_user
+    if
+      select_user
     #hm
     then
       lib.mkIf cfg.default.enable {
         home.persistence."/local_state/home/${userName}" = {
-          directories = [".local/share/nvim"];
+          directories = [ ".local/share/nvim" ];
         };
         programs.neovim = {
           enable = true;
@@ -285,5 +287,6 @@ in {
         };
       }
     #nixos
-    else {};
+    else
+      { };
 }

@@ -8,7 +8,8 @@
   mobile,
   secrets,
   ...
-}: {
+}:
+{
   imports = [
     (modulesPath + "/installer/scan/not-detected.nix")
     volatile.north
@@ -32,7 +33,7 @@
   };
 
   mobile.quirks.audio.alsa-ucm-meld = true;
-  environment.systemPackages = [pkgs.alsa-ucm-conf-op];
+  environment.systemPackages = [ pkgs.alsa-ucm-conf-op ];
 
   services.udev.extraRules = ''
     SUBSYSTEM=="input", KERNEL=="event*", ENV{ID_INPUT}=="1", SUBSYSTEMS=="input", ATTRS{name}=="spmi_haptics", TAG+="uaccess", ENV{FEEDBACKD_TYPE}="vibra"
@@ -46,17 +47,20 @@
   };
 
   hardware.enableRedistributableFirmware = true;
-  nixpkgs.config.allowUnfreePredicate = pkg:
+  nixpkgs.config.allowUnfreePredicate =
+    pkg:
     builtins.elem (lib.getName pkg) [
       "firmware-oneplus-sdm845"
       "firmware-oneplus-sdm845-xz"
     ];
-  hardware.firmware = lib.mkAfter [pkgs.enchilada_firmware];
+  hardware.firmware = lib.mkAfter [ pkgs.enchilada_firmware ];
 
-  systemd.services.ModemManager.serviceConfig.ExecStart = ["" "${pkgs.modemmanager}/bin/ModemManager --test-quick-suspend-resume"];
+  systemd.services.ModemManager.serviceConfig.ExecStart = [
+    ""
+    "${pkgs.modemmanager}/bin/ModemManager --test-quick-suspend-resume"
+  ];
 
-  boot.kernelPackages =
-    lib.mkForce (pkgsARM.linuxPackagesFor pkgsARM.linux_enchilada);
+  boot.kernelPackages = lib.mkForce (pkgsARM.linuxPackagesFor pkgsARM.linux_enchilada);
   hardware.deviceTree.enable = true;
   hardware.deviceTree.name = "qcom/sdm845-oneplus-enchilada.dtb";
   boot.consoleLogLevel = 7;
@@ -69,7 +73,10 @@
   boot.loader = {
     grub.enable = false;
     systemd-boot.enable = true;
-    systemd-boot.extraFiles.${config.hardware.deviceTree.name} = "${config.hardware.deviceTree.package}/${config.hardware.deviceTree.name}";
+    systemd-boot.extraFiles.${config.hardware.deviceTree.name} =
+      "${config.hardware.deviceTree.package}/${config.hardware.deviceTree.name}";
+    #TODO: check this out
+    systemd-boot.consoleMode = "0";
     efi.canTouchEfiVariables = false;
   };
   boot.initrd = {

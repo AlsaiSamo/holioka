@@ -1,4 +1,4 @@
-inputs @ {
+inputs@{
   lib,
   config,
   pkgs,
@@ -6,7 +6,8 @@ inputs @ {
   extra,
   modulesPath,
   ...
-}: {
+}:
+{
   hlk = {
     common.enable = true;
     defaultFilesystems = true;
@@ -26,7 +27,7 @@ inputs @ {
       default.enable = true;
       rootKeysFrom = secrets.east.authorizedKeyFiles;
     };
-    #TODO: currently cannot connect the two machines
+    #TODO: currently cannot connect the two machines (no router)
     #nix.distributed.enable = true;
     mainUser = {
       enable = true;

@@ -1,0 +1,83 @@
+{
+    "custom/keeb": {
+        "format": "",
+        "on-click": "busctl call --user sm.puri.OSK0 /sm/puri/OSK0 sm.puri.OSK0 SetVisible b $(if [ \"$(busctl get-property --user sm.puri.OSK0 /sm/puri/OSK0 sm.puri.OSK0 Visible | tail -c+3)\" = \"false\" ]; then echo 'true'; else echo 'false'; fi)"
+    },
+
+    "group/bat": {
+        "orientation": "vertical",
+        "modules": [ "battery", "backlight" ]
+    },
+
+    "group/load": {
+        "orientation": "vertical",
+        "modules": [ "network", "memory" ]
+    },
+
+    "clock#time": {
+        "interval": 15,
+        "format": "{:%H:%M}",
+        "tooltip-format": "{:%Y-%m-%d %H:%M}",
+        "justify": "center"
+    },
+
+    "sway/workspaces": {
+	    "format": "{icon}",
+	    "format-icons": { "10": "0" },
+        "disable-scroll-wraparound": true,
+	    "disable-auto-back-and-forth": true,
+        "warp-on-scroll": false
+	},
+
+    "cpu": {
+        "interval": 10,
+        "format": " {usage}%"
+    },
+
+    "memory": {
+        "interval": 30,
+        "format": "󰘚 {percentage}%"
+    },
+
+    "battery": {
+        "format-icons": ["󰂎", "󰁺", "󰁻", "󰁼", "󰁽", "󰁾", "󰁿", "󰂀", "󰂁", "󰂂", "󰁹"],
+        "format": "{icon} {capacity}%"
+    },
+
+    "network": {
+        "interval": 10,
+        "format-wifi": "{icon}",
+        "format-icons": ["󰤯 ", "󰤟 ", "󰤢 ", "󰤥 ", "󰤨 "],
+        "tooltip-format": "{ifname}\n{ipaddr}\n {bandwidthUpBits} /  {bandwidthDownBits}",
+        "tooltip-format-wifi": "󰖩 {essid} / {signalStrength}%\n{ipaddr}\n {bandwidthUpBits} /  {bandwidthDownBits}"
+    },
+
+    "pulseaudio": {
+        "format-muted": "",
+        "format": " {volume}%",
+        "on-click": "pactl set-sink-mute @DEFAULT_SINK@ toggle"
+    },
+
+    "pulseaudio/slider": {
+        "orientation": "vertical"
+    },
+
+    "tray": {
+	    "spacing": 6
+	},
+
+    "idle_inhibitor": {
+        "format": "{icon}",
+        "format-icons": {
+            "activated": "󰅶",
+            "deactivated": "󰾪"
+        },
+        "start-activated": "false"
+    },
+
+    "sway/language": {
+	    "format": "<span text_transform='lowercase'>{shortDescription}</span>",
+	    "tooltip-format": "{long}"
+	}
+
+}

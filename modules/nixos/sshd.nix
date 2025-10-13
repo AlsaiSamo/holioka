@@ -3,9 +3,11 @@
   lib,
   pkgs,
   ...
-} @ inputs: let
+}@inputs:
+let
   cfg = config.hlk.sshd;
-in {
+in
+{
   options = {
     hlk.sshd = {
       default.enable = lib.mkEnableOption "default SSHD configuration";
@@ -46,6 +48,6 @@ in {
       bantime = "30m";
     };
     users.users.root.openssh.authorizedKeys.keyFiles = cfg.rootKeysFrom;
-    environment.persistence."/state".directories = ["/var/lib/fail2ban"];
+    environment.persistence."/state".directories = [ "/var/lib/fail2ban" ];
   };
 }
