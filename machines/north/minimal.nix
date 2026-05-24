@@ -45,8 +45,6 @@ inputs@{
           };
         };
         extraHmConfig = {
-          #NOTE: these fail to build in aarch64 emulator
-          #fails due to fish failing
           programs.direnv.enable = lib.mkForce false;
           #fails due to a timeout caused by slow emulation
           programs.atuin.enable = lib.mkForce false;

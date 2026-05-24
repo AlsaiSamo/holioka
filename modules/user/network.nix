@@ -8,7 +8,7 @@ select_user:
 }:
 let
   cfg = config._hlk_auto.network;
-  cfgGraphical = config._hlk_auto.graphical.windowSystem;
+  cfgGraphical = config._hlk_auto.graphical.desktopVariant;
   options._hlk_auto.network = {
     manager = lib.mkOption {
       example = "iwd";
@@ -30,6 +30,7 @@ let
 in
 {
   inherit options;
+  #TODO: networkmanager and modemmanager (for phone)
   config =
     if
       select_user
@@ -41,7 +42,6 @@ in
             (lib.mkIf (cfg.manager == "iwd") { home.packages = [ pkgs.iwgtk ]; })
             # (lib.mkIf (cfg.manager == "networkmanager") {})
             # (lib.mkIf (cfg.manager == "nm+mm") {})
-            #TODO: networkmanager and modemmanager
           ]
         ))
       ]
@@ -54,7 +54,6 @@ in
         (lib.mkIf (cfg.hostName != "") {
           hlk.network.hostName = cfg.hostName;
         })
-        #TODO: networkmanager and modemmanager config and state persisting
         # (lib.mkIf (cfg.manager == "iwd") {home.packages = [pkgs.iwgtk];})
         # (lib.mkIf (cfg.manager == "networkmanager") {})
         # (lib.mkIf (cfg.manager == "nm+mm") {})

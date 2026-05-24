@@ -34,23 +34,33 @@ in
             unixtools.route
           ]
           ++ (
-            if (config._hlk_auto.graphical.windowSystem == "xorg") then
+            if (config._hlk_auto.graphical.desktopVariant == "xorg") then
               [
-                wineWowPackages.stable
+                wineWow64Packages.stable
               ]
             else
               [ ]
           )
           ++ (
-            if (config._hlk_auto.graphical.windowSystem == "wayland") then
+            if (config._hlk_auto.graphical.desktopVariant == "wayland") then
               [
-                wineWowPackages.wayland
+                wineWow64Packages.wayland
               ]
             else
               [ ]
           );
-        home.persistence."/state/home/${userName}" = {
-          allowOther = true;
+      }
+    #nixos
+    else
+      lib.mkIf cfg.enable {
+        services.openvpn.servers.work = {
+          updateResolvConf = true;
+          config = secrets.work.vpn_conf;
+        };
+        environment.systemPackages = with pkgs; [
+          openvpn
+        ];
+        environment.persistence."/state".users.${userName} = {
           files = [
             ".config/zoom.conf"
             ".config/zoomus.conf"
@@ -68,16 +78,5 @@ in
             ".zoom"
           ];
         };
-      }
-    #nixos
-    else
-      lib.mkIf cfg.enable {
-        services.openvpn.servers.work = {
-          updateResolvConf = true;
-          config = secrets.work.vpn_conf;
-        };
-        environment.systemPackages = with pkgs; [
-          openvpn
-        ];
       };
 }

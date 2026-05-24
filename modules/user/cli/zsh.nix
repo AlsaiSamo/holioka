@@ -30,12 +30,11 @@ in
         nsh = "nix-shell -p";
         gs = "git status";
         gc = "git commit";
-        #TODO: add to fish
         ga = "git add";
         gd = "git diff";
         py = "python";
       };
-      #TODO: is this needed?
+      #TODO: try using gpg without this
       loginExtra = ''
         GPG_TTY=$(tty)
         export GPG_TTY
@@ -68,10 +67,6 @@ in
       eza.enableZshIntegration = true;
       direnv.enableZshIntegration = true;
       nix-index.enableZshIntegration = true;
-    };
-    home.persistence."/state/home/${userName}" = {
-      allowOther = true;
-      # files = [".zcompdump"];
     };
   };
 }

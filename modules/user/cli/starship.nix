@@ -25,7 +25,7 @@ in
           "$username$hostname"
         ];
         add_newline = false;
-        #TODO: doesn't show multiline prompt (not even the default one) (on fish)
+        #NOTE: doesn't show up on fish
         #continuation_prompt = "[██](bright-black)  ";
         status = {
           disabled = false;

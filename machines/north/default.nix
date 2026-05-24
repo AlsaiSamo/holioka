@@ -66,7 +66,7 @@ inputs@{
         userConfig = {
           keepass.enable = true;
           firefox.default.enable = true; # TODO: mobile-friendly config
-          nheko.enable = true;
+          comms.nheko.enable = true;
           #krita.enable = true;
           #fcitx.enable = true;
           common.enable = true;
@@ -78,7 +78,7 @@ inputs@{
             shell = "zsh"; # TODO: fish?
             starship.enable = true;
           };
-          graphical.windowSystem = "wayland_mobile";
+          graphical.desktopVariant = "wayland_mobile";
 
           network = {
             manager = "networkmanager";
@@ -86,21 +86,20 @@ inputs@{
           };
         };
         extraHmConfig = {
-          home.persistence."/state/home/imikoy" = {
-            allowOther = true;
-            directories = [
-              ".config/pulse" # TODO: when creating audio module with pulseaudio option, move this to the new module
-              ".purple" # chatty
-              ".local/share/evolution" # calendar, email, address book
-              ".local/share/calls" # calls things
-            ];
-            files = [
-              #NOTE: phosh replaces the symlink with a file, wiping the settings
-              #".config/dconf/user" #gnome settings
-            ];
-          };
         };
       };
+    };
+    environment.persistence."/state".users.imikoy = {
+      directories = [
+        ".config/pulse" # TODO: when creating audio module with pulseaudio option, move this to the new module
+        ".purple" # chatty
+        ".local/share/evolution" # calendar, email, address book
+        ".local/share/calls" # calls things
+      ];
+      files = [
+        #NOTE: phosh replaces the symlink with a file, wiping the settings
+        #".config/dconf/user" #gnome settings
+      ];
     };
     users.users.imikoy = {
       extraGroups = [

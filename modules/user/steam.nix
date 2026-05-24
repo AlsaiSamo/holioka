@@ -6,7 +6,6 @@ select_user:
   userName,
   ...
 }:
-#NOTE: games are stored in ~/large_items, they must not be snapshotted
 let
   cfg = config._hlk_auto.steam;
   options._hlk_auto.steam = {
@@ -20,23 +19,19 @@ in
       select_user
     #hm
     then
-      {
-        #TODO: bindmount ~/large_items/Steam to ~/.local/share/Steam
-        #but in a way that'll work (so that it'll be owned by the mainuser)
-        #TODO: look at zfs diffs
-      }
+      { }
     #nixos
     else
       lib.mkIf cfg.enable {
+        environment.persistence."/local_state".users.${userName} = {
+          directories = [ ".local/share/Steam" ];
+        };
         programs.steam = {
           enable = true;
           extraPackages = with pkgs; [
             gamescope
-            gamemode
           ];
           protontricks.enable = true;
-          # extraCompatPackages = with pkgs; [];
-          # package = pkgs.steam.override {};
         };
       };
 }

@@ -42,19 +42,20 @@ in
         "snd-seq"
         "snd-rawmidi"
       ];
+      security.polkit.enable = true;
       services.pipewire = {
         enable = true;
         alsa.enable = true;
         alsa.support32Bit = true;
         pulse.enable = true;
         jack.enable = true;
+        #TODO: wireplumber config
       };
       programs.noisetorch.enable = true;
     })
     (lib.mkIf cfg.desktop.enable {
       environment.systemPackages = with pkgs; [
         qpwgraph
-        helvum
         # carla
 
         pulseaudio

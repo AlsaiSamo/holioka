@@ -11,10 +11,10 @@ let
 in
 {
   #nixos
-  config = lib.mkIf (cfg.windowSystem == "wayland_mobile") {
+  config = lib.mkIf (cfg.desktopVariant == "wayland_mobile") {
     services.displayManager = {
       enable = true;
-      #NOTE: try lemurs at some point
+      #TODO: rewrite to use greetd stuff
       ly.enable = true;
       ly.settings = {
         auth_fails = 65535;

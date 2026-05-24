@@ -13,8 +13,7 @@ let
 in
 {
   #hm
-  #TODO: waydroid?
-  config = lib.mkIf (cfg.windowSystem == "wayland") {
+  config = lib.mkIf (cfg.desktopVariant == "wayland") {
     home.packages = with pkgs; [
       swaybg
       wayshot
@@ -33,7 +32,12 @@ in
       enable = true;
       extraConfig = lib.concatStringsSep "\n" [
         "mouse_warping none"
-        "output * bg ${config.xdg.userDirs.pictures}/wallpaper.png fit"
+        # "output * bg ${config.xdg.userDirs.pictures}/wallpaper.png fit"
+        (lib.strings.concatStrings [
+          "output * bg "
+          ../../../dotfiles/wallpaper.png
+          " fit"
+        ])
 
         "bindsym ${modifier}+Ctrl+l exec"
         "bindsym --release ${modifier}+Ctrl+l exec swaylock -f"
@@ -44,8 +48,6 @@ in
         "bindsym --release ${modifier}+Shift+q kill"
 
         #Taken from wl-kbptr's readme
-        #TODO: want to have warpd's smoothness...
-        #TODO: make the mouse look different? how can this be done?
         "mode Mouse {"
         "# Mouse move"
         "bindsym Left exec wlrctl pointer move -5 0"
@@ -65,7 +67,6 @@ in
         "}"
         #End of wl-kbptr's readme segment
 
-        #TODO: would be cool to have $mod+m switch from floating to tile if pressed after launch
         "unbindsym ${modifier}+j"
         "bindsym ${modifier}+j exec pgrep wl-kbptr || wl-kbptr -c $HOME/${
           config.xdg.configFile."wl-kbptr/config".target
@@ -78,8 +79,9 @@ in
         "bindsym ${modifier}+Ctrl+p exec pgrep wleave || wleave -b4 -c10 -p layer-shell"
 
         #FIX: doen't work on East due to Shift-Print not being registered
-        "bindsym Print+Shift exec wayshot -s \"$(slurp)\" --stdout | ifne tee ${config.xdg.userDirs.pictures}/screenshot_$(date +'%y-%m-%d_%T').png | wl-copy"
-        "bindsym --release Print exec wayshot --stdout | ifne tee ${config.xdg.userDirs.pictures}/screenshot_$(date +'%y-%m-%d_%T').png | wl-copy"
+        "bindsym Print+Shift exec wayshot --silent --clipboard -g '${config.xdg.userDirs.pictures}/screenshots/'"
+        "bindsym --release Print exec wayshot --silent --clipboard '${config.xdg.userDirs.pictures}/screenshots/'"
+        # "bindsym --release Print exec wayshot --silent --clipboard - | ifne tee ${config.xdg.userDirs.pictures}/screenshots/screenshot_$(date +'%y-%m-%d_%T').png | wl-copy"
 
         "bindcode Ctrl+47 exec cliphist list | fuzzel -d -w80 | cliphist decode | wl-copy"
         "bindcode Ctrl+Shift+47 exec cliphist wipe"
@@ -103,6 +105,7 @@ in
           style = "Regular";
           size = 8.0;
         };
+        bars = [ ];
         #NOTE: output config should be done per machine or per hardware
         focus = {
           newWindow = "urgent";
@@ -187,7 +190,7 @@ in
         position = "left";
         width = 40;
         ipc = true;
-        id = "bar-0";
+        # id = "bar-0";
         modules-left = [
           "clock#time"
           "clock#date"
@@ -226,6 +229,8 @@ in
           horizontal-pad = "2";
           vertical-pad = "2";
           image-size-ratio = "0";
+          #TODO: currently resvg, a dependency of fuzzel, crashes on pavucontrol's icon
+          icons-enabled = "no";
         };
         colors = {
           background = "1d2021ff";
@@ -243,6 +248,8 @@ in
         border.width = 2;
       };
     };
+    #TODO: css broke
+    #    if this is fixed, remove the todo
     programs.wlogout = {
       enable = true;
       package = pkgs.wleave;
@@ -273,7 +280,6 @@ in
           text = "Reboot";
         }
       ];
-      #TODO: fix style
       style = ''
         window {
           background-color: rgba(20, 14, 28, 0.85);
@@ -298,26 +304,6 @@ in
             background-color: #3700B3;
             outline-style: none;
         }
-
-        #reboot {
-            background-image: image(url("${pkgs.wlogout}/share/wlogout/icons/reboot.png"), url("/usr/local/share/wlogout/icons/reboot.png"));
-        }
-
-        #shutdown {
-            background-image: image(url("${pkgs.wlogout}/share/wlogout/icons/shutdown.png"), url("/usr/local/share/wlogout/icons/shutdown.png"));
-        }
-
-        #suspend {
-            background-image: image(url("${pkgs.wlogout}/share/wlogout/icons/suspend.png"), url("/usr/local/share/wlogout/icons/suspend.png"));
-        }
-
-        #logout {
-            background-image: image(url("${pkgs.wlogout}/share/wlogout/icons/logout.png"), url("/usr/local/share/wlogout/icons/logout.png"));
-        }
-
-        #lock {
-            background-image: image(url("${pkgs.wlogout}/share/wlogout/icons/lock.png"), url("/usr/local/share/wlogout/icons/lock.png"));
-        }
       '';
     };
 
@@ -333,7 +319,8 @@ in
       enable = true;
       package = pkgs.swaylock-effects;
       settings = {
-        image = "${config.xdg.userDirs.pictures}/wallpaper.png";
+        # image = "${config.xdg.userDirs.pictures}/wallpaper.png";
+        image = ../../../dotfiles/wallpaper.png;
         show-keyboard-layout = true;
         indicator-caps-lock = true;
         font = "Hack Nerd Font";
@@ -374,16 +361,10 @@ in
 
     services.swayidle = {
       enable = true;
-      events = [
-        {
-          event = "before-sleep";
-          command = "${pkgs.swaylock-effects}/bin/swaylock -f -C $HOME/.config/swaylock/config";
-        }
-        {
-          event = "lock";
-          command = "${pkgs.swaylock-effects}/bin/swaylock -f -C $HOME/.config/swaylock/config";
-        }
-      ];
+      events = {
+        "before-sleep" = "${pkgs.swaylock-effects}/bin/swaylock -f -C $HOME/.config/swaylock/config";
+        "lock" = "${pkgs.swaylock-effects}/bin/swaylock -f -C $HOME/.config/swaylock/config";
+      };
       timeouts = [
         {
           timeout = 1800;

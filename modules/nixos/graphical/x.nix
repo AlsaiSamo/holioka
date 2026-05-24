@@ -8,7 +8,7 @@ let
   cfg = config.hlk.graphical;
 in
 {
-  config = lib.mkIf (cfg.windowSystem == "xorg") {
+  config = lib.mkIf (cfg.desktopVariant == "xorg") {
     services.xserver = {
       enable = true;
       windowManager.i3.enable = true;

@@ -16,7 +16,7 @@
 
 (doom! :input
        ;;chinese
-       japanese
+       ;; japanese
        ;;layout            ; auie,ctsrnm is the superior home row
 
        :completion
@@ -26,7 +26,6 @@
        ;;helm              ; the *other* search engine for love and life
        ;;ido               ; the other *other* search engine...
        ;;ivy               ; a search engine for love and life
-       ;; TODO: configure?
        (vertico +icons)     ; the search engine of the future
 
        :ui
@@ -34,14 +33,13 @@
        doom                   ; what makes DOOM look the way it does
        doom-dashboard         ; a nifty splash screen for Emacs
        doom-quit              ; DOOM quit-message prompts when you quit Emacs
+       ;; TODO: enable?
        ;; (emoji +unicode)  ; 🙂
        hl-todo                ; highlight TODO/FIXME/NOTE/DEPRECATED/HACK/REVIEW
        ;;hydra
        indent-guides                    ; highlighted indent columns
-       ;; TODO: try this out someday, search how to disable ligatures per face
        ;;(ligatures +iosevka)         ; ligatures and symbols to make your code pretty again
        ;;minimap           ; show a map of the code on the side
-       ;;TODO: keep this or nah?
        smooth-scroll
        modeline    ; snazzy, Atom-inspired modeline, plus API
        nav-flash   ; blink cursor line after big motions
@@ -51,7 +49,6 @@
        ;;tabs              ; a tab bar for Emacs
        ;;treemacs          ; a project drawer, like neotree but cooler
        unicode                ; extended unicode support for various languages
-       ;; TODO: check whether +pretty is good
        (vc-gutter +pretty)    ; vcs diff in the fringe
        vi-tilde-fringe        ; fringe tildes to mark beyond EOB
        ;;window-select     ; visually switch windows
@@ -59,10 +56,9 @@
        ;;zen               ; distraction-free coding or writing
 
        :editor
-       (evil +everywhere)           ; come to the dark side, we have cookies
+       (evil +everywhere)            ; come to the dark side, we have cookies
        file-templates               ; auto-snippets for empty files
        fold                         ; (nigh) universal code folding
-       ;; TODO: check out what nix formatter to use
        (format +onsave +lsp)            ; automated prettiness
        ;;god               ; run Emacs commands without modifier keys
        ;; TODO: try this out in lisp
@@ -71,28 +67,31 @@
        ;;objed             ; text object editing for the innocent
        ;;parinfer          ; turn lisp into python, sort of
        ;;rotate-text       ; cycle region at point between text candidates
-       snippets                       ; my elves. They type so I don't have to
+       snippets                         ; my elves. They type so I don't have to
        ;; word-wrap                      ; soft wrapping with language-aware indent
 
        :emacs
        ;; TODO: learn how to use this better
+       ;; 1. How to quick open home dir?
+       ;; 2. How to quick open project dir?
        (dired +icons +dirvish) ; making dired pretty [functional]
+       ;; TODO: what does this do?
        electric                ; smarter, keyword-based electric-indent
-       ;;ibuffer         ; interactive buffer management
-       ;; TODO: "less stable but offers branching undo history and a visualiser"
-       ;; check if it is stable enough and configure
+       ;; TODO: look into using this
+       (ibuffer +icons)         ; interactive buffer management
+       ;;tramp
        (undo +tree)      ; persistent, smarter undo for your inevitable mistakes
        vc                ; version-control and Emacs, sitting in a tree
 
        :term
-       eshell            ; the elisp shell that works everywhere
+       eshell         ; the elisp shell that works everywhere
        ;;shell             ; simple shell REPL for Emacs
        ;;term              ; basic terminal emulator for Emacs
        ;;vterm             ; the best terminal emulation in Emacs
 
        :checkers
-       ;; TODO: trying the flags out, originally used without them
-       (syntax +icons +flymake) ; tasing you for every semicolon you forget
+       ;; TODO: try without flymake on rust projects
+       (syntax +icons +flymake)      ; tasing you for every semicolon you forget
        ;;(spell +flyspell) ; tasing you for misspelling mispelling
        ;;grammar           ; tasing grammar mistake every you make
 
@@ -108,15 +107,13 @@
        (eval +overlay)       ; run code, run (also, repls)
        ;;gist              ; interacting with github gists
        lookup                   ; navigate your code and its documentation
-       lsp                      ; M-x vscode
+       ;; TODO: testing +peek
+       (lsp +peek)                      ; M-x vscode
        magit                    ; a git porcelain for Emacs
        make                     ; run make tasks from Emacs
        ;;pass              ; password manager for nerds
        pdf                              ; pdf enhancements
-       ;;prodigy           ; FIXME managing external services & code builders
-       ;; rgb               ; creating color strings
        tree-sitter
-       ;;taskrunner        ; taskrunner for all your projects
        ;;terraform         ; infrastructure as code
        ;;tmux              ; an API for interacting with tmux
        ;;upload            ; map local to remote projects via ssh/ftp
@@ -132,7 +129,7 @@
        ;; and configure if needed
        (cc +lsp +tree-sitter)           ; C > C++ == 1
        ;;clojure           ; java with a lisp
-       ;;common-lisp       ; if you've seen one lisp, you've seen them all
+       common-lisp       ; if you've seen one lisp, you've seen them all
        ;;coq               ; proofs-as-programs
        ;;crystal           ; ruby at the speed of c
        ;;csharp            ; unity, .NET, and mono shenanigans
@@ -167,27 +164,26 @@
        ;;nim               ; python + lisp at the speed of c
        (nix +tree-sitter +lsp)          ; I hereby declare "nix geht mehr!"
        ;;ocaml             ; an objective camel
-       ;;TODO: use this properly
-       (org +roam2 +dragndrop)
+       ;;TODO: configure (including flags and other packages) and use this properly
+       (org +dragndrop +pretty)
        ;; php               ; perl's insecure younger brother
        ;;plantuml          ; diagrams for confusing people more
        ;;purescript        ; javascript, but functional
-       (python +lsp +pyright +tree-sitter) ; beautiful is better than ugly
+       (python +lsp +pyright +tree-sitter) ; beautiful is better than ugly 
        ;;qt                ; the 'cutest' gui framework ever
        ;;racket            ; a DSL for DSLs
        ;;raku              ; the artist formerly known as perl6
-       rest                             ; Emacs as a REST client
+       (rest +jq)                             ; Emacs as a REST client
        ;;rst               ; ReST in peace
        ;;(ruby +rails)     ; 1.step {|i| p "Ruby is #{i.even? ? 'love' : 'life'}"}
        (rust +tree-sitter +lsp)      ; Fe2O3.unwrap().unwrap().unwrap().unwrap()
        ;;scala             ; java, but good
-       (scheme +guile)      ; a fully conniving family of lisps
+       ;; (scheme +guile)      ; a fully conniving family of lisps
        (sh +lsp)            ; she sells {ba,z,fi}sh shells on the C xor
        ;;sml
        ;;solidity          ; do you need a blockchain? No.
        ;;swift             ; who asked for emoji variables?
        ;;terra             ; Earth and Moon in alignment for performance.
-       ;;TODO: lsp?
        (web +tree-sitter)              ; the tubes
        ;; yaml              ; JSON, but readable
        ;;zig               ; C, but simpler

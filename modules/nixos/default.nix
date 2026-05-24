@@ -6,8 +6,7 @@
   ...
 }@inputs:
 {
-  #WARN: these modules are not going to be maintained well because I do not have
-  #      a use case where I do not create my user.
+  #NOTE: I always create the main user, so these modules may not be maintained as good as the usermodules.
   imports = [
     ./common.nix
     ./fs.nix
@@ -17,7 +16,6 @@
     ./network.nix
     ./sshd.nix
     ./graphical
-    ./fcitx.nix
     ./distributed.nix
     ./avahi.nix
     ./user.nix

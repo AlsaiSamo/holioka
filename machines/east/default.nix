@@ -46,11 +46,11 @@ inputs@{
         #emacs.default.enable = true;
         firefox.default.enable = true;
         gpg.default.enable = true;
-        graphical.windowSystem = "wayland";
+        graphical.desktopVariant = "wayland";
         nvim.default.enable = true;
         krita.enable = true;
         fcitx.enable = true;
-        nheko.enable = true;
+        comms.nheko.enable = true;
         work.enable = false;
         common.enable = true;
         keepass.enable = true;

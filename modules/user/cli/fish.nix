@@ -8,25 +8,24 @@
 }:
 let
   #NOTE: run 'sudo nix-channel --update' once to get rid of "DBI connect..."
-  #TODO: have autocompletion for nix-shell -p (list of attributes of pkgs from nixpkgs)
-  #TODO: have insert-and-complete (re-cal lcompletion after insert)
-  #TODO: fzf for sorting autocompletions and search (but don't change anything else)
-  #TODO: find a list of variables used to configure fish (impossible)
+  #TODO: I do not use fish right now. The following is the todo list:
+  #1. have autocompletion for nix-shell -p (list of attributes of pkgs from nixpkgs)
+  #2. have insert-and-complete (re-cal lcompletion after insert)
+  #3. fzf for sorting autocompletions and search (but don't change anything else)
+  #4. find a list of variables used to configure fish (impossible)
+  #5. replacement for !$
+  #6. Make starship multiline/continuation prompt show up
   cfg = config._hlk_auto.cli;
 in
 {
   config = lib.mkIf (cfg.shell == "fish") {
-    home.persistence."/state/home/${userName}" = {
-      allowOther = true;
-      directories = [ ".local/share/fish" ];
-    };
     home.packages = with pkgs; [
       which
       fd
     ];
     programs.fish = {
       enable = true;
-      #TODO: proper fuzzy completion (currently it is not fuzzy but close enough)
+      package = pkgs.fish_patched;
       plugins = [
         {
           name = "done";
@@ -44,11 +43,12 @@ in
         Q = "exit";
         ":q" = "exit";
       };
-      #TODO: write a replacement of !$
-      #and something to toggle private mode
       shellAbbrs = {
         gs = "git status";
         gc = "git commit";
+        ga = "git add";
+        gd = "git diff";
+        py = "python";
         v = "$EDITOR";
         nsh = "nix-shell -p ";
         "!!" = {
@@ -74,8 +74,5 @@ in
         set -U __done_notification_duration 15000 # in ms
       '';
     };
-    #NOTE: here I was setting enableFishIntegration to
-    #direnv, atuin, zoxide, starship, fzf, eza, nix-index and services.gpg-agent,
-    #but this is not required lol (they are set to true already)
   };
 }

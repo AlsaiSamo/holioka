@@ -11,7 +11,7 @@ let
   options._hlk_auto.firefox = {
     default.enable = lib.mkEnableOption "default Firefox configuration";
   };
-  myFirefox = pkgs.wrapFirefox pkgs.firefox-unwrapped {
+  myFirefox = pkgs.wrapFirefox pkgs.librewolf-unwrapped {
     nativeMessagingHosts = [ pkgs.tridactyl-native ];
     extraPolicies = {
       OverrideFirstRunPage = "";
@@ -46,10 +46,13 @@ in
           enable = true;
           package = myFirefox;
           policies = {
+            # NOTE: I actually use the fact that the dir has no default.
             # DefaultDownloadDirectory = "\${home}/Downloads";
           };
           profiles."alsaisamo" = {
-            search.default = "ddg";
+            #NOTE: configuring search has to be disabled due to this issue
+            #https://github.com/nix-community/home-manager/issues/3698
+            # search.default = "ddg";
             extensions.packages = with pkgs.nur.repos.rycee.firefox-addons; [
               ublock-origin
               tridactyl
@@ -63,21 +66,25 @@ in
             '';
           };
         };
-        home.persistence."/state/home/${userName}" = {
+      }
+    #nixos
+    else
+      lib.mkIf cfg.default.enable {
+        environment.persistence."/state".users.${userName} = {
           files = [ ".config/tridactyl/tridactylrc" ];
           directories = [
             #Has the profile
-            ".mozilla/firefox"
-            #".cache/mozilla"
+            # ".mozilla/firefox"
+            ".librewolf"
             #Keepassxc
             ".mozilla/native-messaging-hosts"
           ];
         };
-        home.persistence."/local_state/home/${userName}" = {
-          directories = [ ".cache/mozilla" ];
+        environment.persistence."/local_state".users.${userName} = {
+          directories = [
+            # ".cache/mozilla"
+            ".cache/librewolf"
+          ];
         };
-      }
-    #nixos
-    else
-      { };
+      };
 }

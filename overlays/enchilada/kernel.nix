@@ -200,7 +200,7 @@ pkgs.buildLinux {
     NET_SCH_MQPRIO = no;
     NET_CLS_BASIC = no;
     NET_CLS_FLOWER = no;
-    NET_CLS_ACT = no;
+    NET_CLS_ACT = lib.mkForce no;
     MDIO_BUS_MUX_MMIOREG = no;
     MDIO_BUS_MUX_MULTIPLEXER = no;
     SND_SOC_ES7134 = no;

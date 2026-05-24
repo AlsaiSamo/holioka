@@ -24,14 +24,21 @@ in
         home.packages = with pkgs; [
           keepassxc
         ];
-        home.persistence."/state/home/${userName}" = {
-          files = [
-            ".config/keepassxc/keepassxc.ini"
-            ".cache/keepassxc/keepassxc.ini"
-          ];
-        };
       }
     #nixos
     else
-      { };
+      {
+        environment.persistence."/state".users.${userName} = {
+          files = [
+            {
+              file = ".config/keepassxc/keepassxc.ini";
+              method = "symlink";
+            }
+            {
+              file = ".cache/keepassxc/keepassxc.ini";
+              method = "symlink";
+            }
+          ];
+        };
+      };
 }

@@ -1,65 +1,117 @@
-#+title: Readme
+#+title: Holioka, NixOS configuration flake
 #+author: Imikoy
+
+#+attr_html: :align center
+[[./logo.png]]
 
 * Description
 A nix flake for my NixOS machines.
 It is focused on single-user setups (meaning that any multi-user config would need to be done from the ground up).
 * Machines
 ** West
-This is the main machine - a (somewhat) beefy gaming laptop from 2020.
+This is the main machine.
+Previously it was Lenovo IdeaPad, AMD + Nvidia.
+Right now it is a ThinkPad E15 Gen 4 AMD.
 ** East
-This is the secondary machine - a weak AMD A10 Thinkpad.
+This is the secondary machine - ThinkPad A275.
+Currently out of service.
 ** North
-This is a OnePlus 6 that runs NixOS using UEFI. WIP.
+This was previously a OnePlus 6 that runs NixOS using UEFI. Deep WIP.
+Rarely used because it is currently not configured to completion + it has issues with audio, cellular, etc.
+Right now I am looking into using Nothing Phone 1 instead of OnePlus 6.
 * Repo structure
 + =modules= contains modules that are used for NixOS and home-manager.
   + =nixos= contains NixOS modules.
-    This directory is currently not maintained as these modules were largely superseded by usermodules.
-    These modules do not make an assumption that a "main" user exists, however I currently do not have machines without a "main" user.
+    Since most of the configuration is done through usermodules, NixOS modules are not maintained as good as them.
+    These modules should not make an assumption that a "main" user exists, however I currently do not have machines without a "main" user.
     The only exception is the ~user.nix~ module, which defines a main user of the machine.
     All options are added under ~hlk~ tree.
   + =user= contains "usermodules" - pseudomodules that expand into both NixOS and home-manager modules with identical option trees.
-    This was made to support setting options on both sides (NixOS and home-manager) with one configuration option.
+    This was made to support setting options on both sides (NixOS and home-manager) with only one configuration option.
     These modules create their options in ~_hlk_auto~ config tree and define the module configs for NixOS and home-manager.
     These modules are used via ~user.nix~ module from =nixos=.
-+ =machines= contains NixOS configurations per logical machine.
-+ =hardware= contains NixOS configuration portions per physical machine.
+    Example usage - using NixOS impermanence module to create user-owned bind-mounts instead of using FUSE bindfs via home-manager impermanence module.
++ =machines= contains NixOS configurations per logical machine (West, East, North, etc.).
++ =hardware= contains NixOS configuration portions per physical machine (Thinkpad E15, Ideapad, Oneplus 6, etc.).
 + =dotfiles= contains config files for things. There is no strict rule what configs go into =dotfiles= and what are specified in nix code though.
++ =overlays= contains nixpkgs overlays, which usually add new or modified packages.
 + =secret.nix= and =secrets= are encrypted in the repository and contain secret information, such as:
   - SSH pubkeys
   - Timezone
   - Machine configuration parts
   - User environment configuration parts
   - etc.
-+ =volatile.nix= contains information that is expected to change on reinstalls, such as partition information.
++ =volatile.nix= contains information that is expected to change on reinstalls, that is - partition information.
 * Filesystem
 The filesystem is ZFS. It needs to be set up before installation.
 ** Structure
 1. nix_pool
    1. local
-      1. home
-         Mounted on ~/home~.
-         ~home@blank~ contains user directories, owned by the respective users, ~Downloads~ and ~large_items~ symlinks to ~../../local_state/home/<username>/<source_dir>~.
-      2. log
+      1. log
          Mounted on ~/var/log~.
-      3. nix
+      2. nix
          Mounted on ~/nix~.
-      4. root
+      3. root
          Mounted on ~/~.
-         ~root@blank~ contains nothing - it is created right after creating the dataset.
-      5. local_state
+         ~root@blank~ contains empty directories ~home/imikoy~ (owned by the imikoy user), ~local_state~, ~nix~, ~state~, ~var/log~.
+      4. local_state
          Mounted on ~/local_state~.
-         Contains state that is either local to the machine or does not fit into machine's state (for example, music).
+         Contains state that is either local to the machine or does not physically fit into machine's state (for example, music).
    2. safe
       This dataset is snapshotted regularly.
       1. secrets
          Mounted on ~/state/secrets~. Contains keys, keepass databases, etc.
+         This dataset has =copies = 3=.
       2. state
          Mounted on ~/state~.
-         Persisted state is stored here, mirroring the structure of root (so home state is in ~/state/home~, etc state is in ~/state/etc~). Also contains this repo (I use ~/state/holioka~), secrets mountpoint ~/state/secrets~.
+         Persisted state is stored here, mirroring the structure of root (so home state is in ~/state/home~, etc state is in ~/state/etc~). Also contains this repo (I use ~/state/holioka~), and the secrets mountpoint ~/state/secrets~.
 ** Impermanence
 Modules are designed with an assumption of opt-in state preservation. Currently, all my machines remove their state (roll root and home snapshots to ~@blank~) on boot, with an option to not do that (provided via specialisation).
+*** Issue of impermanence bindmounts and opt-in state
+Home-manager module of impermanence can only work within limitations of the user. Regular bindmounts can only be created by root, so HM cannot work with them. This is why HM impermanence uses bindfs, which is a FUSE filesystem and so is subject to FUSE limitations (worse throughput, file descriptor limits) which can, for example, break compilation (linker or compiler will encounter "not enough file descriptors" issue).
+NixOS impermanence module, however, supports creating proper bind mounts for users - in users' directories, owned by them. This flake relies on this functionality.
+The issue appears when there exists a separate ~nix_pool/local/home~ dataset, that is mounted into ~/home/{username}~ - it is mounted /after/ NixOS impermanence creates and chowns the mounts, shadowing them. In the end, the mounts do exist, but their parent directories are owned by root.
+This can be fixed if the home dataset has =neededForBoot = true==. But this breaks the boot process, I forgot in what way.
+The home dataset is not needed if there is nothing in it. So, the solution is to not rely on anything existing in it, and not using it.
+** Creation
+The setup assumes installation to a singular consumer-grade SSD.
+1. LUKS
+   Sector size should be 4096 bytes, otherwise LUKS will use 512 bytes, which leads to atrocious performance on modern SSDs (as it has to do extract-transform-load for every write, amplifying them 8x).
+   #+begin_src bash
+sudo cryptsetup luksFormat --sector-size=4096 [path to disk]
+sudo cryptsetup open [path to disk] cryptroot
+   #+end_src
+2. Zpool
+   Reserve 5-20% to not starve ZFS when the pool gets filled up. Additionally, as it is a COW filesystem, reaching 100% can force it into read-only state (like btrfs does).
+   #+begin_src bash
+sudo zpool create -m legacy -o ashift=12 -O acltype=posix -O atime=off -O compression=lz4 -O mountpoint=legacy -O refreservation=[10% of your disk] -O xattr=sa [name] /dev/mapper/cryptroot
+   #+end_src
+3. ZFS datasets
+   #+begin_src bash
+# NOTE: for secrets, have -o copies=2
+sudo zfs create -p -o mountpoint=legacy [path]
+   #+end_src
+4. Create the snapshots and the directory structure
+#+begin_src bash
+#TODO: create the directories first!
+sudo mount -t zfs [name]/local/root /mnt
+cd /mnt
+sudo mkdir /
+sudo zfs snapshot [name]/local/root@blank
+sudo mkdir -p /mnt/home/[username]
+sudo chown 1000:1000 !$
+sudo mkdir -p /mnt/{nix,var/log,boot,etc,state,local_state}
+#TODO: mount the respective zfs items and the boot partition
+sudo mkdir /mnt/state/secrets
+sudo mount -t zfs [name]/state/secrets /mnt/state/secrets
+#+end_src
+5. Write the necessary files and finish setting up the datasets
+   #+begin_src bash
+
+#TODO: you need to clone state dataset if you have specialisations that have their own state
+   #+end_src
 * Extras
+** TODO use NP1 as North
 ** TODO North bringup instruction
 ** TODO North installer
 This is a QEMU virtual machine that is used as an ARM environment to generate contents of the boot partition.

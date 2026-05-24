@@ -21,22 +21,28 @@ in
         home.packages = with pkgs; [
           krita
         ];
-        #TODO: startup script for krita:
-        #1. exclude krita from the list of prorgams accessible through gui runner
-        #2. make a script that copies the files for krita to use
-        #3. add script to the list of programs accessible through gui runner
-        home.persistence."/state/home/${userName}" = {
+      }
+    #nixos
+    else
+      {
+        environment.persistence."/state".users.${userName} = {
           files = [
-            ".config/kritarc"
-            ".config/kritashortcutrc"
-            ".config/kritashortcutsrc"
+            {
+              file = ".config/kritarc";
+              method = "symlink";
+            }
+            {
+              file = ".config/kritashortcutrc";
+              method = "symlink";
+            }
+            {
+              file = ".config/kritashortcutsrc";
+              method = "symlink";
+            }
           ];
           directories = [
             ".local/share/krita"
           ];
         };
-      }
-    #nixos
-    else
-      { };
+      };
 }

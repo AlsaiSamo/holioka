@@ -8,6 +8,7 @@
 let
   cfg = config.hlk.nix.distributed;
 in
+#NOTE: currently unused.
 {
   options = {
     hlk.nix.distributed.enable = lib.mkEnableOption "remote building and store serving";
@@ -17,6 +18,5 @@ in
     nix.buildMachines = [
       secrets.west.asBuilder
     ];
-    #TODO: store serving
   };
 }

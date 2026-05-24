@@ -10,7 +10,7 @@ select_user:
   ./nvim.nix
   ./graphical/default.nix
   ./fcitx.nix
-  ./nheko.nix
+  ./comms.nix
   ./work.nix
   ./common.nix
   ./keepass.nix

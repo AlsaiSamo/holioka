@@ -10,16 +10,19 @@ select_user:
 let
   cfg = config._hlk_auto.graphical;
   options._hlk_auto.graphical = {
-    #TODO: rename? since I am adding wayland_mobile it would be more appropriate to rename the option
-    #TODO: replace phosh with something else (catacomb? niri?)
-    windowSystem = lib.mkOption {
+    desktopVariant = lib.mkOption {
       example = "xorg";
       description = "What windowing system and the respective environment to enable for the user";
       default = "none";
       type = lib.types.enum [
         "none"
+        #NOTE: not used on any machine rn
         "xorg"
         "wayland"
+        #Very WIP. Options:
+        #1. Phosh
+        #2. Niri/sway + a bunch of scripts + a very custom panel
+        #3. the secret third thing
         "wayland_mobile"
       ];
     };
@@ -27,7 +30,7 @@ let
 in
 {
   inherit options;
-  #Both files do their own checks
+  #All files do their own checks of the option
   imports =
     if
       select_user
@@ -51,7 +54,7 @@ in
       select_user
     #hm
     then
-      (lib.mkIf (cfg.windowSystem != "none") {
+      (lib.mkIf (cfg.desktopVariant != "none") {
         home.packages = with pkgs; [
           dconf
 
@@ -72,7 +75,7 @@ in
 
           #thumbnail stuff
           taglib
-          xfce.tumbler
+          pkgs.tumbler
           gnome-epub-thumbnailer
           webp-pixbuf-loader
           poppler
@@ -108,7 +111,6 @@ in
         xdg.configFile."alacritty/alacritty.toml".source = ../../../dotfiles/alacritty.toml;
 
         dconf.enable = true;
-        #TODO: consistent theming
         gtk = {
           enable = true;
           font = {
@@ -131,8 +133,14 @@ in
           gtk3.extraConfig = {
             gtk-application-prefer-dark-theme = 1;
           };
-          gtk4.extraConfig = {
-            gtk-application-prefer-dark-theme = 1;
+          gtk4 = {
+            theme = {
+              package = pkgs.gnome-themes-extra;
+              name = "Adwaita";
+            };
+            extraConfig = {
+              gtk-application-prefer-dark-theme = 1;
+            };
           };
         };
         qt = {
@@ -181,10 +189,11 @@ in
       })
     #nixos
     else
-      (lib.mkIf (cfg.windowSystem != "none") {
+      (lib.mkIf (cfg.desktopVariant != "none") {
         hardware.graphics = {
           enable = true;
-          #TODO: only on x86_64
+          #TODO: if nixpkgs.crossSystem is defined and is x86_64, or is null and nixpkgs.localSystem is x86_64, set to true
+          #otherwise, set to false
           enable32Bit = true;
           extraPackages = with pkgs; [ libGL ];
         };
@@ -198,6 +207,6 @@ in
           };
         };
         xdg.portal.enable = true;
-        xdg.portal.xdgOpenUsePortal = true;
+        # xdg.portal.xdgOpenUsePortal = true;
       });
 }

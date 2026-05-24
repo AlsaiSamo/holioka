@@ -33,7 +33,7 @@ in
     ];
     networking.firewall.interfaces."virbr*".allowedTCPPorts = [ 24800 ];
 
-    programs.virt-manager.enable = lib.mkIf (config.hlk.graphical.windowSystem != "none") true;
+    programs.virt-manager.enable = lib.mkIf (config.hlk.graphical.desktopVariant != "none") true;
 
     environment.persistence."/state".files = lib.mkIf (cfg.VMConfigsToLink != [ ]) (
       lib.lists.flatten (

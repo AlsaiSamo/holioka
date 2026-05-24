@@ -123,7 +123,7 @@ rec {
       tinyalsa
     ];
     nativeBuildInputs = with pkgsPrev; [ pkg-config ];
-    buildPhase = ''cc $(pkg-config --cflags --libs dbus-1) -ltinyalsa -o q6voiced q6voiced.c'';
+    buildPhase = "cc $(pkg-config --cflags --libs dbus-1) -ltinyalsa -o q6voiced q6voiced.c";
     installPhase = ''install -m555 -Dt "$out/bin" q6voiced'';
     meta.license = lib.licenses.mit;
   };

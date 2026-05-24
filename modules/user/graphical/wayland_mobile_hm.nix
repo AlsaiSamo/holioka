@@ -13,8 +13,7 @@ let
 in
 {
   #hm
-  #TODO: waydroid?
-  config = lib.mkIf (cfg.windowSystem == "wayland_mobile") {
+  config = lib.mkIf (cfg.desktopVariant == "wayland_mobile") {
     home.packages = with pkgs; [
       chatty
       cliphist
@@ -23,9 +22,12 @@ in
     #TODO: what to configure:
     # 1. Sway (configure key presses, touch config)
     # 2. Squeekboard (should have a layout that provides modifier keys, currently the Terminal one is greyed out)
+    #     Have there appeared any other OSKs?
     # 3. Lockscreen
+    # 4. Physical button scripts
+    # 5. Bars
 
-    #XXX: cannot make a group drop down?
+    #BUG: cannot make a group drop down?
     programs.waybar = {
       enable = true;
       systemd.enable = true;
@@ -324,16 +326,8 @@ in
 
     services.swayidle = {
       enable = true;
-      events = [
-        # {
-        #   event = "before-sleep";
-        #   command = "${pkgs.swaylock-effects}/bin/swaylock -f -C $HOME/.config/swaylock/config";
-        # }
-        # {
-        #   event = "lock";
-        #   command = "${pkgs.swaylock-effects}/bin/swaylock -f -C $HOME/.config/swaylock/config";
-        # }
-      ];
+      events = {
+      };
       timeouts = [
         {
           timeout = 1800;

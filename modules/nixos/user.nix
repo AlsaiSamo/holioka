@@ -32,11 +32,15 @@ in
         description = "Main user's config";
         type = lib.types.attrs;
       };
-      #TODO: make into a module
       extraHmConfig = lib.mkOption {
         default = { };
         description = "Extra home-manager config";
         type = lib.types.attrs;
+      };
+      stateVersion = lib.mkOption {
+        default = "25.05";
+        description = "Version of home-manager state";
+        type = lib.types.str;
       };
     };
   };
@@ -54,6 +58,12 @@ in
           group = cfg.userName;
           extraGroups = [
             "wheel"
+            #needed to connect to seatd socket
+            "seat"
+            #needed for pipewire
+            #NOTE: not recommended for multiuser setups, but this isn't a multiuser setup anyways
+            # "audio"
+            # "video"
           ];
         };
         security.pam.loginLimits = [
@@ -70,7 +80,7 @@ in
             value = "65536";
           }
         ];
-        services.kmscon.autologinUser = cfg.userName;
+        services.getty.autologinUser = cfg.userName;
         home-manager = {
           useUserPackages = false;
           useGlobalPkgs = false;
@@ -83,7 +93,7 @@ in
             {
               imports = hmModules;
               _hlk_auto = cfg.userConfig;
-              home.stateVersion = "23.11";
+              home.stateVersion = cfg.stateVersion;
               programs.home-manager.enable = true;
               nixpkgs.overlays = hmOverlay;
             }

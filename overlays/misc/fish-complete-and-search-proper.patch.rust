@@ -1,8 +1,8 @@
 diff --git a/src/input.rs b/src/input.rs
-index 5b22b8e..b62a0dc 100644
+index 0fe3141..38f11bb 100644
 --- a/src/input.rs
 +++ b/src/input.rs
-@@ -153,6 +153,7 @@ const fn make_md(name: &'static wstr, code: ReadlineCmd) -> InputFunctionMetadat
+@@ -132,6 +132,7 @@ const fn make_md(name: &'static wstr, code: ReadlineCmd) -> InputFunctionMetadat
      make_md(L!("clear-screen"), ReadlineCmd::ClearScreenAndRepaint),
      make_md(L!("complete"), ReadlineCmd::Complete),
      make_md(L!("complete-and-search"), ReadlineCmd::CompleteAndSearch),
@@ -11,10 +11,10 @@ index 5b22b8e..b62a0dc 100644
      make_md(L!("delete-or-exit"), ReadlineCmd::DeleteOrExit),
      make_md(L!("down-line"), ReadlineCmd::DownLine),
 diff --git a/src/input_common.rs b/src/input_common.rs
-index e11b557..a80f54a 100644
+index 22264d3..655e4a9 100644
 --- a/src/input_common.rs
 +++ b/src/input_common.rs
-@@ -75,6 +75,7 @@ pub enum ReadlineCmd {
+@@ -72,6 +72,7 @@ pub enum ReadlineCmd {
      YankPop,
      Complete,
      CompleteAndSearch,
@@ -22,11 +22,11 @@ index e11b557..a80f54a 100644
      PagerToggleSearch,
      BeginningOfHistory,
      EndOfHistory,
-diff --git a/src/reader.rs b/src/reader.rs
-index cdeee88..899a9f0 100644
---- a/src/reader.rs
-+++ b/src/reader.rs
-@@ -2730,7 +2730,7 @@ fn handle_readline_command(&mut self, c: ReadlineCmd) {
+diff --git a/src/reader/reader.rs b/src/reader/reader.rs
+index 2713ff4..25de7bb 100644
+--- a/src/reader/reader.rs
++++ b/src/reader/reader.rs
+@@ -2855,7 +2855,7 @@ fn handle_readline_command(&mut self, c: ReadlineCmd) {
                  if self.rls().complete_did_insert
                      && matches!(
                          self.rls().last_cmd,
@@ -35,7 +35,7 @@ index cdeee88..899a9f0 100644
                      )
                  {
                      let (elt, _el) = self.active_edit_line();
-@@ -2771,7 +2771,7 @@ fn handle_readline_command(&mut self, c: ReadlineCmd) {
+@@ -2896,7 +2896,7 @@ fn handle_readline_command(&mut self, c: ReadlineCmd) {
                  self.force_exec_prompt_and_repaint = false;
                  self.parser.libdata_mut().is_repaint = false;
              }
@@ -44,7 +44,7 @@ index cdeee88..899a9f0 100644
                  if !self.conf.complete_ok {
                      return;
                  }
-@@ -2786,7 +2786,7 @@ fn handle_readline_command(&mut self, c: ReadlineCmd) {
+@@ -2911,7 +2911,7 @@ fn handle_readline_command(&mut self, c: ReadlineCmd) {
                          self.pager.set_fully_disclosed();
                      } else {
                          self.select_completion_in_direction(
@@ -53,7 +53,7 @@ index cdeee88..899a9f0 100644
                                  SelectionMotion::Next
                              } else {
                                  SelectionMotion::Prev
-@@ -5543,6 +5543,7 @@ fn command_ends_paging(c: ReadlineCmd, focused_on_search_field: bool) -> bool {
+@@ -5767,6 +5767,7 @@ fn command_ends_paging(c: ReadlineCmd, focused_on_search_field: bool) -> bool {
          }
          rl::Complete
          | rl::CompleteAndSearch
@@ -61,16 +61,16 @@ index cdeee88..899a9f0 100644
          | rl::HistoryPager
          | rl::BackwardChar
          | rl::BackwardCharPassive
-@@ -6239,7 +6240,7 @@ impl<'a> Reader<'a> {
+@@ -6466,7 +6467,7 @@ impl<'a> Reader<'a> {
      fn compute_and_apply_completions(&mut self, c: ReadlineCmd) {
          assert!(matches!(
              c,
 -            ReadlineCmd::Complete | ReadlineCmd::CompleteAndSearch
 +            ReadlineCmd::Complete | ReadlineCmd::CompleteAndSearch | ReadlineCmd::CompleteAndSearchFw
          ));
- 
-         // Remove a trailing backslash. This may trigger an extra repaint, but this is
-@@ -6343,6 +6344,14 @@ fn compute_and_apply_completions(&mut self, c: ReadlineCmd) {
+         assert!(
+             !get_tty_protocols_active(),
+@@ -6571,6 +6572,14 @@ fn compute_and_apply_completions(&mut self, c: ReadlineCmd) {
              self.pager.set_search_field_shown(true);
              self.select_completion_in_direction(SelectionMotion::Next, false);
          }

@@ -11,7 +11,7 @@ let
 in
 {
   #nixos
-  config = lib.mkIf (cfg.windowSystem == "xorg") {
+  config = lib.mkIf (cfg.desktopVariant == "xorg") {
     services.xserver = {
       enable = true;
       windowManager.i3.enable = true;
@@ -24,5 +24,13 @@ in
       defaultSession = "none+i3";
     };
     services.displayManager.autoLogin.user = userName;
+    environment.persistence."/state".users.${userName} = {
+      directories = [
+        ".cache/betterlockscreen"
+      ];
+      files = [
+        ".cache/rofi3.druncache"
+      ];
+    };
   };
 }

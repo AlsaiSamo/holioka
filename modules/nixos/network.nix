@@ -22,7 +22,7 @@ in
       ];
     };
     hostName = lib.mkOption {
-      description = "Host name";
+      description = "What host this is (e.q. West, East; actual hostname is taken from secrets.nix)";
       type = lib.types.str;
     };
   };
@@ -43,7 +43,6 @@ in
         hostId = secrets.${cfg.hostName}.hostId;
         nftables.enable = true;
         networkmanager.enable = true;
-        #TODO: persist networkmanager stuff
       };
       environment.persistence."/state".directories = [ "/var/lib/NetworkManager" ];
     })

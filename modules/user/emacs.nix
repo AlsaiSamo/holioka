@@ -7,16 +7,23 @@ select_user:
   ...
 }:
 #Emacs config
-#TODO: review the modules and later the entire config
+#TODO: for emacs-everywhere to know that it runs under Wayland, it checks WAYLAND_DISPLAY.
+#Which is not set because it isn't in the environment of the daemon, since it is started by systemd.
+#A restart of the daemon helps, ofc, but it is not a good solution.
+#TODO: revise configuration
+#TODO: revise packages
+#TODO: revise keymaps
 let
   cfg = config._hlk_auto.emacs;
   options._hlk_auto.emacs = {
-    default.enable = lib.mkEnableOption "default Doom Emacs configuration";
+    default.enable = lib.mkEnableOption "default Doom Emacs configuration - the primary IDE.";
     package = lib.mkOption {
-      description = "What Emacs to use as the base. Use emacs_FD for Xorg and emacsPGTK_fd for Wayland.";
+      description = "What Emacs to use as the base.
+        By default Emacs is compiled with increased open file descriptors limit.
+        By default the option uses emacs_FD for Xorg and emacsPGTK_FD for Wayland.";
       type = lib.types.package;
       default =
-        if (config._hlk_auto.graphical.windowSystem == "xorg") then pkgs.emacs_FD else pkgs.emacsPGTK_FD;
+        if (config._hlk_auto.graphical.desktopVariant == "xorg") then pkgs.emacs_FD else pkgs.emacsPGTK_FD;
     };
   };
 in
@@ -31,6 +38,8 @@ in
         home.packages =
           with pkgs;
           [
+            #font
+            aporetic
             #for dired
             vips
             imagemagick
@@ -45,29 +54,37 @@ in
             #for irc
             gnutls
             #for langs
+            lldb
             cmake
             nil
             clang-tools
-            lua-language-server
-            mdl
             pandoc
             nixfmt
+            rust-analyzer
             rustfmt
-            guile
-            bash-language-server
-            shellcheck
-            pyright
-            black
-            lldb
+            # sbcl #I'm using it on per-project basis
+            # lua-language-server
+            # mdl
+            # guile
+            # bash-language-server
+            # shellcheck
+            # pyright
+            # black
           ]
           ++ (
-            if (config._hlk_auto.graphical.windowSystem == "xorg") then
+            if (config._hlk_auto.graphical.desktopVariant == "xorg") then
               [
                 # for emacs-everywhere
                 xorg.xwininfo
                 xclip
                 xorg.xprop
                 xdotool
+              ]
+            else if (config._hlk_auto.graphical.desktopVariant == "wayland") then
+              [
+                # for emacs-everywhere
+                wtype
+                wl-clipboard
               ]
             else
               [ ]
@@ -76,13 +93,16 @@ in
         programs.doom-emacs = {
           enable = true;
           emacs = cfg.package;
-          # Doesn't work due to github url redirecting, which nix fears
-          # experimentalFetchTree = true;
+          #fixes the package redownloads at every change in the flake, seemingly
+          experimentalFetchTree = true;
           doomDir = ../../dotfiles/doom.d;
-          #NOTE: I can use extraPackages to add packages to Emacs
+          extraPackages = epkgs: with epkgs; [ treesit-grammars.with-all-grammars ];
         };
-        home.persistence."/state/home/${userName}/" = {
-          allowOther = true;
+      }
+    #nixos
+    else
+      {
+        environment.persistence."/state".users.${userName} = {
           directories = [
             #Losing cache only leads to annoyingly long several minutes of wait.
             #".cache/doom"
@@ -91,12 +111,8 @@ in
             ".local/share/doom"
           ];
         };
-        home.persistence."/local_state/home/${userName}" = {
-          allowOther = true;
+        environment.persistence."/local_state".users.${userName} = {
           directories = [ ".cache/doom" ];
         };
-      }
-    #nixos
-    else
-      { };
+      };
 }

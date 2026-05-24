@@ -11,7 +11,7 @@ let
 in
 {
   #hm
-  config = lib.mkIf (cfg.windowSystem == "xorg") {
+  config = lib.mkIf (cfg.desktopVariant == "xorg") {
     home.packages = with pkgs; [
       i3
       rofi-power-menu
@@ -23,7 +23,6 @@ in
       slop
     ];
 
-    #TODO: configure correctly, it is now using j for scrolling down
     xdg.configFile."warpd/config".source = ../../../dotfiles/warpd/config;
 
     services.betterlockscreen = {
@@ -76,15 +75,6 @@ in
       activeOpacity = 1.0;
       opacityRules = [ "95:class_g = 'Alacritty' && !focused" ];
       vSync = true;
-    };
-
-    home.persistence."/state/home/${userName}" = {
-      directories = [
-        ".cache/betterlockscreen"
-      ];
-      files = [
-        ".cache/rofi3.druncache"
-      ];
     };
   };
 }

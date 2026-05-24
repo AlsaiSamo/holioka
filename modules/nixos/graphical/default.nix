@@ -13,7 +13,7 @@ in
     ./wayland.nix
   ];
   options.hlk.graphical = {
-    windowSystem = lib.mkOption {
+    desktopVariant = lib.mkOption {
       example = "xorg";
       description = "What windowing system and the respective environment to enable in the system";
       default = "none";
@@ -24,9 +24,9 @@ in
       ];
     };
   };
-  config = lib.mkIf (cfg.windowSystem != "none") {
+  config = lib.mkIf (cfg.desktopVariant != "none") {
     services.xserver = {
-      #TODO: doesn't apply to wayland
+      #TODO: doesn't apply to wayland, make some way to have this toggle not through xkb
       xkb.options = "grp:caps_toggle";
       autoRepeatDelay = 200;
       autoRepeatInterval = 30;
@@ -42,6 +42,6 @@ in
       };
     };
     xdg.portal.enable = true;
-    xdg.portal.xdgOpenUsePortal = true;
+    # xdg.portal.xdgOpenUsePortal = true;
   };
 }

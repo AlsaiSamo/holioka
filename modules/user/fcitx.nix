@@ -14,7 +14,7 @@ let
 in
 {
   inherit options;
-  #TODO: default fcitx config (take from West)
+  #TODO: default fcitx config
   #TODO: fcitx5.settings
   config =
     if
@@ -32,7 +32,11 @@ in
           # GTK_IM_MODULE = "fcitx";
           # QT_IM_MODULE = "fcitx";
         };
-        home.persistence."/state/home/${userName}" = {
+      }
+    #nixos
+    else
+      lib.mkIf cfg.enable {
+        environment.persistence."/state".users.${userName} = {
           directories = [
             ".config/fcitx5"
             #Appears when adding something like quick phrase
@@ -40,10 +44,6 @@ in
             ".config/mozc"
           ];
         };
-      }
-    #nixos
-    else
-      lib.mkIf cfg.enable {
         i18n = {
           inputMethod = {
             type = "fcitx5";
@@ -59,7 +59,7 @@ in
           };
         };
         environment.systemPackages = with pkgs; [
-          fcitx5-configtool
+          qt6Packages.fcitx5-configtool
         ];
         environment.variables = {
           XMODIFIERS = "@im=fcitx";

@@ -24,7 +24,7 @@
     };
 
     services.kmscon = {
-      #on some devices (such as oneplus) I have to disable this
+      #NOTE: on some devices (such as oneplus) I have to disable this
       enable = lib.mkDefault true;
       extraConfig = "font-size=10";
       fonts = [
@@ -56,7 +56,7 @@
       sqlite
       p7zip
       htop
-      pinentry
+      pinentry-all
       gnupg
       git-crypt
       gitFull
@@ -69,8 +69,8 @@
       udiskie
       libsecret
       libnotify
+      eza
     ];
-    #TODO: leave this here or replace?
     programs.zsh = {
       enable = true;
       autosuggestions.enable = true;
@@ -81,6 +81,7 @@
         ":q" = "exit";
         v = "nvim";
         "vim" = "nvim";
+        l = "eza -halg";
       };
     };
     nix = {
