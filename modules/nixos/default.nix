@@ -11,7 +11,8 @@
     ./common.nix
     ./fs.nix
     ./audio.nix
-    ./flatpak.nix
+    #TODO: flatpak module based on nix-flatpak or declarative-flatpak
+    # ./flatpak.nix
     ./virt.nix
     ./network.nix
     ./sshd.nix

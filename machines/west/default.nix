@@ -15,7 +15,7 @@
     projectsDataset.enable = true;
     stateRemoval.enable = true;
     backup.enable = true;
-    flatpak.default.enable = true;
+    # flatpak.default.enable = true;
     audio = {
       default.enable = true;
       desktop.enable = true;
@@ -68,7 +68,6 @@
           output = {
             # built-in screen
             "Lenovo Group Limited 0x40BA Unknown" = {
-              #TODO: reposition due to setup change.
               pos = "1920 860";
             };
             #right side vertical screen
@@ -78,7 +77,6 @@
             };
             #left side drawing monitor
             "HUN GT-191 Unknown" = {
-              #TODO: reposition due to setup change.
               pos = "0 860";
             };
           };
@@ -111,6 +109,7 @@
       hlk.datasetPrefix = "work";
     };
   };
+
   #TODO: specialisation for streaming
   #TODO: blacklist the webcam in streaming setup
 

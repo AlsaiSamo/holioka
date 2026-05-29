@@ -7,6 +7,7 @@
 let
   cfg = config.hlk.graphical;
 in
+#WARN: configuration of GUI as nixos module isn't maintained.
 {
   imports = [
     ./x.nix
@@ -25,13 +26,6 @@ in
     };
   };
   config = lib.mkIf (cfg.desktopVariant != "none") {
-    services.xserver = {
-      #TODO: doesn't apply to wayland, make some way to have this toggle not through xkb
-      xkb.options = "grp:caps_toggle";
-      autoRepeatDelay = 200;
-      autoRepeatInterval = 30;
-      xkb.layout = "us,ru";
-    };
     environment.systemPackages = with pkgs; [
       alacritty
       brightnessctl
@@ -41,7 +35,7 @@ in
         subpixel.rgba = "none";
       };
     };
-    xdg.portal.enable = true;
+    xdg.portal.enable = lib.mkDefault true;
     # xdg.portal.xdgOpenUsePortal = true;
   };
 }

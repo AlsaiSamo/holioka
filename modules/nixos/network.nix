@@ -44,7 +44,10 @@ in
         nftables.enable = true;
         networkmanager.enable = true;
       };
-      environment.persistence."/state".directories = [ "/var/lib/NetworkManager" ];
+      environment.persistence."/state".directories = [
+        "/var/lib/NetworkManager"
+        "/etc/NetworkManager"
+      ];
     })
   ];
 }

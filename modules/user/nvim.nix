@@ -87,9 +87,44 @@ in
                 "o"
               ];
             }
+            #TODO: these don't work for visual mode
+            {
+              action = ":lua require('leap').leap { offset = 0, inputlen = 1 }<CR>";
+              key = "f";
+              mode = [
+                "n"
+                "v"
+                # "o"
+              ];
+            }
+            {
+              action = ":lua require('leap').leap { offset = 0, inputlen = 1, backward = true }<CR>";
+              key = "F";
+              mode = [
+                "n"
+                "v"
+                # "o"
+              ];
+            }
+            {
+              action = ":lua require('leap').leap { offset = -1, inputlen = 1 }<CR>";
+              key = "t";
+              mode = [
+                "n"
+                "v"
+                # "o"
+              ];
+            }
+            {
+              action = ":lua require('leap').leap { offset = -1, inputlen = 1, backward = true }<CR>";
+              key = "T";
+              mode = [
+                "n"
+                "v"
+                # "o"
+              ];
+            }
           ];
-          #TODO: autostart them when visiting their respective files
-          #lsp enable
           lsp.servers = {
             ccls = {
               enable = true;
@@ -137,12 +172,8 @@ in
             tree-sitter.enable = true;
           };
           plugins = {
-            #Modes
-            #TODO: cannot be loaded rn
-            # csvview = {
-            #   enable = true;
-            #   autoLoad = false;
-            # };
+            # Modes
+            # NOTE: csvview is broken
             undotree = {
               enable = true;
               settings = {
@@ -168,12 +199,7 @@ in
             todo-comments.enable = true;
             #Editing
             comment.enable = true;
-            #TODO: replicate this
-            #         require('leap').add_default_mappings()
-            #         vim.api.nvim_set_hl(0, 'LeapBackdrop', { link = 'Comment' })
-            #TODO: require('leap').opts.vim_opts['go.ignorecase'] = false
             leap.enable = true;
-            flit.enable = true;
             autopairs.enable = true;
           };
         };

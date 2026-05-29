@@ -133,27 +133,29 @@ in
         '';
       };
 
-      environment.persistence."/state" = lib.mkIf cfg.stateRemoval.enable {
+      environment.persistence."/state" = {
         files = [
           "/etc/machine-id"
           "/etc/zfs/zpool.cache"
         ];
         directories = [
-          "/etc/NetworkManager/"
           #persist uids and gids
           "/var/lib/nixos"
           "/var/lib/systemd"
         ];
       };
+
       environment.variables = lib.mkIf cfg.stateRemoval.enable {
-        PLEASE_PUT_BUILD_ARTIFACTS_IN_TMP = 1;
+        PLEASE_PUT_BUILD_ARTIFACTS_IN_TMP = lib.mkDefault "/tmp";
       };
+
       services.zfs = lib.mkIf cfg.defaultFilesystems {
         trim.enable = true;
         autoScrub = {
           enable = true;
         };
       };
+
       services.sanoid = lib.mkIf cfg.backup.enable {
         enable = true;
         interval = "hourly";

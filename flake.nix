@@ -103,26 +103,19 @@
       hmModules = hmModules' ++ userModulesUser;
 
       #Nixpkgs for cross-compiling the kernel
-      nixpkgsARM = import nixpkgs {
+      nixpkgsArmCross = import nixpkgs {
         overlays = allOverlays;
         crossSystem.system = "aarch64-linux";
         #NOTE: assumes x86_64 builder
         localSystem.system = "x86_64-linux";
       };
-      nixpkgsNoCross = import nixpkgs {
-        overlays = allOverlays;
-        localSystem.system = "aarch64-linux";
-        config.allowUnfree = true;
-      };
     in
     {
-      #Packages for oneplus
+      #Packages for north
       packages."aarch64-linux" = {
-        ubootImage = nixpkgsNoCross.ubootImage_enchilada;
-        uboot = nixpkgsNoCross.uboot_enchilada;
-        ubootImageSpacewar = nixpkgsNoCross.ubootImage_spacewar_test;
-        buffyboard = nixpkgsNoCross.buffyboard;
-        kernel = nixpkgsARM.linux_enchilada;
+        uboot = nixpkgsArmCross.uboot_spacewar;
+        ubootImage = nixpkgsArmCross.ubootImage_spacewar;
+        kernel = nixpkgsArmCross.linux_spacewar;
       };
 
       nixosConfigurations = {
@@ -184,7 +177,7 @@
               hmModules
               hmOverlay
               ;
-            pkgsARM = nixpkgsARM.pkgs;
+            pkgsARM = nixpkgsArmCross.pkgs;
             mobile = mobile-nixos;
           };
           modules = nixosModules ++ [
@@ -199,8 +192,8 @@
             }
           ];
         };
-        #Oneplus 6 (minified config to be used for first installation)
-        #WARN: not tested
+        # Minified config to be used for first installation
+        # WARN: not tested
         north_minimal = nixpkgs.lib.nixosSystem {
           system = "aarch64-linux";
           specialArgs = {
@@ -211,7 +204,7 @@
               hmModules
               hmOverlay
               ;
-            pkgsARM = nixpkgsARM.pkgs;
+            pkgsARM = nixpkgsArmCross.pkgs;
             mobile = mobile-nixos;
           };
           modules = nixosModules ++ [

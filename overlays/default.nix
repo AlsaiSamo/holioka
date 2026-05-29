@@ -14,7 +14,8 @@ let
 in
 map fileOverlay [
   ./misc
-  ./enchilada/default.nix
-  ./buffyboard.nix
+  ./north/enchilada/default.nix
+  ./north/spacewar/default.nix
+  #TODO: if I end up using sway on north, I should remove this
   ./sway
 ]

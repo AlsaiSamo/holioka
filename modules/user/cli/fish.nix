@@ -8,7 +8,8 @@
 }:
 let
   #NOTE: run 'sudo nix-channel --update' once to get rid of "DBI connect..."
-  #TODO: I do not use fish right now. The following is the todo list:
+  #WARN: I'm not using fish anymore, this module is unmaintained.
+  # List of tasks:
   #1. have autocompletion for nix-shell -p (list of attributes of pkgs from nixpkgs)
   #2. have insert-and-complete (re-cal lcompletion after insert)
   #3. fzf for sorting autocompletions and search (but don't change anything else)

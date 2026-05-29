@@ -18,12 +18,10 @@ let
   options._hlk_auto.emacs = {
     default.enable = lib.mkEnableOption "default Doom Emacs configuration - the primary IDE.";
     package = lib.mkOption {
-      description = "What Emacs to use as the base.
-        By default Emacs is compiled with increased open file descriptors limit.
-        By default the option uses emacs_FD for Xorg and emacsPGTK_FD for Wayland.";
+      description = "What Emacs to use as the base.";
       type = lib.types.package;
       default =
-        if (config._hlk_auto.graphical.desktopVariant == "xorg") then pkgs.emacs_FD else pkgs.emacsPGTK_FD;
+        if (config._hlk_auto.graphical.desktopVariant == "xorg") then pkgs.emacs else pkgs.emacs-pgtk;
     };
   };
 in

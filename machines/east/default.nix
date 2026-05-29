@@ -13,7 +13,7 @@ inputs@{
     defaultFilesystems = true;
     stateRemoval.enable = true;
     backup.enable = true;
-    flatpak.default.enable = true;
+    # flatpak.default.enable = true;
     audio = {
       default.enable = true;
       desktop.enable = true;
@@ -27,7 +27,6 @@ inputs@{
       default.enable = true;
       rootKeysFrom = secrets.east.authorizedKeyFiles;
     };
-    #TODO: currently cannot connect the two machines (no router)
     #nix.distributed.enable = true;
     mainUser = {
       enable = true;
@@ -42,8 +41,7 @@ inputs@{
         cli.extra.enable = true;
         cli.shell = "fish";
         cli.starship.enable = true;
-        #TODO: disabled for faster iteration (this needs to build Emacs for evaluation)
-        #emacs.default.enable = true;
+        emacs.default.enable = true;
         firefox.default.enable = true;
         gpg.default.enable = true;
         graphical.desktopVariant = "wayland";

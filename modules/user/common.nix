@@ -45,7 +45,7 @@ in
             # "Projects"
             # "litter"
 
-            #TODO: create audio module that relies on my nixos audio module and move this into it
+            #TODO: move out
             ".local/state/wireplumber"
             ".config/cmus"
           ];

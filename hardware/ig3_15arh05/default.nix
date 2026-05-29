@@ -49,19 +49,13 @@
     enableCryptodisk = true;
     device = "nodev";
   };
-  #TODO: set priority to 2048
-  zramSwap.enable = true;
+  zramSwap = {
+    enable = true;
+    priority = 64;
+  };
 
   boot.kernelPackages = pkgs.linuxPackagesFor pkgs.linuxKernel.kernels.linux_zen;
 
-  #TODO: test with this
-  # services.scx = {
-  #   enable = true;
-  #   package = pkgs.scx.rustscheds;
-  #   scheduler = "scx_lavd";
-  # };
-
-  #TODO: look into system76-scheduler
   services.ananicy = {
     enable = true;
     package = pkgs.ananicy-cpp;

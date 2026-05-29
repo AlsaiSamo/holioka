@@ -1,0 +1,208 @@
+diff --git a/drivers/power/regulator/qcom-rpmh-regulator.c b/drivers/power/regulator/qcom-rpmh-regulator.c
+index 3f0f184546..ffcaa61828 100644
+--- a/drivers/power/regulator/qcom-rpmh-regulator.c
++++ b/drivers/power/regulator/qcom-rpmh-regulator.c
+@@ -318,34 +318,6 @@ static int rpmh_regulator_is_enabled(struct udevice *rdev)
+ 	return vreg->enabled > 0;
+ }
+ 
+-static int rpmh_regulator_set_enable_state(struct udevice *rdev,
+-					   bool enable)
+-{
+-	struct rpmh_vreg *vreg = dev_get_priv(rdev);
+-	struct tcs_cmd cmd = {
+-		.addr = vreg->addr + RPMH_REGULATOR_REG_ENABLE,
+-		.data = enable,
+-	};
+-	int ret;
+-
+-	debug("%s: set_enable %d (current %d)\n", rdev->name, enable,
+-	      vreg->enabled);
+-
+-	if (vreg->enabled == -EINVAL &&
+-	    vreg->uv != -ENOTRECOVERABLE) {
+-		ret = _rpmh_regulator_vrm_set_value(rdev,
+-						    vreg->uv, true);
+-		if (ret < 0)
+-			return ret;
+-	}
+-
+-	ret = rpmh_regulator_send_request(vreg, &cmd, enable);
+-	if (!ret)
+-		vreg->enabled = enable;
+-
+-	return ret;
+-}
+-
+ static int rpmh_regulator_vrm_set_mode_bypass(struct rpmh_vreg *vreg,
+ 					      unsigned int mode, bool bypassed)
+ {
+@@ -396,6 +368,41 @@ static int rpmh_regulator_vrm_set_mode(struct udevice *rdev,
+ 	return ret;
+ }
+ 
++static int rpmh_regulator_set_enable_state(struct udevice *rdev,
++					   bool enable)
++{
++	struct rpmh_vreg *vreg = dev_get_priv(rdev);
++	struct tcs_cmd cmd = {
++		.addr = vreg->addr + RPMH_REGULATOR_REG_ENABLE,
++		.data = enable,
++	};
++	int ret;
++
++	debug("%s: set_enable %d (current %d)\n", rdev->name, enable,
++	      vreg->enabled);
++
++    if (vreg->mode != -EINVAL) {
++        ret = rpmh_regulator_vrm_set_mode_bypass(vreg, vreg->mode,
++                             vreg->bypassed);
++        if (ret < 0)
++            return ret;
++    }
++
++	if (vreg->enabled == -EINVAL &&
++	    vreg->uv != -ENOTRECOVERABLE) {
++		ret = _rpmh_regulator_vrm_set_value(rdev,
++						    vreg->uv, true);
++		if (ret < 0)
++			return ret;
++	}
++
++	ret = rpmh_regulator_send_request(vreg, &cmd, enable);
++	if (!ret)
++		vreg->enabled = enable;
++
++	return ret;
++}
++
+ static int rpmh_regulator_vrm_get_pmic_mode(struct rpmh_vreg *vreg, int *pmic_mode)
+ {
+ 	struct tcs_cmd cmd = {
+diff --git a/drivers/ufs/ufs-qcom.c b/drivers/ufs/ufs-qcom.c
+index c63e550c88..c51f178dd6 100644
+--- a/drivers/ufs/ufs-qcom.c
++++ b/drivers/ufs/ufs-qcom.c
+@@ -16,6 +16,7 @@
+ #include <generic-phy.h>
+ #include <asm/gpio.h>
+ #include <interconnect.h>
++#include <power/regulator.h>
+ 
+ #include <linux/bitops.h>
+ #include <linux/delay.h>
+@@ -261,6 +262,11 @@ static int ufs_qcom_power_up_sequence(struct ufs_hba *hba)
+ 		return ret;
+ 	}
+ 
++    ret = (generic_phy_power_off(&phy));
++    if (ret) {
++      dev_err(hba->dev, "%s: phy power off failed, ret = %d\n", __func__, ret);
++    }
++
+ 	/* phy initialization */
+ 	ret = generic_phy_init(&phy);
+ 	if (ret) {
+@@ -596,15 +602,26 @@ static int ufs_qcom_init(struct ufs_hba *hba)
+ 		return err;
+ 	}
+ 
++    err = regulator_set_enable(hba->vregs.vcc, true);
++    if (err && err != -ENOSYS)
++      dev_warn(hba->dev, "failed to enable regulator vcc-supply:%d\n", err);
++
++    err = regulator_set_enable(hba->vregs.vccq, true);
++    if (err && err != -ENOSYS)
++      dev_warn(hba->dev, "failed to enable regulator vccq-supply:%d\n", err);
++  
++    err = regulator_set_enable(hba->vregs.vccq2, true);
++    if (err && err != -ENOSYS)
++      dev_warn(hba->dev, "failed to enable regulator vccq2-supply:%d\n", err);
++
+ 	/* setup clocks */
+-	ufs_qcom_setup_clocks(hba, true, PRE_CHANGE);
++	ufs_qcom_setup_clocks(hba, false, PRE_CHANGE);
+ 
+ 	if (priv->hw_ver.major >= 0x4)
+ 		ufshcd_dme_set(hba,
+ 			       UIC_ARG_MIB(PA_TXHSADAPTTYPE),
+ 			       PA_NO_ADAPT);
+ 
+-	ufs_qcom_setup_clocks(hba, true, POST_CHANGE);
+ 
+ 	ufs_qcom_get_controller_revision(hba, &priv->hw_ver.major,
+ 					 &priv->hw_ver.minor,
+@@ -683,10 +700,14 @@ static int ufs_qcom_probe(struct udevice *dev)
+ 	ret = ufshcd_probe(dev, &ufs_qcom_hba_ops);
+ 	if (ret) {
+ 		dev_err(dev, "ufshcd_probe() failed, ret:%d\n", ret);
+-		return ret;
++        goto err_free_gpio;
+ 	}
+ 
+ 	return 0;
++
++err_free_gpio:
++    dm_gpio_free(dev, &priv->reset);
++    return ret;
+ }
+ 
+ static const struct udevice_id ufs_qcom_ids[] = {
+diff --git a/drivers/ufs/ufs-uclass.c b/drivers/ufs/ufs-uclass.c
+index 7a80a9d566..58aa3a2677 100644
+--- a/drivers/ufs/ufs-uclass.c
++++ b/drivers/ufs/ufs-uclass.c
+@@ -21,6 +21,7 @@
+ #include <hexdump.h>
+ #include <scsi.h>
+ #include <ufs.h>
++#include <power/regulator.h>
+ #include <asm/io.h>
+ #include <asm/dma-mapping.h>
+ #include <linux/bitops.h>
+@@ -2181,6 +2182,18 @@ int ufshcd_probe(struct udevice *ufs_dev, struct ufs_hba_ops *hba_ops)
+ 	}
+ 	hba->mmio_base = mmio_base;
+ 
++    err = device_get_supply_regulator(ufs_dev, "vcc-supply", &hba->vregs.vcc);
++    if (err)
++      dev_info(ufs_dev, "failed to get regulator vcc-supply:%d\n", err);
++
++    err = device_get_supply_regulator(ufs_dev, "vccq-supply", &hba->vregs.vccq);
++    if (err)
++      dev_info(ufs_dev, "failed to get regulator vccq-supply:%d\n", err);
++
++    err = device_get_supply_regulator(ufs_dev, "vccq2-supply", &hba->vregs.vccq2);
++    if (err)
++      dev_info(ufs_dev, "failed to get regulator vccq2-supply:%d\n", err);
++
+ 	/* Set descriptor lengths to specification defaults */
+ 	ufshcd_def_desc_sizes(hba);
+ 
+diff --git a/drivers/ufs/ufs.h b/drivers/ufs/ufs.h
+index bc839a4370..4739e898ba 100644
+--- a/drivers/ufs/ufs.h
++++ b/drivers/ufs/ufs.h
+@@ -693,6 +693,13 @@ enum ufshcd_quirks {
+ 	UFSHCD_QUIRK_BROKEN_LSDBS_CAP			= 1 << 25,
+ };
+ 
++struct ufs_vreg_info {
++  struct udevice *vcc;
++  struct udevice *vccq;
++  struct udevice *vccq2;
++};
++
++
+ struct ufs_hba {
+ 	struct			udevice *dev;
+ 	void __iomem		*mmio_base;
+@@ -718,6 +725,8 @@ struct ufs_hba {
+ 	struct ufs_pa_layer_attr pwr_info;
+ 	struct ufs_pwr_mode_info max_pwr_info;
+ 
++    struct ufs_vreg_info vregs;
++
+ 	struct ufs_dev_cmd dev_cmd;
+ };
+ 

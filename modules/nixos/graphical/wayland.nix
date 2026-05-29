@@ -8,7 +8,6 @@ let
   cfg = config.hlk.graphical;
 in
 {
-  #TODO: remove?
   config = lib.mkIf (cfg.desktopVariant == "wayland") {
     # programs.sway = {
     #   enable = true;

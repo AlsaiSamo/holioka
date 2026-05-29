@@ -12,7 +12,7 @@ let
   options._hlk_auto.comms = {
     nheko.enable = lib.mkEnableOption "nheko matrix client";
     telegram.enable = lib.mkEnableOption "telegram desktop client";
-    #TODO: try out dorion when 6.12.0 hits nixpkgs
+    #TODO: dorion currently doesn't support webrtc properly
     discord.enable = lib.mkEnableOption "discord client (legcord)";
   };
 in
@@ -58,8 +58,8 @@ in
           };
           environment.persistence."/local_state".users.${userName} = {
             directories = [
-              #TODO: persist .local/share/TelegramDesktop/tdata/user_data/{cache,media_cache} in local_state
-              #(check that this will work)
+              #NOTE: this bindmounts to both /home/imikoy/... and /state/home/imikoy/..., funny
+              #(same with the legcord cache down below)
               ".local/share/TelegramDesktop/tdata/user_data/cache"
               ".local/share/TelegramDesktop/tdata/user_data/media_cache"
             ];
@@ -73,7 +73,6 @@ in
           };
           environment.persistence."/local_state".users.${userName} = {
             directories = [
-              #TODO: check that this'll work.
               ".config/legcord/Cache"
             ];
           };
